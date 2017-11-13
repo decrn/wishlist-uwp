@@ -10,7 +10,23 @@ namespace ServerApp.Models {
     public class List {
         public int ListId { get; set; }
 
+        public string EditableHash { get; set; }
+
+        public string ViewableHash { get; set; }
+
         public string Name { get; set; }
+
+        public string CuratorName { get; set; }
+
+        public string Description { get; set; }
+
+        public bool isHidden { get; set; }
+
+        public bool isReadOnly { get; set; }
+
+        public int Color { get; set; }
+
+        public char Icon { get; set; }
 
         public virtual ICollection<Item> Items { get; set; }
     }
