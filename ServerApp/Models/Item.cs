@@ -11,6 +11,8 @@ namespace ServerApp.Models {
 
         public int ItemId { get; set; }
 
+        [Required]
+        [MaxLength(100)]
         public string ProductName { get; set; }
 
         public bool IsCompleted { get; set; }

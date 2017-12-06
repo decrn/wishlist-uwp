@@ -22,6 +22,7 @@ namespace ClientApp.Models {
 
         public bool isReadOnly { get; set; }
 
+        // https://msdn.microsoft.com/en-us/library/system.drawing.color(v=vs.110).aspx
         public System.Drawing.Color Color { get; set; }
 
         public char Icon { get; set; }
