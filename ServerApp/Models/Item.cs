@@ -8,23 +8,30 @@ using Newtonsoft.Json;
 
 namespace ServerApp.Models {
     public class Item {
-
+        
+        // autogenerate
         public int ItemId { get; set; }
 
         [Required]
         [MaxLength(100)]
         public string ProductName { get; set; }
 
+        // default to false
         public bool IsCompleted { get; set; }
 
+        // default to false
         public bool IsCheckLocked { get; set; }
 
+        // optional
         public string ProductInfoUrl { get; set; }
 
+        // optional
         public string ProductImageUrl { get; set; }
 
+        // optional
         public double ItemPriceUsd { get; set; }
 
+       
         public virtual ICollection<Item> Items { get; set; }
 
         [ForeignKey("List")]
