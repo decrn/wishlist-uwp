@@ -10,6 +10,7 @@ namespace ServerApp.Models {
     public class List {
 
         // autogenerate
+        [Key]
         public int ListId { get; set; }
 
         // autogenerate
@@ -39,8 +40,9 @@ namespace ServerApp.Models {
         public int Color { get; set; }
 
         // optional: consider default icon?
-        public char Icon { get; set; }
+        public string Icon { get; set; }
 
+        [InverseProperty("List")]
         public virtual ICollection<Item> Items { get; set; }
     }
 }

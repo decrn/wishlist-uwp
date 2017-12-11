@@ -31,9 +31,6 @@ namespace ServerApp.Models {
         // optional
         public double ItemPriceUsd { get; set; }
 
-       
-        public virtual ICollection<Item> Items { get; set; }
-
         [ForeignKey("List")]
         public int ListId { get; set; }
 

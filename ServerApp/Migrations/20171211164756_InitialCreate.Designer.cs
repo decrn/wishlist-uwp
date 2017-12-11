@@ -11,8 +11,8 @@ using System;
 namespace ServerApp.Migrations
 {
     [DbContext(typeof(WishContext))]
-    [Migration("20171025131310_Initial")]
-    partial class Initial
+    [Migration("20171211164756_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,11 +26,21 @@ namespace ServerApp.Migrations
                     b.Property<int>("ItemId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<bool>("IsCheckLocked");
+
                     b.Property<bool>("IsCompleted");
+
+                    b.Property<double>("ItemPriceUsd");
 
                     b.Property<int>("ListId");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("ProductImageUrl");
+
+                    b.Property<string>("ProductInfoUrl");
+
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasMaxLength(100);
 
                     b.HasKey("ItemId");
 
@@ -44,7 +54,27 @@ namespace ServerApp.Migrations
                     b.Property<int>("ListId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Name");
+                    b.Property<int>("Color");
+
+                    b.Property<string>("CuratorName")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("EditableHash");
+
+                    b.Property<string>("Icon");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
+                    b.Property<string>("ViewableHash");
+
+                    b.Property<bool>("isHidden");
+
+                    b.Property<bool>("isReadOnly");
 
                     b.HasKey("ListId");
 

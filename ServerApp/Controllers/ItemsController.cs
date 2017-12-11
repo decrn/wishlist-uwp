@@ -93,6 +93,7 @@ namespace ServerApp.Controllers
             _context.Item.Add(item);
             await _context.SaveChangesAsync();
 
+            // return the newly created item
             return CreatedAtAction("GetItem", new { id = item.ItemId }, item);
         }
 
