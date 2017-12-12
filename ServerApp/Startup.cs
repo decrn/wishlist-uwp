@@ -31,7 +31,13 @@ namespace ServerApp
             services.AddDbContext<WishContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("WishContext")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<User, IdentityRole>(options => {
+                    options.Password.RequireDigit = false;
+                    options.Password.RequiredLength = 10;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequireLowercase = false;
+                })
                 .AddEntityFrameworkStores<WishContext>()
                 .AddDefaultTokenProviders();
 
