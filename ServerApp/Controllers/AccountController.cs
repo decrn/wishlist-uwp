@@ -19,17 +19,14 @@ namespace ServerApp.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        private readonly ILogger _logger;
 
         public AccountController(
             UserManager<User> userManager,
-            SignInManager<User> signInManager,
-            ILogger<AccountController> logger
+            SignInManager<User> signInManager
         )
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _logger = logger;
         }
 
         // POST: api/Account/Login
@@ -42,18 +39,13 @@ namespace ServerApp.Controllers
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
-                    return Ok(model);
+                    return Json(model);
                 }
 
-                _logger.LogInformation("User failed to log in.");
-                // TODO: don't return OK but ERROR/FAIL/..?
-                return Ok(result);
+                return Json(result);
             }
 
-            _logger.LogInformation("User failed to log in.");
-            // TODO: don't return OK but ERROR/FAIL/..?
-            return Ok(ModelState.Values);
+            return Json(ModelState.Values);
         }
 
         // POST: api/Account/Register
@@ -70,25 +62,19 @@ namespace ServerApp.Controllers
                 IdentityResult result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User registered.");
-                    return Ok(model);
+                    return Json(model);
                 }
 
-                _logger.LogInformation("User failed to register.");
-                // TODO: don't return OK but ERROR/FAIL/..?
-                return Ok(result.Errors);
+                return Json(result);
             }
 
-            _logger.LogInformation("User failed to register.");
-            // TODO: don't return OK but ERROR/FAIL/..?
-            return Ok(ModelState.Values);
+            return Json(ModelState.Values);
         }
 
         // GET: api/Account/Logout
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            _logger.LogInformation("User logged out.");
             return NoContent();
         }
     }
