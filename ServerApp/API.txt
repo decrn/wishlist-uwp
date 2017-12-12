@@ -1,0 +1,109 @@
+﻿# API Routes
+
+## Account
+
+### Register
+`POST /api/Account/Register`
+
+- Email
+- Password
+
+Returns: JSON
+
+- ModelState.Values
+- IdentityResult
+- model  + Token / Cookie?
+
+### Login
+`POST /api/Account/Login`
+- Email
+- Password
+
+Returns: JSON
+
+- ModelState.Values
+- IdentityResult
+- model + Token / Cookie?
+
+### Logout
+`GET /api/Account/Logout`
+
+
+## Lists
+
+### All lists (deprecated)
+`GET /api/Lists`
+
+Returns: JSON [List]
+
+### All lists (coming)
+`GET /api/Lists`
+
+- Token / Cookie?
+
+Returns: JSON [List] of logged in user
+
+### List By ID
+`GET /api/Lists/{id}`
+
+- Token / Cookie? of list owner or participant
+
+Returns: JSON List with all items
+
+### Edit list (deprecated)
+`PUT /api/Lists/{id}`
+
+- List model
+
+### Edit list (coming)
+`PATCH /api/Lists/{id}`
+
+- Token / Cookie? of list owner
+- Partial list model
+
+### New list
+`POST /api/Lists/{id}`
+
+- Token / Cookie?
+- List model
+
+### Delete List
+`DELETE /api/Lists/{id}`
+
+- Token / Cookie? of list owner
+
+## Items
+
+### All items (deprecated)
+`GET /api/Items`
+
+Returns: JSON [Item]
+
+### Item By ID (deprecated)
+`GET /api/Items/{id}`
+
+Returns: JSON Item
+
+### Edit item (deprecated)
+`PUT /api/Items/{id}`
+
+- Item model
+
+### Edit item (coming)
+For editing and (un)checking items.
+
+`PATCH /api/Items/{id}`
+
+- Token / Cookie? of item owner
+- Partial item model
+
+### New item
+`POST /api/Items/{id}`
+
+- Token / Cookie? of list participant
+- Item model
+
+### Delete Item
+`DELETE /api/Items/{id}`
+
+- Token / Cookie? of item owner
