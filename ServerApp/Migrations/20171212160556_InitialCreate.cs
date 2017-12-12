@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ServerApp.Migrations
+namespace ServerApp.Data.Migrations
 {
     public partial class InitialCreate : Migration
     {

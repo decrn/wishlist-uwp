@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ServerApp.Models;
 
-namespace ServerApp.Models
+namespace ServerApp.Data
 {
     public class WishContext : DbContext
     {
@@ -14,8 +14,7 @@ namespace ServerApp.Models
         {
         }
 
-        public DbSet<ServerApp.Models.List> List { get; set; }
-
-        public DbSet<ServerApp.Models.Item> Item { get; set; }
+        public virtual DbSet<List> List { get; set; }
+        public virtual DbSet<Item> Item { get; set; }
     }
 }

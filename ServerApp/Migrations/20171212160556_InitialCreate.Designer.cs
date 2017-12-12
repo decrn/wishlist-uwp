@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
-using ServerApp.Models;
+using ServerApp.Data;
 using System;
 
-namespace ServerApp.Migrations
+namespace ServerApp.Data.Migrations
 {
     [DbContext(typeof(WishContext))]
-    [Migration("20171211164756_InitialCreate")]
+    [Migration("20171212160556_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
