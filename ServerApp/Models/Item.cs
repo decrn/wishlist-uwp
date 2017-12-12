@@ -8,8 +8,9 @@ using Newtonsoft.Json;
 
 namespace ServerApp.Models {
     public class Item {
-        
+
         // autogenerate
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ItemId { get; set; }
 
         [Required]

@@ -10,7 +10,7 @@ namespace ServerApp.Models {
     public class List {
 
         // autogenerate
-        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ListId { get; set; }
 
         // autogenerate

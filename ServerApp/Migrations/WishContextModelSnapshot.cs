@@ -22,8 +22,7 @@ namespace ServerApp.Migrations
 
             modelBuilder.Entity("ServerApp.Models.Item", b =>
                 {
-                    b.Property<int>("ItemId")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("ItemId");
 
                     b.Property<bool>("IsCheckLocked");
 
@@ -50,8 +49,7 @@ namespace ServerApp.Migrations
 
             modelBuilder.Entity("ServerApp.Models.List", b =>
                 {
-                    b.Property<int>("ListId")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("ListId");
 
                     b.Property<int>("Color");
 

@@ -8,10 +8,10 @@ using Microsoft.EntityFrameworkCore.Storage.Internal;
 using ServerApp.Data;
 using System;
 
-namespace ServerApp.Data.Migrations
+namespace ServerApp.Migrations
 {
     [DbContext(typeof(WishContext))]
-    [Migration("20171212160556_InitialCreate")]
+    [Migration("20171212173000_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,8 +23,7 @@ namespace ServerApp.Data.Migrations
 
             modelBuilder.Entity("ServerApp.Models.Item", b =>
                 {
-                    b.Property<int>("ItemId")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("ItemId");
 
                     b.Property<bool>("IsCheckLocked");
 
@@ -51,8 +50,7 @@ namespace ServerApp.Data.Migrations
 
             modelBuilder.Entity("ServerApp.Models.List", b =>
                 {
-                    b.Property<int>("ListId")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("ListId");
 
                     b.Property<int>("Color");
 

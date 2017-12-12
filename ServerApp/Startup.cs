@@ -29,7 +29,7 @@ namespace ServerApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<WishContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("WishContext")));
+                options.UseSqlServer(Configuration.GetConnectionString("WishContext")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<WishContext>()

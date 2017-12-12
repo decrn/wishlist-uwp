@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using ServerApp.Data;
 
-namespace ServerApp.Data.Migrations
+namespace ServerApp.Migrations
 {
     [DbContext(typeof(WishContext))]
     [Migration("00000000000000_CreateIdentitySchema")]
