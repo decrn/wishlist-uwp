@@ -37,11 +37,13 @@ namespace ServerApp {
                 .AddEntityFrameworkStores<WishContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddTransient<DataInitializer>();
+
             services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, DataInitializer dataInitializer) {
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
@@ -49,6 +51,9 @@ namespace ServerApp {
 
             app.UseAuthentication();
             app.UseMvc();
+
+            if (env.IsDevelopment())
+                dataInitializer.Seed().Wait();
         }
     }
 }
