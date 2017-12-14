@@ -89,3 +89,13 @@ For editing and (un)checking items.
 `DELETE /api/Items/{id}`
 
 - Token / Cookie? of item owner
+
+
+
+## Users
+
+### Get User
+
+`GET /api/Users/{id}`
+
+Returns: JSON User with populated public OwningLists field

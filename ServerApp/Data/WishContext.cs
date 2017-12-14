@@ -13,6 +13,7 @@ namespace ServerApp.Data {
 
         public virtual DbSet<List> List { get; set; }
         public virtual DbSet<Item> Item { get; set; }
+        public virtual DbSet<User> User { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
