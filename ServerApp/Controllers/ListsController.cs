@@ -2,36 +2,40 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ServerApp.Data;
 using ServerApp.Models;
 
 namespace ServerApp.Controllers {
+
     [Produces("application/json")]
     [Route("api/Lists")]
+    [Authorize]
     public class ListsController : Controller {
         private readonly WishContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public ListsController(WishContext context) {
+        public ListsController(WishContext context, UserManager<User> userManager) {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: api/Lists
         [HttpGet]
-        public IEnumerable<List> GetList() {
-            return _context.List.Include(l => l.Items);
+        public async Task<IEnumerable<List>> GetListsAsync() {
+            User user = await _userManager.GetUserAsync(HttpContext.User);
+            return _context.List.Include(l => l.Items).Where(l => l.OwnerUserId == user.Id);
         }
 
         // GET: api/Lists/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetList([FromRoute] int id) {
-            if (!ModelState.IsValid) {
-                return BadRequest(ModelState);
-            }
-
-            var list = await _context.List.Include(l => l.Items).SingleOrDefaultAsync(m => m.ListId == id);
+            User user = await _userManager.GetUserAsync(HttpContext.User);
+            List list = await _context.List.Include(l => l.Items).SingleOrDefaultAsync(m => m.ListId == id && m.OwnerUserId == user.Id);
 
             if (list == null) {
                 return NotFound();
@@ -40,9 +44,9 @@ namespace ServerApp.Controllers {
             return Ok(list);
         }
 
-        // PUT: api/Lists/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutList([FromRoute] int id, [FromBody] List list) {
+        // PATCH: api/Lists/5
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> PatchList([FromRoute] int id, [FromBody] List list) {
             if (!ModelState.IsValid) {
                 return BadRequest(ModelState);
             }
@@ -52,16 +56,7 @@ namespace ServerApp.Controllers {
             }
 
             _context.Entry(list).State = EntityState.Modified;
-
-            try {
-                await _context.SaveChangesAsync();
-            } catch (DbUpdateConcurrencyException) {
-                if (!ListExists(id)) {
-                    return NotFound();
-                } else {
-                    throw;
-                }
-            }
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
@@ -86,7 +81,8 @@ namespace ServerApp.Controllers {
                 return BadRequest(ModelState);
             }
 
-            var list = await _context.List.SingleOrDefaultAsync(m => m.ListId == id);
+            User user = await _userManager.GetUserAsync(HttpContext.User);
+            List list = await _context.List.SingleOrDefaultAsync(m => m.ListId == id && m.OwnerUserId == user.Id);
             if (list == null) {
                 return NotFound();
             }
@@ -95,10 +91,6 @@ namespace ServerApp.Controllers {
             await _context.SaveChangesAsync();
 
             return Ok(list);
-        }
-
-        private bool ListExists(int id) {
-            return _context.List.Any(e => e.ListId == id);
         }
     }
 }

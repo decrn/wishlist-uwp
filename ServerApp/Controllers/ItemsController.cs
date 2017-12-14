@@ -2,47 +2,31 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ServerApp.Data;
 using ServerApp.Models;
 
 namespace ServerApp.Controllers {
+
     [Produces("application/json")]
     [Route("api/Items")]
+    [Authorize]
     public class ItemsController : Controller {
         private readonly WishContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public ItemsController(WishContext context) {
+        public ItemsController(WishContext context, UserManager<User> userManager) {
             _context = context;
+            _userManager = userManager;
         }
 
-        // GET: api/Items
-        [HttpGet]
-        public IEnumerable<Item> GetItem() {
-            return _context.Item;
-        }
-
-        // GET: api/Items/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetItem([FromRoute] int id) {
-            if (!ModelState.IsValid) {
-                return BadRequest(ModelState);
-            }
-
-            var item = await _context.Item.SingleOrDefaultAsync(m => m.ItemId == id);
-
-            if (item == null) {
-                return NotFound();
-            }
-
-            return Ok(item);
-        }
-
-        // PUT: api/Items/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutItem([FromRoute] int id, [FromBody] Item item) {
+        // PATCH: api/Items/5
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> PatchItem([FromRoute] int id, [FromBody] Item item) {
             if (!ModelState.IsValid) {
                 return BadRequest(ModelState);
             }
@@ -52,16 +36,7 @@ namespace ServerApp.Controllers {
             }
 
             _context.Entry(item).State = EntityState.Modified;
-
-            try {
-                await _context.SaveChangesAsync();
-            } catch (DbUpdateConcurrencyException) {
-                if (!ItemExists(id)) {
-                    return NotFound();
-                } else {
-                    throw;
-                }
-            }
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
@@ -87,7 +62,8 @@ namespace ServerApp.Controllers {
                 return BadRequest(ModelState);
             }
 
-            var item = await _context.Item.SingleOrDefaultAsync(m => m.ItemId == id);
+            User user = await _userManager.GetUserAsync(HttpContext.User);
+            Item item = await _context.Item.SingleOrDefaultAsync(m => m.ItemId == id && m.List.OwnerUserId == user.Id);
             if (item == null) {
                 return NotFound();
             }
@@ -96,10 +72,6 @@ namespace ServerApp.Controllers {
             await _context.SaveChangesAsync();
 
             return Ok(item);
-        }
-
-        private bool ItemExists(int id) {
-            return _context.Item.Any(e => e.ItemId == id);
         }
     }
 }

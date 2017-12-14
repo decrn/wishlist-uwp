@@ -31,31 +31,21 @@ Returns: JSON
 
 ## Lists
 
-### All lists (deprecated)
-`GET /api/Lists`
-
-Returns: JSON [List]
-
-### All lists (coming)
+### All owned lists
 `GET /api/Lists`
 
 - Token / Cookie?
 
 Returns: JSON [List] of logged in user
 
-### List By ID
+### Owned or subscribed list By ID
 `GET /api/Lists/{id}`
 
 - Token / Cookie? of list owner or participant
 
 Returns: JSON List with all items
 
-### Edit list (deprecated)
-`PUT /api/Lists/{id}`
-
-- List model
-
-### Edit list (coming)
+### Edit list
 `PATCH /api/Lists/{id}`
 
 - Token / Cookie? of list owner
@@ -72,24 +62,10 @@ Returns: JSON List with all items
 
 - Token / Cookie? of list owner
 
+
 ## Items
 
-### All items (deprecated)
-`GET /api/Items`
-
-Returns: JSON [Item]
-
-### Item By ID (deprecated)
-`GET /api/Items/{id}`
-
-Returns: JSON Item
-
-### Edit item (deprecated)
-`PUT /api/Items/{id}`
-
-- Item model
-
-### Edit item (coming)
+### Edit item
 For editing and (un)checking items.
 
 `PATCH /api/Items/{id}`

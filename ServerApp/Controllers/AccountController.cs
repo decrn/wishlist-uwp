@@ -12,6 +12,7 @@ using ServerApp.Models;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace ServerApp.Controllers {
+
     [Produces("application/json")]
     [Route("api/Account/[action]")]
     public class AccountController : Controller {
@@ -63,6 +64,7 @@ namespace ServerApp.Controllers {
         }
 
         // GET: api/Account/Logout
+        [Authorize]
         public async Task<IActionResult> Logout() {
             await _signInManager.SignOutAsync();
             return NoContent();
