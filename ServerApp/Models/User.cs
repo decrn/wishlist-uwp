@@ -1,14 +1,23 @@
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace ServerApp.Models
 {
-    // Add profile data for application users by adding properties to the ApplicationUser class
     public class User : IdentityUser
     {
+
         // Id
         // Email
         // UserName
         // PasswordHash
+
+        [JsonIgnore]
+        public virtual ICollection<List> OwningLists { get; set; }
+
+        [JsonIgnore]
+        public virtual ICollection<UserListSubscriptions> SubscribedLists { get; set; }
     }
 }
