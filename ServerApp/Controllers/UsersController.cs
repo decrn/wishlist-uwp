@@ -37,6 +37,17 @@ namespace ServerApp.Controllers {
             return _context.List.Include(l => l.Items).Where(l => l.SubscribedUsers == null);
         }
 
+        // GET: api/Users/
+        [HttpGet]
+        public async Task<IActionResult> GetLoggedInUser() {
+            User user = await _userManager.GetUserAsync(HttpContext.User);
+
+            if (user == null)
+                return NotFound();
+
+            return Ok(user);
+        }
+
         // GET: api/Users/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser([FromRoute] string id) {

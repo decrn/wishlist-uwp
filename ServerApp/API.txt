@@ -86,6 +86,12 @@ For editing and (un)checking items.
 
 ## Users
 
+### Get Logged in User
+
+`GET /api/Users/`
+
+Returns: JSON User
+
 ### Get User
 
 `GET /api/Users/{id}`
