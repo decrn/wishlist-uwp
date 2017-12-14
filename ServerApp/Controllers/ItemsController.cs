@@ -8,39 +8,32 @@ using Microsoft.EntityFrameworkCore;
 using ServerApp.Data;
 using ServerApp.Models;
 
-namespace ServerApp.Controllers
-{
+namespace ServerApp.Controllers {
     [Produces("application/json")]
     [Route("api/Items")]
-    public class ItemsController : Controller
-    {
+    public class ItemsController : Controller {
         private readonly WishContext _context;
 
-        public ItemsController(WishContext context)
-        {
+        public ItemsController(WishContext context) {
             _context = context;
         }
 
         // GET: api/Items
         [HttpGet]
-        public IEnumerable<Item> GetItem()
-        {
+        public IEnumerable<Item> GetItem() {
             return _context.Item;
         }
 
         // GET: api/Items/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetItem([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
+        public async Task<IActionResult> GetItem([FromRoute] int id) {
+            if (!ModelState.IsValid) {
                 return BadRequest(ModelState);
             }
 
             var item = await _context.Item.SingleOrDefaultAsync(m => m.ItemId == id);
 
-            if (item == null)
-            {
+            if (item == null) {
                 return NotFound();
             }
 
@@ -49,32 +42,23 @@ namespace ServerApp.Controllers
 
         // PUT: api/Items/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutItem([FromRoute] int id, [FromBody] Item item)
-        {
-            if (!ModelState.IsValid)
-            {
+        public async Task<IActionResult> PutItem([FromRoute] int id, [FromBody] Item item) {
+            if (!ModelState.IsValid) {
                 return BadRequest(ModelState);
             }
 
-            if (id != item.ItemId)
-            {
+            if (id != item.ItemId) {
                 return BadRequest();
             }
 
             _context.Entry(item).State = EntityState.Modified;
 
-            try
-            {
+            try {
                 await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ItemExists(id))
-                {
+            } catch (DbUpdateConcurrencyException) {
+                if (!ItemExists(id)) {
                     return NotFound();
-                }
-                else
-                {
+                } else {
                     throw;
                 }
             }
@@ -84,10 +68,8 @@ namespace ServerApp.Controllers
 
         // POST: api/Items
         [HttpPost]
-        public async Task<IActionResult> PostItem([FromBody] Item item)
-        {
-            if (!ModelState.IsValid)
-            {
+        public async Task<IActionResult> PostItem([FromBody] Item item) {
+            if (!ModelState.IsValid) {
                 return BadRequest(ModelState);
             }
 
@@ -100,16 +82,13 @@ namespace ServerApp.Controllers
 
         // DELETE: api/Items/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteItem([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
+        public async Task<IActionResult> DeleteItem([FromRoute] int id) {
+            if (!ModelState.IsValid) {
                 return BadRequest(ModelState);
             }
 
             var item = await _context.Item.SingleOrDefaultAsync(m => m.ItemId == id);
-            if (item == null)
-            {
+            if (item == null) {
                 return NotFound();
             }
 
@@ -119,8 +98,7 @@ namespace ServerApp.Controllers
             return Ok(item);
         }
 
-        private bool ItemExists(int id)
-        {
+        private bool ItemExists(int id) {
             return _context.Item.Any(e => e.ItemId == id);
         }
     }

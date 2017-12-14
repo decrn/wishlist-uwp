@@ -4,10 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ServerApp.Models
-{
-    public class UserListSubscriptions
-    {
+namespace ServerApp.Models {
+    public class UserListSubscriptions {
         // autogenerate
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }

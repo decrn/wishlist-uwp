@@ -14,30 +14,26 @@ using Microsoft.EntityFrameworkCore;
 using ServerApp.Data;
 using ServerApp.Models;
 
-namespace ServerApp
-{
-    public class Startup
-    {
-        public Startup(IConfiguration configuration)
-        {
+namespace ServerApp {
+    public class Startup {
+        public Startup(IConfiguration configuration) {
             Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
+        public void ConfigureServices(IServiceCollection services) {
             services.AddDbContext<WishContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("WishContext")));
 
             services.AddIdentity<User, IdentityRole>(options => {
-                    options.Password.RequireDigit = false;
-                    options.Password.RequiredLength = 10;
-                    options.Password.RequireNonAlphanumeric = false;
-                    options.Password.RequireUppercase = false;
-                    options.Password.RequireLowercase = false;
-                })
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 10;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+            })
                 .AddEntityFrameworkStores<WishContext>()
                 .AddDefaultTokenProviders();
 
@@ -45,10 +41,8 @@ namespace ServerApp
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
+            if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
