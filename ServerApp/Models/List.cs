@@ -13,28 +13,22 @@ namespace ServerApp.Models {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ListId { get; set; }
 
-        // autogenerate
-        public string EditableHash { get; set; }
-
-        // autogenerate
-        public string ViewableHash { get; set; }
-
         [Required]
         [MaxLength(100)]
         public string Name { get; set; }
 
-        [Required]
-        [MaxLength(100)]
-        public string CuratorName { get; set; }
-
         // optional
+        [MaxLength(500)]
         public string Description { get; set; }
 
+        [ForeignKey("User")]
+        public string OwnerUserId { get; set; }
+
         // defaults to false
-        public bool isHidden { get; set; }
+        public bool IsHidden { get; set; }
 
         // defaults to false?
-        public bool isReadOnly { get; set; }
+        public bool IsReadOnly { get; set; }
 
         // optional
         public int Color { get; set; }
@@ -44,5 +38,7 @@ namespace ServerApp.Models {
 
         [InverseProperty("List")]
         public virtual ICollection<Item> Items { get; set; }
+
+        public virtual ICollection<UserListSubscription> SubscribedUsers { get; set; }
     }
 }

@@ -2,92 +2,71 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ServerApp.Data;
 using ServerApp.Models;
 
-namespace ServerApp.Controllers
-{
+namespace ServerApp.Controllers {
+
     [Produces("application/json")]
     [Route("api/Items")]
-    public class ItemsController : Controller
-    {
+    [Authorize]
+    public class ItemsController : Controller {
         private readonly WishContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public ItemsController(WishContext context)
-        {
+        public ItemsController(WishContext context, UserManager<User> userManager) {
             _context = context;
-        }
-
-        // GET: api/Items
-        [HttpGet]
-        public IEnumerable<Item> GetItem()
-        {
-            return _context.Item;
-        }
-
-        // GET: api/Items/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetItem([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var item = await _context.Item.SingleOrDefaultAsync(m => m.ItemId == id);
-
-            if (item == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(item);
+            _userManager = userManager;
         }
 
         // PUT: api/Items/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutItem([FromRoute] int id, [FromBody] Item item)
-        {
-            if (!ModelState.IsValid)
-            {
+        public async Task<IActionResult> PutItem([FromRoute] int id) {
+
+            User user = await _userManager.GetUserAsync(HttpContext.User);
+            Item item = await _context.Item.SingleOrDefaultAsync(m => m.ItemId == id);
+
+            // TODO: check if user is subscribed to list
+            if (false)
+                return Forbid();
+
+            if (item.CheckedByUserId == user.Id) {
+                item.CheckedByUserId = null;
+            } else {
+                item.CheckedByUserId = user.Id;
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        // TODO: PATCH: api/Items/5
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> PatchItem([FromRoute] int id, [FromBody] Item item) {
+            if (!ModelState.IsValid) {
                 return BadRequest(ModelState);
             }
 
-            if (id != item.ItemId)
-            {
+            if (id != item.ItemId) {
                 return BadRequest();
             }
 
             _context.Entry(item).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ItemExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        // POST: api/Items
+        // TODO: POST: api/Items
         [HttpPost]
-        public async Task<IActionResult> PostItem([FromBody] Item item)
-        {
-            if (!ModelState.IsValid)
-            {
+        public async Task<IActionResult> PostItem([FromBody] Item item) {
+            if (!ModelState.IsValid) {
                 return BadRequest(ModelState);
             }
 
@@ -100,28 +79,24 @@ namespace ServerApp.Controllers
 
         // DELETE: api/Items/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteItem([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
+        public async Task<IActionResult> DeleteItem([FromRoute] int id) {
+            if (!ModelState.IsValid) {
                 return BadRequest(ModelState);
             }
 
-            var item = await _context.Item.SingleOrDefaultAsync(m => m.ItemId == id);
+            Item item = await _context.Item.SingleOrDefaultAsync(m => m.ItemId == id);
+
             if (item == null)
-            {
                 return NotFound();
-            }
+
+            User user = await _userManager.GetUserAsync(HttpContext.User);
+            if (item.List.OwnerUserId != user.Id)
+                return Forbid();
 
             _context.Item.Remove(item);
             await _context.SaveChangesAsync();
 
             return Ok(item);
-        }
-
-        private bool ItemExists(int id)
-        {
-            return _context.Item.Any(e => e.ItemId == id);
         }
     }
 }

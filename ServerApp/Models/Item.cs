@@ -17,11 +17,8 @@ namespace ServerApp.Models {
         [MaxLength(100)]
         public string ProductName { get; set; }
 
-        // default to false
-        public bool IsCompleted { get; set; }
-
-        // default to false
-        public bool IsCheckLocked { get; set; }
+        [ForeignKey("User")]
+        public string CheckedByUserId { get; set; }
 
         // optional
         public string ProductInfoUrl { get; set; }
