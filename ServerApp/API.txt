@@ -65,6 +65,12 @@ Returns: JSON List with all items
 
 ## Items
 
+### Toggle checkmark
+
+`PUT /api/Items/{id}`
+
+- Token / Cookie? of list subscriber
+
 ### Edit item
 For editing and (un)checking items.
 

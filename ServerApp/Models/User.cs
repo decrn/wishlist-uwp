@@ -16,6 +16,6 @@ namespace ServerApp.Models {
         public virtual ICollection<List> OwningLists { get; set; }
 
         [JsonIgnore]
-        public virtual ICollection<UserListSubscriptions> SubscribedLists { get; set; }
+        public virtual ICollection<UserListSubscription> SubscribedLists { get; set; }
     }
 }

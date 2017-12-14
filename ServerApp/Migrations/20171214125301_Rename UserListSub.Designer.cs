@@ -11,9 +11,10 @@ using System;
 namespace ServerApp.Migrations
 {
     [DbContext(typeof(WishContext))]
-    partial class WishContextModelSnapshot : ModelSnapshot
+    [Migration("20171214125301_Rename UserListSub")]
+    partial class RenameUserListSub
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

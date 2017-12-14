@@ -39,6 +39,6 @@ namespace ServerApp.Models {
         [InverseProperty("List")]
         public virtual ICollection<Item> Items { get; set; }
 
-        public virtual ICollection<UserListSubscriptions> SubscribedUsers { get; set; }
+        public virtual ICollection<UserListSubscription> SubscribedUsers { get; set; }
     }
 }

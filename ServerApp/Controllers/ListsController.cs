@@ -34,17 +34,19 @@ namespace ServerApp.Controllers {
         // GET: api/Lists/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetList([FromRoute] int id) {
-            User user = await _userManager.GetUserAsync(HttpContext.User);
-            List list = await _context.List.Include(l => l.Items).SingleOrDefaultAsync(m => m.ListId == id && m.OwnerUserId == user.Id);
+            List list = await _context.List.Include(l => l.Items).SingleOrDefaultAsync(m => m.ListId == id);
 
-            if (list == null) {
+            if (list == null)
                 return NotFound();
-            }
+
+            User user = await _userManager.GetUserAsync(HttpContext.User);
+            if (list.OwnerUserId != user.Id)
+                return Forbid();
 
             return Ok(list);
         }
 
-        // PATCH: api/Lists/5
+        // TODO: PATCH: api/Lists/5
         [HttpPatch("{id}")]
         public async Task<IActionResult> PatchList([FromRoute] int id, [FromBody] List list) {
             if (!ModelState.IsValid) {
@@ -61,7 +63,7 @@ namespace ServerApp.Controllers {
             return NoContent();
         }
 
-        // POST: api/Lists
+        // TODO: POST: api/Lists
         [HttpPost]
         public async Task<IActionResult> PostList([FromBody] List list) {
             if (!ModelState.IsValid) {
@@ -81,11 +83,14 @@ namespace ServerApp.Controllers {
                 return BadRequest(ModelState);
             }
 
-            User user = await _userManager.GetUserAsync(HttpContext.User);
-            List list = await _context.List.SingleOrDefaultAsync(m => m.ListId == id && m.OwnerUserId == user.Id);
-            if (list == null) {
+            List list = await _context.List.SingleOrDefaultAsync(m => m.ListId == id);
+
+            if (list == null)
                 return NotFound();
-            }
+
+            User user = await _userManager.GetUserAsync(HttpContext.User);
+            if (list.OwnerUserId != user.Id)
+                return Forbid();
 
             _context.List.Remove(list);
             await _context.SaveChangesAsync();

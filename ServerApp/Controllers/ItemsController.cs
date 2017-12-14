@@ -24,7 +24,29 @@ namespace ServerApp.Controllers {
             _userManager = userManager;
         }
 
-        // PATCH: api/Items/5
+        // PUT: api/Items/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutItem([FromRoute] int id) {
+
+            User user = await _userManager.GetUserAsync(HttpContext.User);
+            Item item = await _context.Item.SingleOrDefaultAsync(m => m.ItemId == id);
+
+            // TODO: check if user is subscribed to list
+            if (false)
+                return Forbid();
+
+            if (item.CheckedByUserId == user.Id) {
+                item.CheckedByUserId = null;
+            } else {
+                item.CheckedByUserId = user.Id;
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        // TODO: PATCH: api/Items/5
         [HttpPatch("{id}")]
         public async Task<IActionResult> PatchItem([FromRoute] int id, [FromBody] Item item) {
             if (!ModelState.IsValid) {
@@ -41,7 +63,7 @@ namespace ServerApp.Controllers {
             return NoContent();
         }
 
-        // POST: api/Items
+        // TODO: POST: api/Items
         [HttpPost]
         public async Task<IActionResult> PostItem([FromBody] Item item) {
             if (!ModelState.IsValid) {
@@ -62,11 +84,14 @@ namespace ServerApp.Controllers {
                 return BadRequest(ModelState);
             }
 
-            User user = await _userManager.GetUserAsync(HttpContext.User);
-            Item item = await _context.Item.SingleOrDefaultAsync(m => m.ItemId == id && m.List.OwnerUserId == user.Id);
-            if (item == null) {
+            Item item = await _context.Item.SingleOrDefaultAsync(m => m.ItemId == id);
+
+            if (item == null)
                 return NotFound();
-            }
+
+            User user = await _userManager.GetUserAsync(HttpContext.User);
+            if (item.List.OwnerUserId != user.Id)
+                return Forbid();
 
             _context.Item.Remove(item);
             await _context.SaveChangesAsync();

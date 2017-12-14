@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace ServerApp.Models {
-    public class UserListSubscriptions {
+    public class UserListSubscription {
         // autogenerate
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
