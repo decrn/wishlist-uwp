@@ -31,13 +31,6 @@ Returns: JSON
 
 ## Lists
 
-### All owned lists
-`GET /api/Lists`
-
-- Token / Cookie?
-
-Returns: JSON [List] of logged in user
-
 ### Owned or subscribed list By ID
 `GET /api/Lists/{id}`
 
@@ -91,7 +84,6 @@ For editing and (un)checking items.
 - Token / Cookie? of item owner
 
 
-
 ## Users
 
 ### Get User
@@ -99,3 +91,17 @@ For editing and (un)checking items.
 `GET /api/Users/{id}`
 
 Returns: JSON User with populated public OwningLists field
+
+### All owned lists
+`GET /api/Users/Lists`
+
+- Token / Cookie?
+
+Returns: JSON [List] of logged in user
+
+### All subscribed lists
+`GET /api/Users/Subscriptions`
+
+- Token / Cookie?
+
+Returns: JSON [List] of logged in user

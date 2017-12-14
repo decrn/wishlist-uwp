@@ -24,13 +24,6 @@ namespace ServerApp.Controllers {
             _userManager = userManager;
         }
 
-        // GET: api/Lists
-        [HttpGet]
-        public async Task<IEnumerable<List>> GetListsAsync() {
-            User user = await _userManager.GetUserAsync(HttpContext.User);
-            return _context.List.Include(l => l.Items).Where(l => l.OwnerUserId == user.Id);
-        }
-
         // GET: api/Lists/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetList([FromRoute] int id) {
