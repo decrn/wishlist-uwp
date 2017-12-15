@@ -42,7 +42,17 @@ Returns: JSON List with all items
 `PATCH /api/Lists/{id}`
 
 - JWT Token of list owner in Headers
-- Partial list model
+- Partial list model like this:
+
+```
+[
+	{
+		"Op": "replace",
+		"Path": "Name",
+		"Value": "test"
+	}
+]
+```
 
 ### New list
 `POST /api/Lists/{id}`
@@ -70,7 +80,17 @@ For editing and (un)checking items.
 `PATCH /api/Items/{id}`
 
 - JWT Token of item owner in Headers
-- Partial item model
+- Partial item model like this:
+
+```
+[
+	{
+		"Op": "replace",
+		"Path": "Name",
+		"Value": "test"
+	}
+]
+```
 
 ### New item
 `POST /api/Items/{id}`

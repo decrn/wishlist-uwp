@@ -76,7 +76,7 @@ namespace ServerApp.Controllers {
         [Authorize]
         public async Task<IActionResult> Logout() {
             await _signInManager.SignOutAsync();
-            return NoContent();
+            return Ok();
         }
 
         private async Task<object> GenerateJwtToken(string email, IdentityUser user) {

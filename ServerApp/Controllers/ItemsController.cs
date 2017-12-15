@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ServerApp.Data;
@@ -26,7 +27,7 @@ namespace ServerApp.Controllers {
 
         // PUT: api/Items/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutItem([FromRoute] int id) {
+        public async Task<IActionResult> CheckItem([FromRoute] int id) {
 
             User user = await _userManager.GetUserAsync(HttpContext.User);
             Item item = await _context.Item.SingleOrDefaultAsync(m => m.ItemId == id);
@@ -35,40 +36,40 @@ namespace ServerApp.Controllers {
             if (false)
                 return Forbid();
 
-            if (item.CheckedByUserId == user.Id) {
+            if (item.CheckedByUserId == user.Id)
                 item.CheckedByUserId = null;
-            } else {
+            else
                 item.CheckedByUserId = user.Id;
-            }
 
             await _context.SaveChangesAsync();
 
             return Ok();
         }
 
-        // TODO: PATCH: api/Items/5
+        // PATCH: api/Items/5
         [HttpPatch("{id}")]
-        public async Task<IActionResult> PatchItem([FromRoute] int id, [FromBody] Item item) {
-            if (!ModelState.IsValid) {
+        public async Task<IActionResult> PatchItem([FromRoute] int id, [FromBody] JsonPatchDocument<Item> patch)
+        {
+            Item item = await _context.Item.SingleOrDefaultAsync(m => m.ItemId == id);
+            patch.ApplyTo(item, ModelState);
+
+            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            }
 
-            if (id != item.ItemId) {
-                return BadRequest();
-            }
+            // TODO: check if user is owner
 
-            _context.Entry(item).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(item);
         }
 
-        // TODO: POST: api/Items
+        // POST: api/Items
         [HttpPost]
-        public async Task<IActionResult> PostItem([FromBody] Item item) {
-            if (!ModelState.IsValid) {
+        public async Task<IActionResult> AddItem([FromBody] Item item) {
+            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            }
+
+            // TODO: check if list id exists & user is owner of list
 
             _context.Item.Add(item);
             await _context.SaveChangesAsync();
@@ -80,10 +81,6 @@ namespace ServerApp.Controllers {
         // DELETE: api/Items/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteItem([FromRoute] int id) {
-            if (!ModelState.IsValid) {
-                return BadRequest(ModelState);
-            }
-
             Item item = await _context.Item.SingleOrDefaultAsync(m => m.ItemId == id);
 
             if (item == null)

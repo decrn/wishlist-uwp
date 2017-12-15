@@ -26,6 +26,7 @@ namespace ServerApp.Controllers {
         [HttpGet("Lists")]
         public async Task<IEnumerable<List>> GetOwnedListsAsync() {
             User user = await _userManager.GetUserAsync(HttpContext.User);
+            // TODO: only show public lists when not owner logged in
             return _context.List.Include(l => l.Items).Where(l => l.OwnerUserId == user.Id);
         }
 
@@ -33,7 +34,7 @@ namespace ServerApp.Controllers {
         [HttpGet("Subscriptions")]
         public async Task<IEnumerable<List>> GetSubscribedListsAsync() {
             User user = await _userManager.GetUserAsync(HttpContext.User);
-            // TODO: filter in SubscribedUsers
+            // TODO: only show subscribed lists from user
             return _context.List.Include(l => l.Items).Where(l => l.SubscribedUsers == null);
         }
 
@@ -51,13 +52,12 @@ namespace ServerApp.Controllers {
         // GET: api/Users/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser([FromRoute] string id) {
-
-            var user = await _context.User.SingleOrDefaultAsync(m => m.Id == id);
+            User user = await _context.User.SingleOrDefaultAsync(m => m.Id == id);
 
             if (user == null)
                 return NotFound();
 
-            // TODO: only add public user lists
+            // TODO: filter private info, like hidden owned lists
 
             return Ok(user);
         }

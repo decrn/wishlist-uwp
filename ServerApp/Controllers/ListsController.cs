@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ServerApp.Data;
@@ -33,36 +34,36 @@ namespace ServerApp.Controllers {
                 return NotFound();
 
             User user = await _userManager.GetUserAsync(HttpContext.User);
+            // TODO: also allow viewing list if subscribed or public
             if (list.OwnerUserId != user.Id)
                 return Forbid();
 
             return Ok(list);
         }
 
-        // TODO: PATCH: api/Lists/5
+        // PATCH: api/Lists/5
         [HttpPatch("{id}")]
-        public async Task<IActionResult> PatchList([FromRoute] int id, [FromBody] List list) {
-            if (!ModelState.IsValid) {
+        public async Task<IActionResult> PatchList([FromRoute] int id, [FromBody] JsonPatchDocument<List> patch) {
+            List list = await _context.List.SingleOrDefaultAsync(m => m.ListId == id);
+            patch.ApplyTo(list, ModelState);
+
+            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            }
 
-            if (id != list.ListId) {
-                return BadRequest();
-            }
+            // TODO: check if user is owner
 
-            _context.Entry(list).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(list);
         }
 
-        // TODO: POST: api/Lists
+        // POST: api/Lists
         [HttpPost]
-        public async Task<IActionResult> PostList([FromBody] List list) {
-            if (!ModelState.IsValid) {
+        public async Task<IActionResult> AddList([FromBody] List list) {
+            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            }
-
+            
+            // TODO: add owneduser as loggedinuser
             _context.List.Add(list);
             await _context.SaveChangesAsync();
 
@@ -72,10 +73,9 @@ namespace ServerApp.Controllers {
         // DELETE: api/Lists/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteList([FromRoute] int id) {
-            if (!ModelState.IsValid) {
+            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            }
-
+            
             List list = await _context.List.SingleOrDefaultAsync(m => m.ListId == id);
 
             if (list == null)
