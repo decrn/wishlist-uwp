@@ -12,7 +12,7 @@ Returns: JSON
 
 - ModelState.Values
 - IdentityResult
-- model  + Token / Cookie?
+- model  + JWT Token in Headers
 
 ### Login
 `POST /api/Account/Login`
@@ -23,7 +23,7 @@ Returns: JSON
 
 - ModelState.Values
 - IdentityResult
-- model + Token / Cookie?
+- model + JWT Token in Headers
 
 ### Logout
 `GET /api/Account/Logout`
@@ -34,26 +34,26 @@ Returns: JSON
 ### Owned or subscribed list By ID
 `GET /api/Lists/{id}`
 
-- Token / Cookie? of list owner or participant
+- JWT Token of list owner or participant in Headers
 
 Returns: JSON List with all items
 
 ### Edit list
 `PATCH /api/Lists/{id}`
 
-- Token / Cookie? of list owner
+- JWT Token of list owner in Headers
 - Partial list model
 
 ### New list
 `POST /api/Lists/{id}`
 
-- Token / Cookie?
+- JWT Token in Headers
 - List model
 
 ### Delete List
 `DELETE /api/Lists/{id}`
 
-- Token / Cookie? of list owner
+- JWT Token of list owner in Headers
 
 
 ## Items
@@ -62,26 +62,26 @@ Returns: JSON List with all items
 
 `PUT /api/Items/{id}`
 
-- Token / Cookie? of list subscriber
+- JWT Token of list subscriber in Headers
 
 ### Edit item
 For editing and (un)checking items.
 
 `PATCH /api/Items/{id}`
 
-- Token / Cookie? of item owner
+- JWT Token of item owner in Headers
 - Partial item model
 
 ### New item
 `POST /api/Items/{id}`
 
-- Token / Cookie? of list participant
+- JWT Token of list participant in Headers
 - Item model
 
 ### Delete Item
 `DELETE /api/Items/{id}`
 
-- Token / Cookie? of item owner
+- JWT Token of item owner in Headers
 
 
 ## Users
@@ -101,13 +101,13 @@ Returns: JSON User with populated public OwningLists field
 ### All owned lists
 `GET /api/Users/Lists`
 
-- Token / Cookie?
+- JWT Token in Headers
 
 Returns: JSON [List] of logged in user
 
 ### All subscribed lists
 `GET /api/Users/Subscriptions`
 
-- Token / Cookie?
+- JWT Token in Headers
 
 Returns: JSON [List] of logged in user
