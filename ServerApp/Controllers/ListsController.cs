@@ -50,7 +50,9 @@ namespace ServerApp.Controllers {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            // TODO: check if user is owner
+            User user = await _userManager.GetUserAsync(HttpContext.User);
+            if (list.OwnerUserId != user.Id)
+                return Forbid();
 
             await _context.SaveChangesAsync();
 
@@ -62,12 +64,14 @@ namespace ServerApp.Controllers {
         public async Task<IActionResult> AddList([FromBody] List list) {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            
-            // TODO: add owneduser as loggedinuser
+
+            User user = await _userManager.GetUserAsync(HttpContext.User);
+            list.OwnerUserId = user.Id;
+
             _context.List.Add(list);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetList", new { id = list.ListId }, list);
+            return Ok(list);
         }
 
         // DELETE: api/Lists/5

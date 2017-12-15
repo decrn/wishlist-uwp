@@ -56,7 +56,9 @@ namespace ServerApp.Controllers {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            // TODO: check if user is owner
+            User user = await _userManager.GetUserAsync(HttpContext.User);
+            if (item.List.OwnerUserId != user.Id)
+                return Forbid();
 
             await _context.SaveChangesAsync();
 
@@ -69,13 +71,14 @@ namespace ServerApp.Controllers {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            // TODO: check if list id exists & user is owner of list
+            User user = await _userManager.GetUserAsync(HttpContext.User);
+            if (item.List == null || item.List.OwnerUserId != user.Id)
+                return Forbid();
 
             _context.Item.Add(item);
             await _context.SaveChangesAsync();
 
-            // return the newly created item
-            return CreatedAtAction("GetItem", new { id = item.ItemId }, item);
+            return Ok(item);
         }
 
         // DELETE: api/Items/5

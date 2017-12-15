@@ -65,7 +65,9 @@ namespace ServerApp.Data
 
             _context.SaveChanges();
 
-            // seed list subscriptions
+
+            
+            // TODO: seed list subscriptions
             //var subs = new UserListSubscription[]
             //{
             //    new UserListSubscription { Id=0, ListId=0, UserId=users[1].Id },

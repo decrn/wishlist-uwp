@@ -26,40 +26,53 @@ namespace ServerApp.Controllers {
         [HttpGet("Lists")]
         public async Task<IEnumerable<List>> GetOwnedListsAsync() {
             User user = await _userManager.GetUserAsync(HttpContext.User);
-            // TODO: only show public lists when not owner logged in
-            return _context.List.Include(l => l.Items).Where(l => l.OwnerUserId == user.Id);
+            return _context.List.Where(l => l.OwnerUserId == user.Id);
         }
 
         // GET: api/Users/Subscriptions
         [HttpGet("Subscriptions")]
         public async Task<IEnumerable<List>> GetSubscribedListsAsync() {
             User user = await _userManager.GetUserAsync(HttpContext.User);
-            // TODO: only show subscribed lists from user
-            return _context.List.Include(l => l.Items).Where(l => l.SubscribedUsers == null);
+
+            ICollection<List> list = new List<List>();
+            var allLists = await _context.List.Include(l => l.SubscribedUsers).ToListAsync();
+
+            // TODO: fix not getting result
+            foreach (List l in allLists) {
+                foreach (UserListSubscription sub in l.SubscribedUsers) {
+                    if (sub.UserId == user.Id) {
+                        list.Add(l);
+                        break;
+                    }
+                }
+            }
+            return list;
         }
 
         // GET: api/Users/
         [HttpGet]
         public async Task<IActionResult> GetLoggedInUser() {
             User user = await _userManager.GetUserAsync(HttpContext.User);
-
-            if (user == null)
-                return NotFound();
-
-            return Ok(user);
+            return await GetUser(user.Id);
         }
 
         // GET: api/Users/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser([FromRoute] string id) {
-            User user = await _context.User.SingleOrDefaultAsync(m => m.Id == id);
+            User loggedinuser = await _userManager.GetUserAsync(HttpContext.User);
+            User user = await _context.User.Include(u => u.OwningLists).FirstOrDefaultAsync(m => m.Id == id);
 
             if (user == null)
                 return NotFound();
 
-            // TODO: filter private info, like hidden owned lists
+            var publicuser = new {
+                Id = user.Id,
+                userName = user.UserName,
+                Email = user.Email,
+                Lists = _context.List.Where(l => l.OwnerUserId == user.Id).Where(l => !l.IsHidden || loggedinuser.Id == id)
+            };
 
-            return Ok(user);
+            return Ok(publicuser);
         }
 
     }
