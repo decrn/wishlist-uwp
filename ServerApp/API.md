@@ -10,9 +10,32 @@
 
 Returns: JSON
 
-- ModelState.Values
-- IdentityResult
-- model  + JWT Token in Headers
+- ModelState errors:
+```
+[
+    {
+        "exception": null,
+        "errorMessage": "The Email field is required."
+    },
+    {
+        "exception": null,
+        "errorMessage": "The Password field is required."
+    }
+]
+```
+- Failed IdentityResult:
+```
+{
+    "succeeded": false,
+    "errors": [
+        {
+            "code": "DuplicateUserName",
+            "description": "User name 'test@domain.com' is already taken."
+        }
+    ]
+}
+```
+- String: JWT Token
 
 ### Login
 `POST /api/Account/Login`
@@ -21,9 +44,29 @@ Returns: JSON
 
 Returns: JSON
 
-- ModelState.Values
-- IdentityResult
-- model + JWT Token in Headers
+- ModelState errors:
+```
+[
+    {
+        "exception": null,
+        "errorMessage": "The Email field is required."
+    },
+    {
+        "exception": null,
+        "errorMessage": "The Password field is required."
+    }
+]
+```
+- Failed IdentityResult:
+```
+{
+    "succeeded": false,
+    "isLockedOut": false,
+    "isNotAllowed": false,
+    "requiresTwoFactor": false
+}
+```
+- String: JWT Token
 
 ### Logout
 `GET /api/Account/Logout`

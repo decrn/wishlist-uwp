@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
@@ -49,7 +50,8 @@ namespace ServerApp.Controllers {
                 return Json(result);
             }
 
-            return Json(ModelState.Values);
+            IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
+            return Json(allErrors);
         }
 
         // POST: api/Account/Register
@@ -69,7 +71,8 @@ namespace ServerApp.Controllers {
                 return Json(result);
             }
 
-            return Json(ModelState.Values);
+            IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
+            return Json(allErrors);
         }
 
         // GET: api/Account/Logout
