@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ServerApp.Models;
 
 namespace ServerApp.Data
@@ -65,19 +67,20 @@ namespace ServerApp.Data
 
             _context.SaveChanges();
 
+            // seed list subscriptions
+            var sqlStatement = "INSERT INTO [UserListSubscription] VALUES ";
+            var subs = new UserListSubscription[]
+            {
+                new UserListSubscription { Id=0, ListId=0, UserId=users[1].Id },
+                new UserListSubscription { Id=1, ListId=0, UserId=users[2].Id },
+                new UserListSubscription { Id=2, ListId=1, UserId=users[0].Id }
+            };
+            foreach (UserListSubscription s in subs)
+                sqlStatement += "( " + s.Id + ", " + s.ListId + ", '" + s.UserId + "' ),";
 
-            
-            // TODO: seed list subscriptions
-            //var subs = new UserListSubscription[]
-            //{
-            //    new UserListSubscription { Id=0, ListId=0, UserId=users[1].Id },
-            //    new UserListSubscription { Id=1, ListId=0, UserId=users[2].Id },
-            //    new UserListSubscription { Id=2, ListId=1, UserId=users[0].Id }
-            //};
-            //foreach (UserListSubscription s in subs)
-            //    _context.UserListSubscription.Add(s);
-
-            //_context.SaveChanges();
+            sqlStatement = sqlStatement.Remove(sqlStatement.Length - 1) + ";";
+            Debug.WriteLine(sqlStatement);
+            _context.Database.ExecuteSqlCommand(sqlStatement);
         }
     }
 }
