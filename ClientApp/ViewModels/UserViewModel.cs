@@ -29,6 +29,8 @@ namespace ClientApp.ViewModels {
 
         }
 
+        // TODO expand: subscriptions vs owned lists, etc.
+
         ObservableCollection<ListViewModel> _Lists = new ObservableCollection<ListViewModel>();
         public ObservableCollection<ListViewModel> Lists {
             get { return _Lists; }
@@ -36,6 +38,11 @@ namespace ClientApp.ViewModels {
         }
         public ListViewModel SelectedList {
             get { return (_SelectedIndex >= 0) ? _Lists[_SelectedIndex] : null; }
+        }
+
+        // used explicitely by ListDetailPage to grab content for a specific list
+        public List GetListById(int id) {
+            return _Lists[id];
         }
 
         int _SelectedIndex;

@@ -11,6 +11,11 @@ namespace ClientApp.ViewModels {
     public class ListViewModel : NotificationBase<List> {
         public ListViewModel(List list = null) : base(list) { }
 
+        public int ListId {
+            get { return This.ListId; }
+            set { SetProperty(This.ListId, value, () => This.ListId = value); }
+        }
+
         public string Name {
             get { return This.Name; }
             set { SetProperty(This.Name, value, () => This.Name = value); }
@@ -21,7 +26,7 @@ namespace ClientApp.ViewModels {
             set { SetProperty(This.OwnerUserId, value, () => This.OwnerUserId = value); }
         }
 
-        public Color color {
+        public Color Color {
             get { return This.Color; }
             set { SetProperty(This.Color, value, () => This.Color = value); }
         }
@@ -30,8 +35,23 @@ namespace ClientApp.ViewModels {
             get { return This.Items.Count + " items"; }
         }
 
-        public ICollection<Item> Items {
+        public List<Item> Items {
             get { return This.Items; }
+            set { SetProperty(This.Items, value, () => This.Items = value); }
+        }
+
+        
+
+        public static ListViewModel FromList(List list) {
+            var viewModel = new ListViewModel();
+
+            viewModel.ListId = list.ListId;
+            viewModel.Name = list.Name;
+            viewModel.OwnerUserId = list.OwnerUserId;
+            viewModel.Color = list.Color;
+            viewModel.Items = list.Items;
+
+            return viewModel;
         }
 
         // add observablelist of list items ...
