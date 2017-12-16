@@ -44,7 +44,7 @@ namespace ServerApp.Controllers {
 
                 if (result.Succeeded) {
                     User user = _userManager.Users.SingleOrDefault(r => r.Email == model.Email);
-                    return await GenerateJwtToken(model.Email, user);
+                    return await GenerateJwtToken(user);
                 }
 
                 return Json(result);
@@ -65,7 +65,7 @@ namespace ServerApp.Controllers {
 
                 IdentityResult result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded) {
-                    return await GenerateJwtToken(model.Email, user);
+                    return await GenerateJwtToken(user);
                 }
 
                 return Json(result);
@@ -82,10 +82,10 @@ namespace ServerApp.Controllers {
             return Ok();
         }
 
-        private async Task<object> GenerateJwtToken(string email, IdentityUser user) {
+        private async Task<object> GenerateJwtToken(IdentityUser user) {
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, email),
+                new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.NameIdentifier, user.Id)
             };
