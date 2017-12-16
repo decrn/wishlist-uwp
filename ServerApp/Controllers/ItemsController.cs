@@ -30,10 +30,9 @@ namespace ServerApp.Controllers {
         public async Task<IActionResult> CheckItem([FromRoute] int id) {
 
             User user = await _userManager.GetUserAsync(HttpContext.User);
-            Item item = await _context.Item.SingleOrDefaultAsync(m => m.ItemId == id);
+            Item item = await _context.Item.Include(i => i.List).Include(i => i.List.SubscribedUsers).SingleOrDefaultAsync(m => m.ItemId == id);
 
-            // TODO: check if user is subscribed to list
-            if (false)
+            if (!item.List.SubscribedUsers.Any(s => s.UserId == user.Id))
                 return Forbid();
 
             if (item.CheckedByUserId == user.Id)

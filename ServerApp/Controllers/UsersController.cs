@@ -24,29 +24,18 @@ namespace ServerApp.Controllers {
 
         // GET: api/Users/Lists
         [HttpGet("Lists")]
-        public async Task<IEnumerable<List>> GetOwnedListsAsync() {
+        public async Task<IEnumerable<List>> GetOwnedLists() {
             User user = await _userManager.GetUserAsync(HttpContext.User);
             return _context.List.Where(l => l.OwnerUserId == user.Id);
         }
 
         // GET: api/Users/Subscriptions
         [HttpGet("Subscriptions")]
-        public async Task<IEnumerable<List>> GetSubscribedListsAsync() {
+        public async Task<IEnumerable<List>> GetSubscribedLists() {
             User user = await _userManager.GetUserAsync(HttpContext.User);
-
-            ICollection<List> list = new List<List>();
-            var allLists = await _context.List.Include(l => l.SubscribedUsers).ToListAsync();
-
-            // TODO: fix not getting result
-            foreach (List l in allLists) {
-                foreach (UserListSubscription sub in l.SubscribedUsers) {
-                    if (sub.UserId == user.Id) {
-                        list.Add(l);
-                        break;
-                    }
-                }
-            }
-            return list;
+            return _context.List.Where(l => 
+                l.SubscribedUsers.Any(s=>
+                    s.UserId == user.Id));
         }
 
         // GET: api/Users/

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -28,17 +29,24 @@ namespace ServerApp.Controllers {
         // GET: api/Lists/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetList([FromRoute] int id) {
-            List list = await _context.List.Include(l => l.Items).SingleOrDefaultAsync(m => m.ListId == id);
-
+            var list = _context.List.Include(l => l.Items).Include(l => l.SubscribedUsers).SingleOrDefault(m => m.ListId == id);
+            
             if (list == null)
                 return NotFound();
 
+            // server doesn't return anything when SubscribedUsers is set
+            var subs = list.SubscribedUsers;
+            list.SubscribedUsers = null;
+            
             User user = await _userManager.GetUserAsync(HttpContext.User);
-            // TODO: also allow viewing list if subscribed or public
-            if (list.OwnerUserId != user.Id)
-                return Forbid();
 
-            return Ok(list);
+            if (!list.IsHidden)
+                return Ok(list);
+
+            if (list.OwnerUserId == user.Id || subs.Any(s => s.UserId == user.Id))
+                return Ok(list);
+
+            return Forbid();
         }
 
         // PATCH: api/Lists/5
