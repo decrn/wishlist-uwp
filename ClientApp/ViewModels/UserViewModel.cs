@@ -38,9 +38,12 @@ namespace ClientApp.ViewModels {
             get { return (_SelectedSubscriptionIndex >= 0) ? _Subscriptions[_SelectedSubscriptionIndex] : null; }
         }
 
-        // used explicitely by ListDetailPage to grab content for a specific list
+        // used explicitly by ListDetailPage to grab content for a specific list
         public List GetSubscriptionById(int id) {
-            return _Subscriptions[id];
+            foreach (var sub in _Subscriptions) {
+                if (sub.ListId == id) { return sub; }
+            }
+            throw new IndexOutOfRangeException();
         }
 
         // _SelectedIndex is used internally when navigating into lists in the details view, when navigating back

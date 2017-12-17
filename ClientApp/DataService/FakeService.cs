@@ -16,9 +16,9 @@ namespace ClientApp.DataService {
             Debug.WriteLine("GET for Subscribed Lists.");
 
             return new List<List>() {
-                    new List() { ListId=2, Name="John Locke's Birthday Wishes", OwnerUserId="John Locke's Mama"},
-                    new List() { ListId=3, Name="Jessica's Maternity List", OwnerUserId="Jessica" },
-                    new List() { ListId=4, Name="Babyborrel van den Sep De Laet", OwnerUserId="Senne De Laet"}
+                    new List() { ListId=0, Name="John Locke's Birthday Wishes", OwnerUserId="John Locke's Mama"},
+                    new List() { ListId=1, Name="Jessica's Maternity List", OwnerUserId="Jessica" },
+                    new List() { ListId=2, Name="Babyborrel van den Sep De Laet", OwnerUserId="Senne De Laet"}
                 };
         }
 
@@ -26,15 +26,15 @@ namespace ClientApp.DataService {
             Debug.WriteLine("GET for Owned Lists.");
 
             return new List<List>() {
-                    new List() { ListId=1, Name="Tutti and Frutti Baby Shower", OwnerUserId="Desmond Tutu", Color=Color.FromArgb(255, 247, 34, 176) },
+                    new List() { ListId=3, Name="Tutti and Frutti Baby Shower", OwnerUserId="Desmond Tutu", Color=Color.FromArgb(255, 247, 34, 176) },
                 };
         }
 
         // probably not gonna work? We called observable in een observable maar let's see I guess
-        public static ObservableCollection<Item> GetListItems(List list) {
+        public static List<Item> GetListItems(List list) {
             Debug.WriteLine("GET items for list with name " + list.Name);
 
-            return new ObservableCollection<Item>() {
+            return new List<Item>() {
                 new Item() { ProductName="Baby Wipes", List=list },
                 new Item() { ProductName="Baby shampoo", List=list, CheckedByUserId="temp" },
                 new Item() { ProductName="Packet of Cigarettes", List=list, ItemPriceUsd=5.55 }
