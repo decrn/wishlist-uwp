@@ -56,6 +56,8 @@ namespace ClientApp
                     subscriptions.Where((list) => list.ListId == id).FirstOrDefault();
             }
 
+            
+
             UpdateForVisualState(AdaptiveStates.CurrentState);
 
             // Don't play a content transition for first item load.
@@ -110,6 +112,7 @@ namespace ClientApp
             }
         }
 
+        // navigation link to own created lists
         private void HyperlinkButton_Click(object sender, RoutedEventArgs e) {
             this.Frame.BackStack.Clear();
             this.Frame.Navigate(typeof(OwnedMasterDetail));

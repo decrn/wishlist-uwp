@@ -22,11 +22,11 @@
     <StackPanel x:Name="RootPanel" x:DeferLoadStrategy="Lazy">
 
         <TextBlock
-                    Margin="0,8"
+                    Margin="12,8,8,8"
                     Style="{ThemeResource TitleTextBlockStyle}"
                     HorizontalAlignment="Left"
                     Text="{x:Bind List.Name}"/>
-        <ListView x:Name="Items" ItemsSource="{x:Bind ListItems}" SelectionMode="Multiple">
+        <ListView x:Name="Items" ItemsSource="{x:Bind ListItems}" SelectionMode="Multiple" SelectedItem="1" IsItemClickEnabled="True" ItemClick="Items_ItemClick">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="x:String">
                     <Grid>

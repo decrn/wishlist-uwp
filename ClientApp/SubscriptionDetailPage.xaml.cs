@@ -86,7 +86,9 @@ namespace ClientApp
             _items = new ObservableCollection<string>();
             foreach (var item in List.Items) {
                 _items.Add(item.ProductName);
+                //if (item.IsCompleted) { Items.SelectedItems.Add(item); }
             }
+
             
 
             // Register for hardware and software back request from the system
@@ -160,6 +162,11 @@ namespace ClientApp
             e.Handled = true;
 
             OnBackRequested();
+        }
+
+        private void Items_ItemClick(object sender, ItemClickEventArgs e) {
+            // handle checking off an item on the list ...
+
         }
     }
 }

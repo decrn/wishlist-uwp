@@ -118,10 +118,22 @@
             <ColumnDefinition x:Name="DetailColumn" Width="*" />
         </Grid.ColumnDefinitions>
 
-        <TextBlock
-            Text="Own lists"
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="LeftMaster" Width="*" />
+                <ColumnDefinition x:Name="RightMaster" Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock
+            Text="Created lists"
             Margin="12,8,8,8"
-            Style="{ThemeResource TitleTextBlockStyle}" />
+            Style="{ThemeResource TitleTextBlockStyle}" 
+            Grid.Column="0"/>
+            <HyperlinkButton Content="View subscribed lists"
+             Margin="12,8,8,8"
+             Click="HyperlinkButton_Click"
+             HorizontalAlignment="Right"
+             Grid.Column="1"/>
+        </Grid>
 
         <ListView
             x:Name="MasterListView"
