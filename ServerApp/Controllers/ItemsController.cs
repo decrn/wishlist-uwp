@@ -45,25 +45,6 @@ namespace ServerApp.Controllers {
             return Ok();
         }
 
-        // PATCH: api/Items/5
-        [HttpPatch("{id}")]
-        public async Task<IActionResult> PatchItem([FromRoute] int id, [FromBody] JsonPatchDocument<Item> patch)
-        {
-            Item item = await _context.Item.SingleOrDefaultAsync(m => m.ItemId == id);
-            patch.ApplyTo(item, ModelState);
-
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            User user = await _userManager.GetUserAsync(HttpContext.User);
-            if (item.List.OwnerUserId != user.Id)
-                return Forbid();
-
-            await _context.SaveChangesAsync();
-
-            return Ok(item);
-        }
-
         // POST: api/Items
         [HttpPost]
         public async Task<IActionResult> AddItem([FromBody] Item item) {
