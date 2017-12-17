@@ -26,7 +26,7 @@ namespace ClientApp
     public sealed partial class ListDetailPage : Page
     {
         private static DependencyProperty s_listProperty
-            = DependencyProperty.Register("List", typeof(ListViewModel), typeof(ListDetailPage), new PropertyMetadata(null));
+            = DependencyProperty.Register("Subscription", typeof(ListViewModel), typeof(ListDetailPage), new PropertyMetadata(null));
 
         public static DependencyProperty ListProperty {
             get { return s_listProperty; }
@@ -48,7 +48,7 @@ namespace ClientApp
             base.OnNavigatedTo(e);
 
             // Parameter is list ID
-            list = ListViewModel.FromList(User.GetListById((int)e.Parameter));
+            list = ListViewModel.FromList(User.GetSubscriptionById((int)e.Parameter));
 
             var backStack = Frame.BackStack;
             var backStackCount = backStack.Count;

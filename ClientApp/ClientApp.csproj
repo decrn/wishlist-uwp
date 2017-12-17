@@ -96,11 +96,11 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataService\FakeService.cs" />
-    <Compile Include="ListDetailPage.xaml.cs">
-      <DependentUpon>ListDetailPage.xaml</DependentUpon>
+    <Compile Include="SubscriptionDetailPage.xaml.cs">
+      <DependentUpon>SubscriptionDetailPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ListMasterDetail.xaml.cs">
-      <DependentUpon>ListMasterDetail.xaml</DependentUpon>
+    <Compile Include="SubscriptionsMasterDetail.xaml.cs">
+      <DependentUpon>SubscriptionsMasterDetail.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -134,11 +134,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="ListDetailPage.xaml">
+    <Page Include="SubscriptionDetailPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ListMasterDetail.xaml">
+    <Page Include="SubscriptionsMasterDetail.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
