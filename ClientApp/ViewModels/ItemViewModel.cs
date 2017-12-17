@@ -19,5 +19,9 @@ namespace ClientApp.ViewModels {
             get { return This.IsCompleted; }
             set { SetProperty(This.IsCompleted, value, () => This.IsCompleted = value); }
         }
+
+        public override string ToString() {
+            return Name;
+        }
     }
 }

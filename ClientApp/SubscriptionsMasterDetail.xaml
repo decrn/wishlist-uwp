@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="ClientApp.ListMasterDetail"
+    x:Class="ClientApp.SubscriptionMasterDetail"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:ClientApp"
@@ -54,7 +54,7 @@
                     Style="{ThemeResource TitleTextBlockStyle}"
                     HorizontalAlignment="Left"
                     Text="{x:Bind Name}"/>
-                
+                <!--
                 <ListView x:Name="templist">
                     <x:String>Item 1</x:String>
                     <x:String>Item 2</x:String>
@@ -62,8 +62,8 @@
                     <x:String>Item 4</x:String>
                     <x:String>Item 5</x:String>
                 </ListView>
-                <!--
-                <ListView x:Name="Items" ItemsSource="{x:Bind Items}" SelectionMode="Multiple">
+                -->
+                <ListView x:Name="Items" ItemsSource="{x:Bind ItemNames}" SelectionMode="Multiple">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="x:String">
                             <Grid>
@@ -80,9 +80,7 @@
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
-                    <ListView.ItemContainerStyle>
-                    </ListView.ItemContainerStyle>
-        </ListView> -->
+                </ListView> 
         </StackPanel>
         </DataTemplate>
     </Page.Resources>

@@ -1,6 +1,7 @@
 ﻿using ClientApp.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -22,12 +23,12 @@ namespace ClientApp
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class ListMasterDetail : Page
+    public sealed partial class SubscriptionMasterDetail : Page
     {
         private ListViewModel _lastSelectedList;
         public UserViewModel User { get; set; }
 
-        public ListMasterDetail() {
+        public SubscriptionMasterDetail() {
             this.InitializeComponent();
             this.User = new UserViewModel();
         }
@@ -71,7 +72,7 @@ namespace ClientApp
 
             if (isNarrow && oldState == DefaultState && _lastSelectedList != null) {
                 // Resize down to the detail item. Don't play a transition.
-                Frame.Navigate(typeof(ListDetailPage), _lastSelectedList.ListId, new SuppressNavigationTransitionInfo());
+                Frame.Navigate(typeof(SubscriptionDetailPage), _lastSelectedList.ListId, new SuppressNavigationTransitionInfo());
             }
 
             EntranceNavigationTransitionInfo.SetIsTargetElement(MasterListView, isNarrow);
@@ -86,7 +87,7 @@ namespace ClientApp
 
             if (AdaptiveStates.CurrentState == NarrowState) {
                 // Use "drill in" transition for navigating from master list to detail view
-                Frame.Navigate(typeof(ListDetailPage), clickedList.ListId, new DrillInNavigationTransitionInfo());
+                Frame.Navigate(typeof(SubscriptionDetailPage), clickedList.ListId, new DrillInNavigationTransitionInfo());
             } else {
                 // Play a refresh animation when the user switches detail items.
                 EnableContentTransitions();

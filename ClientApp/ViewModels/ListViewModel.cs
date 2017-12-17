@@ -40,6 +40,18 @@ namespace ClientApp.ViewModels {
             set { SetProperty(This.Items, value, () => This.Items = value); }
         }
 
+        public List<string> ItemNames {
+            get {
+                List<string> itemnames = new List<string>();
+                foreach (var item in Items) {
+                    itemnames.Add(item.ProductName);
+                }
+
+                return itemnames;
+            }
+        }
+
+
         
 
         public static ListViewModel FromList(List list) {
