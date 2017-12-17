@@ -35,16 +35,16 @@ namespace ClientApp
         protected override void OnNavigatedTo(NavigationEventArgs e) {
             base.OnNavigatedTo(e);
 
-            var lists = MasterListView.ItemsSource as List<ListViewModel>;
+            var subscriptions = MasterListView.ItemsSource as List<ListViewModel>;
 
-            if (lists == null) {
-                lists = new List<ListViewModel>();
+            if (subscriptions == null) {
+                subscriptions = new List<ListViewModel>();
 
-                foreach (var list in User.Lists) {
-                    lists.Add(ListViewModel.FromList(list));
+                foreach (var sub in User.Subscriptions) {
+                    subscriptions.Add(ListViewModel.FromList(sub));
                 }
 
-                MasterListView.ItemsSource = lists;
+                MasterListView.ItemsSource = subscriptions;
             }
 
             // Keep track of where the user was browsing, so they don't have to scroll down again every time they go back to the master view
@@ -52,7 +52,7 @@ namespace ClientApp
                 // Parameter is list ID
                 var id = (int)e.Parameter;
                 _lastSelectedList =
-                    lists.Where((list) => list.ListId == id).FirstOrDefault();
+                    subscriptions.Where((list) => list.ListId == id).FirstOrDefault();
             }
 
             UpdateForVisualState(AdaptiveStates.CurrentState);
