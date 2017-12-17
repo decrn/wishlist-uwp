@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,15 +18,16 @@ namespace ClientApp.ViewModels {
 
             user = new User();
             _SelectedSubscriptionIndex = -1;
+            _SelectedOwnedIndex = -1;
 
             foreach (var list in user.SubscribedLists) {
-                var nl = new ListViewModel(list);
+                var nl = ListViewModel.FromList(list);
                 nl.PropertyChanged += List_OnNotifyPropertyChanged;
                 _Subscriptions.Add(nl);
             }
 
             foreach (var list in user.OwningLists) {
-                var nl = new ListViewModel(list);
+                var nl = ListViewModel.FromList(list);
                 nl.PropertyChanged += List_OnNotifyPropertyChanged;
                 _Owned.Add(nl);
             }

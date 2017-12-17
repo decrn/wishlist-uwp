@@ -26,7 +26,7 @@
                     Style="{ThemeResource TitleTextBlockStyle}"
                     HorizontalAlignment="Left"
                     Text="{x:Bind List.Name}"/>
-        <ListView x:Name="Items" ItemsSource="{x:Bind ListItems}" SelectionMode="Multiple">
+        <ListView x:Name="Items" ItemsSource="{x:Bind ListItems}">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="x:String">
                     <Grid>
