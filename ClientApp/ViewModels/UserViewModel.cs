@@ -21,13 +21,13 @@ namespace ClientApp.ViewModels {
             _SelectedOwnedIndex = -1;
 
             foreach (var list in user.SubscribedLists) {
-                var nl = ListViewModel.FromList(list);
+                var nl = new ListViewModel(list);
                 nl.PropertyChanged += List_OnNotifyPropertyChanged;
                 _Subscriptions.Add(nl);
             }
 
             foreach (var list in user.OwningLists) {
-                var nl = ListViewModel.FromList(list);
+                var nl = new ListViewModel(list);
                 nl.PropertyChanged += List_OnNotifyPropertyChanged;
                 _Owned.Add(nl);
             }

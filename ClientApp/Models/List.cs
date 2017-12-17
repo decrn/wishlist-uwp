@@ -39,12 +39,8 @@ namespace ClientApp.Models {
         }
 
         private void updateItems() {
-            if (Items.Count < 1) {
-                foreach (var item in RealService.GetListItems(this)) {
-                    // awaiting better way to define an order in list items, this will have to do for now...
-                    Items.Add(item);
-                }
-            }
+            if (Items.Count < 1)
+                Items = RealService.GetListItems(this);
         }
 
         public void AddItem(Item item) {

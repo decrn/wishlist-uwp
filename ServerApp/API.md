@@ -81,6 +81,13 @@ Returns: JSON
 
 Returns: JSON List with all items
 
+### get items of Owned or subscribed list By ID
+`GET /api/Lists/{id}/Items`
+
+- JWT Token of list owner or participant in Headers
+
+Returns: JSON arrya of items
+
 ### Edit list
 `PUT /api/Lists/{id}`
 

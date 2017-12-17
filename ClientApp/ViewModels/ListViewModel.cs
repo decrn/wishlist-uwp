@@ -33,22 +33,24 @@ namespace ClientApp.ViewModels {
         }
 
         public string ItemCount {
-            get { return This.Items.Count + " items"; }
+            get { return This.Items==null ? "" : This.Items.Count + " items"; }
         }
 
         public List<Item> Items {
-            get { return This.Items; }
+            get { return This.Items ?? new List<Item>(); }
             set { SetProperty(This.Items, value, () => This.Items = value); }
         }
 
         public List<string> ItemNames {
-            get {
-                List<string> itemnames = new List<string>();
-                foreach (var item in Items) {
-                    itemnames.Add(item.ProductName);
-                }
+            get
+            {
+                return Items.Select(i => i.ProductName).ToList();
+                //List<string> itemnames = new List<string>();
+                //foreach (var item in Items) {
+                //    itemnames.Add(item.ProductName);
+                //}
 
-                return itemnames;
+                //return itemnames;
             }
         }        
 

@@ -49,6 +49,29 @@ namespace ServerApp.Controllers {
             return Forbid();
         }
 
+        // GET: api/Lists/5/Items
+        [HttpGet("{id}/Items")]
+        public async Task<IActionResult> GetListItems([FromRoute] int id) {
+            var list = _context.List.Include(l => l.Items).Include(l => l.SubscribedUsers).SingleOrDefault(m => m.ListId == id);
+
+            if (list == null)
+                return NotFound();
+
+            // server doesn't return anything when SubscribedUsers is set
+            var subs = list.SubscribedUsers;
+            list.SubscribedUsers = null;
+
+            User user = await _userManager.GetUserAsync(HttpContext.User);
+
+            if (!list.IsHidden)
+                return Ok(list.Items);
+
+            if (list.OwnerUserId == user.Id || subs.Any(s => s.UserId == user.Id))
+                return Ok(list.Items);
+
+            return Forbid();
+        }
+
         // PUT: api/Lists/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutList([FromRoute] int id, [FromBody] List list) {

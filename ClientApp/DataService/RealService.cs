@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Windows.Web.Http;
 using Windows.Web.Http.Headers;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using HttpClient = System.Net.Http.HttpClient;
 
 namespace ClientApp.DataService {
@@ -122,7 +123,6 @@ namespace ClientApp.DataService {
             return JsonConvert.DeserializeObject<List<List>>(response);
         }
 
-        // probably not gonna work? We called observable in een observable maar let's see I guess
         public static List<Item> GetListItems(List list) {
             Debug.WriteLine("GET items for list with name " + list.Name);
 
@@ -131,11 +131,11 @@ namespace ClientApp.DataService {
 
             string response = "";
             Task task = Task.Run(async () => {
-                response = await httpClient.GetStringAsync(new Uri(App.BaseUri + "Lists/"+list.ListId)); // sends GET request
+                response = await httpClient.GetStringAsync(new Uri(App.BaseUri + "Lists/"+list.ListId+"/Items")); // sends GET request
             });
             task.Wait();
-            Debug.WriteLine("resp: "+response);
-            return JsonConvert.DeserializeObject<List>(response).Items;
+            var obj = JsonConvert.DeserializeObject<List<Item>>(response);
+            return obj;
         }
 
         public static void Write(List list) {
