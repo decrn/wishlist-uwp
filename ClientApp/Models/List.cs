@@ -16,10 +16,6 @@ namespace ClientApp.Models {
 
         public string Name { get; set; }
 
-        public string EditableHash { get; set; }
-
-        public string ViewableHash { get; set; }
-
         public string OwnerUserId { get; set; }
 
         public string Description { get; set; }
