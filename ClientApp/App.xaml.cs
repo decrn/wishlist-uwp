@@ -71,7 +71,7 @@ namespace ClientApp
                     // configuring the new page by passing required information as a navigation
                     // parameter
                     if (RealService.IsLoggedIn)
-                        rootFrame.Navigate(typeof(ListMasterDetail), e.Arguments);
+                        rootFrame.Navigate(typeof(SubscriptionDetailPage), e.Arguments);
                     else
                         rootFrame.Navigate(typeof(LoginRegisterPage), e.Arguments);
                 }
