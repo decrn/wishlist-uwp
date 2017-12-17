@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -16,11 +17,24 @@ using HttpClient = System.Net.Http.HttpClient;
 namespace ClientApp.DataService {
     public class RealService {
         public static String Name = "Real Data Service";
-        // temp token for testing
-        public static String JWTToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhQGRvbWFpbi5jb20iLCJqdGkiOiI3NmFlMzMwMi1kMjNhLTQyY2EtODQ2OS1kMTk4ZjExYzMwZGUiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjExZjY3YmUzLWNhMDktNDRkYS1iNGRhLWZjYzYxOTVmZGQ3NSIsImV4cCI6MTUxNTg2MTE0MSwiaXNzIjoibG9jYWxob3N0IiwiYXVkIjoibG9jYWxob3N0In0.Y847BwdSZh9qK-kI8MUFxMAHXrKslZHL4KNaSUNjIIs";
+        
+        public static String JWTToken = "";
 
-        public static void Login(string email, string password) {
-            Debug.WriteLine("GET /login/ for JWT Token");
+        // ACCOUNT
+
+        public static JwtSecurityToken Auth {
+            get {
+                var handler = new JwtSecurityTokenHandler();
+                return handler.ReadToken(JWTToken) as JwtSecurityToken;
+            }
+        }
+
+        public static bool IsLoggedIn {
+            get { return JWTToken != ""; }
+        }
+
+        public static dynamic Login(string email, string password) {
+            Debug.WriteLine("GET /login/ for JWT Token with email " + email);
 
             var httpClient = new HttpClient();
             var content = new FormUrlEncodedContent(new[] {
@@ -28,13 +42,45 @@ namespace ClientApp.DataService {
                 new KeyValuePair<string, string>("Password", password),
             });
 
-            httpClient.PostAsync(new Uri(App.BaseUri + "Account/Login"), content);
+            var response = "";
+            Task task = Task.Run(async () => {
+                var res = await httpClient.PostAsync(new Uri(App.BaseUri + "Account/Login"), content);
+                response = await res.Content.ReadAsStringAsync();
+            });
+            task.Wait();
+
+            var obj = JsonConvert.DeserializeObject<object>(response);
+            Debug.WriteLine(obj);
+            return obj;
+        }
+
+        public static dynamic Register(string email, string password) {
+            Debug.WriteLine("GET /register/ for JWT Token with email "+ email);
+
+            var httpClient = new HttpClient();
+            var content = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string, string>("Email", email),
+                new KeyValuePair<string, string>("Password", password),
+            });
+
+            var response = "";
+            Task task = Task.Run(async () => {
+                var res = await httpClient.PostAsync(new Uri(App.BaseUri + "Account/Register"), content);
+                response = await res.Content.ReadAsStringAsync();
+            });
+            task.Wait();
+
+            var obj = JsonConvert.DeserializeObject<object>(response);
+            Debug.WriteLine(obj);
+            return obj;
         }
 
         public static void Logout() {
             Debug.WriteLine("Logout");
             JWTToken = "";
         }
+
+        // LISTS
 
         public static List<List> GetSubscribedLists() {
             Debug.WriteLine("GET for Subscribed Lists.");
@@ -67,21 +113,19 @@ namespace ClientApp.DataService {
         }
 
         // probably not gonna work? We called observable in een observable maar let's see I guess
-        public static ObservableCollection<Item> GetListItems(List list) {
+        public static List<Item> GetListItems(List list) {
             Debug.WriteLine("GET items for list with name " + list.Name);
 
-            //var httpClient = new HttpClient();
-            //httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWTToken);
+            var httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWTToken);
 
-            //string response = "";
-            //Task task = Task.Run(async () => {
-            //    response = await httpClient.GetStringAsync(new Uri(App.BaseUri + "Lists/"+list.ListId)); // sends GET request
-            //});
-            //task.Wait();
-            //Debug.WriteLine("resp: "+response);
-            //List fullList = JsonConvert.DeserializeObject<List>(response);
-
-            return new ObservableCollection<Item>();
+            string response = "";
+            Task task = Task.Run(async () => {
+                response = await httpClient.GetStringAsync(new Uri(App.BaseUri + "Lists/"+list.ListId)); // sends GET request
+            });
+            task.Wait();
+            Debug.WriteLine("resp: "+response);
+            return JsonConvert.DeserializeObject<List>(response).Items;
         }
 
         public static void Write(List list) {

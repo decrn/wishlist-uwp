@@ -58,6 +58,17 @@ namespace ServerApp.Controllers {
         [HttpPost]
         public async Task<object> Register(RegisterViewModel model) {
             if (ModelState.IsValid) {
+
+                try {
+                    var addr = new System.Net.Mail.MailAddress(model.Email);
+                    if (addr.Address != model.Email) throw new Exception();
+                } catch {
+                    return Json(new[] {
+                            new {errorMessage = "Not a valid email"}
+                        }
+                    );
+                }
+
                 User user = new User {
                     Email = model.Email,
                     UserName = model.Email

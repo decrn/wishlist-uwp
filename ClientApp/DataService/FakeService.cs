@@ -11,6 +11,28 @@ using Windows.UI;
 namespace ClientApp.DataService {
     public class FakeService {
         public static String Name = "Fake Data Service";
+        public static String JWTToken = "";
+
+        public bool IsLoggedIn {
+            get { return JWTToken != ""; }
+        }
+
+        public static dynamic Login(string email, string password) {
+            Debug.WriteLine("GET /login/ for JWT Token with email " + email);
+            JWTToken = "temp";
+            return JWTToken;
+        }
+
+        public static dynamic Register(string email, string password) {
+            Debug.WriteLine("GET /register/ for JWT Token with email " + email);
+            JWTToken = "temp";
+            return JWTToken;
+        }
+
+        public static void Logout() {
+            Debug.WriteLine("Logout");
+            JWTToken = "";
+        }
 
         public static List<List> GetSubscribedLists() {
             Debug.WriteLine("GET for Subscribed Lists.");
