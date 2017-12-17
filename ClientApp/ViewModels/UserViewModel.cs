@@ -28,8 +28,8 @@ namespace ClientApp.ViewModels {
 
         // TODO expand: subscriptions vs owned lists, etc.
 
-        ObservableCollection<ListViewModel> _Subscriptions = new ObservableCollection<ListViewModel>();
-        public ObservableCollection<ListViewModel> Subscriptions {
+        List<ListViewModel> _Subscriptions = new List<ListViewModel>();
+        public List<ListViewModel> Subscriptions {
             get { return _Subscriptions; }
             set { SetProperty(ref _Subscriptions, value); }
         }

@@ -19,6 +19,10 @@ namespace ClientApp.DataService {
         // temp token for testing
         public static String JWTToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhQGRvbWFpbi5jb20iLCJqdGkiOiI3NmFlMzMwMi1kMjNhLTQyY2EtODQ2OS1kMTk4ZjExYzMwZGUiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjExZjY3YmUzLWNhMDktNDRkYS1iNGRhLWZjYzYxOTVmZGQ3NSIsImV4cCI6MTUxNTg2MTE0MSwiaXNzIjoibG9jYWxob3N0IiwiYXVkIjoibG9jYWxob3N0In0.Y847BwdSZh9qK-kI8MUFxMAHXrKslZHL4KNaSUNjIIs";
 
+        public bool IsLoggedIn {
+            get { return JWTToken != ""; }
+        }
+
         public static void Login(string email, string password) {
             Debug.WriteLine("GET /login/ for JWT Token");
 
@@ -67,21 +71,19 @@ namespace ClientApp.DataService {
         }
 
         // probably not gonna work? We called observable in een observable maar let's see I guess
-        public static ObservableCollection<Item> GetListItems(List list) {
+        public static List<Item> GetListItems(List list) {
             Debug.WriteLine("GET items for list with name " + list.Name);
 
-            //var httpClient = new HttpClient();
-            //httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWTToken);
+            var httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWTToken);
 
-            //string response = "";
-            //Task task = Task.Run(async () => {
-            //    response = await httpClient.GetStringAsync(new Uri(App.BaseUri + "Lists/"+list.ListId)); // sends GET request
-            //});
-            //task.Wait();
-            //Debug.WriteLine("resp: "+response);
-            //List fullList = JsonConvert.DeserializeObject<List>(response);
-
-            return new ObservableCollection<Item>();
+            string response = "";
+            Task task = Task.Run(async () => {
+                response = await httpClient.GetStringAsync(new Uri(App.BaseUri + "Lists/"+list.ListId)); // sends GET request
+            });
+            task.Wait();
+            Debug.WriteLine("resp: "+response);
+            return JsonConvert.DeserializeObject<List>(response).Items;
         }
 
         public static void Write(List list) {

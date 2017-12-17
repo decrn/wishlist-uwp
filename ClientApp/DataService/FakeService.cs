@@ -31,10 +31,10 @@ namespace ClientApp.DataService {
         }
 
         // probably not gonna work? We called observable in een observable maar let's see I guess
-        public static ObservableCollection<Item> GetListItems(List list) {
+        public static List<Item> GetListItems(List list) {
             Debug.WriteLine("GET items for list with name " + list.Name);
 
-            return new ObservableCollection<Item>() {
+            return new List<Item>() {
                 new Item() { ProductName="Baby Wipes", List=list },
                 new Item() { ProductName="Baby shampoo", List=list, CheckedByUserId="temp" },
                 new Item() { ProductName="Packet of Cigarettes", List=list, ItemPriceUsd=5.55 }
