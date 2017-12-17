@@ -95,6 +95,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataService\RealService.cs" />
     <Compile Include="DataService\FakeService.cs" />
     <Compile Include="SubscriptionDetailPage.xaml.cs">
       <DependentUpon>SubscriptionDetailPage.xaml</DependentUpon>
@@ -154,9 +155,6 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>10.0.3</Version>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="TODO.md" />
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

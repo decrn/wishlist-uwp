@@ -10,10 +10,10 @@ namespace ClientApp.Models {
     public class Item {
 
         public int ItemId { get; set; }
-        
+
         public string ProductName { get; set; }
 
-        public bool IsCheckLocked { get; set; }
+        public string CheckedByUserId { get; set; }
 
         public string ProductInfoUrl { get; set; }
 
@@ -21,8 +21,11 @@ namespace ClientApp.Models {
 
         public double ItemPriceUsd { get; set; }
 
-        public bool IsCompleted { get; set; }
-
         public virtual List List { get; set; }
+
+        public bool IsCompleted {
+            get { return CheckedByUserId != null; }
+            set { CheckedByUserId = ""; }
+        }
     }
 }

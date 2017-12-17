@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI;
 
 namespace ClientApp.DataService {
     public class FakeService {
@@ -25,7 +26,7 @@ namespace ClientApp.DataService {
             Debug.WriteLine("GET for Owned Lists.");
 
             return new List<List>() {
-                    new List() { ListId=1, Name="Tutti and Frutti Baby Shower", OwnerUserId="Desmond Tutu", Color=Windows.UI.Color.FromArgb(255,247, 34, 176)},
+                    new List() { ListId=1, Name="Tutti and Frutti Baby Shower", OwnerUserId="Desmond Tutu", Color=Color.FromArgb(255, 247, 34, 176) },
                 };
         }
 
@@ -34,9 +35,9 @@ namespace ClientApp.DataService {
             Debug.WriteLine("GET items for list with name " + list.Name);
 
             return new ObservableCollection<Item>() {
-                new Item() { ProductName="Baby Wipes", List=list, IsCompleted=false },
-                new Item() { ProductName="Baby shampoo", List=list, IsCompleted=true },
-                new Item() { ProductName="Packet of Cigarettes", List=list, IsCompleted=false, ItemPriceUsd=5.55 }
+                new Item() { ProductName="Baby Wipes", List=list },
+                new Item() { ProductName="Baby shampoo", List=list, CheckedByUserId="temp" },
+                new Item() { ProductName="Packet of Cigarettes", List=list, ItemPriceUsd=5.55 }
             };
         }
 

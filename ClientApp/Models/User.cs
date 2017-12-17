@@ -9,10 +9,8 @@ using System;
 namespace ClientApp.Models {
     public class User {
 
-        // Id
-        // Email
-        // UserName
-        // PasswordHash
+        public string Id;
+        public string Email;
         
         [JsonIgnore]
         public virtual ICollection<List> OwningLists { get; set; }

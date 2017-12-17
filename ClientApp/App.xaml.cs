@@ -32,6 +32,8 @@ namespace ClientApp
             this.Suspending += OnSuspending;
         }
 
+        public static readonly string BaseUri = "http://localhost:64042/api/";
+
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
         /// will be used such as when the application is launched to open a specific file.

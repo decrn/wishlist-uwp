@@ -20,11 +20,11 @@ namespace ClientApp.Models {
 
         public string Description { get; set; }
 
-        public bool isReadOnly { get; set; }
+        public bool IsReadOnly { get; set; }
 
         public Color Color { get; set; }
 
-        public char Icon { get; set; }
+        public string Icon { get; set; }
 
         public virtual List<Item> Items { get; set; }
 
