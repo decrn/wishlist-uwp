@@ -70,7 +70,7 @@ namespace ClientApp
                     // When the navigation stack isn't restored navigate to the first page,
                     // configuring the new page by passing required information as a navigation
                     // parameter
-                    if (FakeService.IsLoggedIn)
+                    if (RealService.IsLoggedIn)
                         rootFrame.Navigate(typeof(OwnedMasterDetail), e.Arguments);
                     else
                         rootFrame.Navigate(typeof(LoginRegisterPage), e.Arguments);

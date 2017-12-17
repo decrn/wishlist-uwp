@@ -41,7 +41,7 @@ namespace ClientApp.Models {
         private void updateItems() {
             Debug.WriteLine("updateitems");
             if (Items.Count < 0) {
-                foreach (var item in FakeService.GetListItems(this)) {
+                foreach (var item in RealService.GetListItems(this)) {
                     // awaiting better way to define an order in list items, this will have to do for now...
                     Items.Add(item);
                 }
@@ -51,14 +51,14 @@ namespace ClientApp.Models {
         public void AddItem(Item item) {
             if (!Items.Contains(item)) {
                 Items.Add(item);
-                FakeService.Write(this);
+                RealService.Write(this);
             }
         }
 
         public void RemoveItem(Item item) {
             if (Items.Contains(item)) {
                 Items.Remove(item);
-                FakeService.Delete(this);
+                RealService.Delete(this);
             }
         }
 

@@ -29,7 +29,7 @@ namespace ClientApp {
             string password = PasswordBox.Password;
 
             try {
-                dynamic result = FakeService.Login(email,password);
+                dynamic result = RealService.Login(email,password);
 
                 if (result.GetType() == typeof(string))
                     this.Frame.Navigate(typeof(OwnedMasterDetail));
@@ -49,7 +49,7 @@ namespace ClientApp {
             string password = PasswordBox.Password;
 
             try {
-                dynamic result = FakeService.Register(email, password);
+                dynamic result = RealService.Register(email, password);
 
                 if (result.GetType() == typeof(string))
                     this.Frame.Navigate(typeof(OwnedMasterDetail));
