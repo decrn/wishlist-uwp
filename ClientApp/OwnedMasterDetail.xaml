@@ -111,6 +111,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -149,6 +150,7 @@
             </ListView.ItemContainerStyle>
         </ListView>
 
+
         <ContentPresenter
             x:Name="DetailContentPresenter"
             Grid.Column="1"
@@ -163,5 +165,11 @@
                 <TransitionCollection />
             </ContentPresenter.ContentTransitions>
         </ContentPresenter>
+        <Grid Grid.Row="2">
+            <HyperlinkButton Content="Create a new list"
+             Margin="12,8,8,8"
+             Click="HyperlinkButton_Click_1"
+             HorizontalAlignment="Left" />
+        </Grid>
     </Grid>
 </Page>
