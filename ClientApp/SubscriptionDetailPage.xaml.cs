@@ -60,12 +60,10 @@ namespace ClientApp
 
             // Parameter is list ID
             var listid = 0;
-            if (e.Parameter != "")
+            if (e.Parameter != "" && e.Parameter != null)
                 List = ListViewModel.FromList(User.GetSubscriptionById((int)e.Parameter));
-            else if (User.Subscriptions.Count > 0)
-                List = ListViewModel.FromList(User.GetSubscriptionById(User.Subscriptions[0].ListId));
             else
-                List = null;
+                List = ListViewModel.FromList(User.GetSubscriptionById(0));
 
             var backStack = Frame.BackStack;
             var backStackCount = backStack.Count;

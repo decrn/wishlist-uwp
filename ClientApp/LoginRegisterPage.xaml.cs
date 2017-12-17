@@ -29,10 +29,10 @@ namespace ClientApp {
             string password = PasswordBox.Password;
 
             try {
-                dynamic result = RealService.Login(email,password);
+                dynamic result = FakeService.Login(email,password);
 
                 if (result.GetType() == typeof(string))
-                    this.Frame.Navigate(typeof(SubscriptionDetailPage));
+                    this.Frame.Navigate(typeof(SubscriptionMasterDetail));
                 else if (result is JArray)
                     ErrorText.Text = result[0].errorMessage;
                 else if (result is JObject)
@@ -49,10 +49,10 @@ namespace ClientApp {
             string password = PasswordBox.Password;
 
             try {
-                dynamic result = RealService.Register(email, password);
+                dynamic result = FakeService.Register(email, password);
 
                 if (result.GetType() == typeof(string))
-                    this.Frame.Navigate(typeof(SubscriptionDetailPage));
+                    this.Frame.Navigate(typeof(SubscriptionMasterDetail));
                 else if (result is JArray)
                     ErrorText.Text = result[0].errorMessage;
                 else if (result is JObject)
