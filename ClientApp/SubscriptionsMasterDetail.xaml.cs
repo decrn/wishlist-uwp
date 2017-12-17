@@ -109,5 +109,10 @@ namespace ClientApp
                 DetailContentPresenter.ContentTransitions.Clear();
             }
         }
+
+        private void HyperlinkButton_Click(object sender, RoutedEventArgs e) {
+            this.Frame.BackStack.Clear();
+            this.Frame.Navigate(typeof(OwnedMasterDetail));
+        }
     }
 }
