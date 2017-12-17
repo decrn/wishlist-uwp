@@ -59,7 +59,13 @@ namespace ClientApp
             Debug.Write(e.Parameter);
 
             // Parameter is list ID
-            List = ListViewModel.FromList(User.GetSubscriptionById((int)e.Parameter));
+            var listid = 0;
+            if (e.Parameter != "")
+                List = ListViewModel.FromList(User.GetSubscriptionById((int)e.Parameter));
+            else if (User.Subscriptions.Count > 0)
+                List = ListViewModel.FromList(User.GetSubscriptionById(User.Subscriptions[0].ListId));
+            else
+                List = null;
 
             var backStack = Frame.BackStack;
             var backStackCount = backStack.Count;
@@ -109,6 +115,9 @@ namespace ClientApp
         void NavigateBackForWideState(bool useTransition) {
             // Evict this page from the cache as we may not need it again.
             NavigationCacheMode = NavigationCacheMode.Disabled;
+
+            if (!Frame.CanGoBack)
+                return;
 
             if (useTransition) {
                 Frame.GoBack(new EntranceNavigationTransitionInfo());
