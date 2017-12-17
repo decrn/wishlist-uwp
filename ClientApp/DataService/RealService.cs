@@ -16,16 +16,24 @@ using HttpClient = System.Net.Http.HttpClient;
 
 namespace ClientApp.DataService {
     public class RealService {
+        static Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+
         public static String Name = "Real Data Service";
-        
-        public static String JWTToken = "";
+
+        public static String JWTToken = localSettings.Values.ContainsKey("JWTToken") ? localSettings.Values["JWTToken"].ToString() : "";
 
         // ACCOUNT
 
-        public static JwtSecurityToken Auth {
-            get {
+        public static bool validJWT(string obj) {
+            try
+            {
                 var handler = new JwtSecurityTokenHandler();
-                return handler.ReadToken(JWTToken) as JwtSecurityToken;
+                var token = handler.ReadToken(obj) as JwtSecurityToken;
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
             }
         }
 
@@ -50,7 +58,9 @@ namespace ClientApp.DataService {
             task.Wait();
 
             var obj = JsonConvert.DeserializeObject<object>(response);
-            Debug.WriteLine(obj);
+            if (validJWT(obj.ToString()))
+                localSettings.Values["JWTToken"] = obj.ToString();
+            
             return obj;
         }
 

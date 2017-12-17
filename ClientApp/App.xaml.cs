@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -14,6 +15,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using ClientApp.DataService;
 
 namespace ClientApp
 {
@@ -68,7 +70,10 @@ namespace ClientApp
                     // When the navigation stack isn't restored navigate to the first page,
                     // configuring the new page by passing required information as a navigation
                     // parameter
-                    rootFrame.Navigate(typeof(LoginRegisterPage), e.Arguments);
+                    if (RealService.IsLoggedIn)
+                        rootFrame.Navigate(typeof(ListMasterDetail), e.Arguments);
+                    else
+                        rootFrame.Navigate(typeof(LoginRegisterPage), e.Arguments);
                 }
                 // Ensure the current window is active
                 Window.Current.Activate();
