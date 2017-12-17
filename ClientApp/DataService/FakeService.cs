@@ -77,5 +77,19 @@ namespace ClientApp.DataService {
             Debug.WriteLine("POST List with name DELETE" + list.Name);
         }
 
+        private static List<Item> GenerateSomeItems(List list) {
+            List<Item> randItems = new List<Item>();
+            Random rnd = new Random();
+
+            string[] items = new string[] { "toys", "window wipers", "lullaby", "flashlight", "dentures", "visual studio licence", "box cutters", "tissues" };
+
+            for (int i = 0; i < rnd.Next(2, 6); i++) {
+                randItems.Add(new Item() { ProductName = items[rnd.Next(0, 4)], List = list });
+            }
+
+            return randItems;
+        }
+
+
     }
 }
