@@ -99,12 +99,6 @@
     <Compile Include="ListDetailPage.xaml.cs">
       <DependentUpon>ListDetailPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ListDetails.xaml.cs">
-      <DependentUpon>ListDetails.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ListLanding.xaml.cs">
-      <DependentUpon>ListLanding.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ListMasterDetail.xaml.cs">
       <DependentUpon>ListMasterDetail.xaml</DependentUpon>
     </Compile>
@@ -141,14 +135,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="ListDetailPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ListDetails.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ListLanding.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
