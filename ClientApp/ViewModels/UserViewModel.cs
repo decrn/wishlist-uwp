@@ -112,6 +112,14 @@ namespace ClientApp.ViewModels {
             }
         }
 
+        public void AddOwned() {
+            var list = new ListViewModel();
+            list.PropertyChanged += List_OnNotifyPropertyChanged;
+            Owned.Add(list);
+            user.RegisterOwned(list);
+            SelectedOwnedIndex = Owned.IndexOf(list);
+        }
+
         public void RemoveOwned() {
             if (SelectedOwnedIndex != -1) {
                 var list = Owned[SelectedOwnedIndex];
