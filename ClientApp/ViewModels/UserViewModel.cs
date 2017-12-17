@@ -18,15 +18,21 @@ namespace ClientApp.ViewModels {
             user = new User();
             _SelectedSubscriptionIndex = -1;
 
-            foreach (var list in user.OwningLists) {
+            foreach (var list in user.SubscribedLists) {
                 var nl = new ListViewModel(list);
                 nl.PropertyChanged += List_OnNotifyPropertyChanged;
                 _Subscriptions.Add(nl);
             }
 
+            foreach (var list in user.OwningLists) {
+                var nl = new ListViewModel(list);
+                nl.PropertyChanged += List_OnNotifyPropertyChanged;
+                _Owned.Add(nl);
+            }
+
         }
 
-        // TODO expand: subscriptions vs owned lists, etc.
+        // Subscriptions
 
         List<ListViewModel> _Subscriptions = new List<ListViewModel>();
         public List<ListViewModel> Subscriptions {
@@ -72,6 +78,47 @@ namespace ClientApp.ViewModels {
                 user.RemoveSubscription(sub);
             }
         }
+
+        // Owned lists
+
+        List<ListViewModel> _Owned = new List<ListViewModel>();
+        public List<ListViewModel> Owned {
+            get { return _Owned; }
+            set { SetProperty(ref _Owned, value); }
+        }
+
+        public ListViewModel SelectedOwned {
+            get { return (_SelectedOwnedIndex >= 0) ? _Owned[_SelectedOwnedIndex] : null; }
+        }
+
+        // used explicitly by ListDetailPage to grab content for a specific list
+        public List GetOwnedById(int id) {
+            foreach (var list in _Owned) {
+                if (list.ListId == id) { return list; }
+            }
+            throw new IndexOutOfRangeException();
+        }
+
+        // _SelectedIndex is used internally when navigating into lists in the details view, when navigating back
+        // This index remembers where the user left off and helps them scroll through all subscribed lists to where they were
+        int _SelectedOwnedIndex;
+
+        public int SelectedOwnedIndex {
+            get { return _SelectedOwnedIndex; }
+            set {
+                if (SetProperty(ref _SelectedOwnedIndex, value)) { RaisePropertyChanged(nameof(SelectedOwned)); }
+            }
+        }
+
+        public void RemoveOwned() {
+            if (SelectedOwnedIndex != -1) {
+                var list = Owned[SelectedOwnedIndex];
+                Owned.RemoveAt(SelectedOwnedIndex);
+                user.RemoveOwned(list);
+            }
+        }
+
+        // Other
 
         void List_OnNotifyPropertyChanged(Object sender, PropertyChangedEventArgs e) {
             user.Update((ListViewModel)sender);

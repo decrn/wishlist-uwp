@@ -100,8 +100,14 @@
     <Compile Include="LoginRegisterPage.xaml.cs">
       <DependentUpon>LoginRegisterPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="OwnedDetailPage.xaml.cs">
+      <DependentUpon>OwnedDetailPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SubscriptionDetailPage.xaml.cs">
       <DependentUpon>SubscriptionDetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="OwnedMasterDetail.xaml.cs">
+      <DependentUpon>OwnedMasterDetail.xaml</DependentUpon>
     </Compile>
     <Compile Include="SubscriptionsMasterDetail.xaml.cs">
       <DependentUpon>SubscriptionsMasterDetail.xaml</DependentUpon>
@@ -142,9 +148,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="OwnedDetailPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="SubscriptionDetailPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="OwnedMasterDetail.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="SubscriptionsMasterDetail.xaml">
       <SubType>Designer</SubType>

@@ -32,7 +32,7 @@ namespace ClientApp {
                 dynamic result = FakeService.Login(email,password);
 
                 if (result.GetType() == typeof(string))
-                    this.Frame.Navigate(typeof(SubscriptionMasterDetail));
+                    this.Frame.Navigate(typeof(OwnedMasterDetail));
                 else if (result is JArray)
                     ErrorText.Text = result[0].errorMessage;
                 else if (result is JObject)
@@ -52,7 +52,7 @@ namespace ClientApp {
                 dynamic result = FakeService.Register(email, password);
 
                 if (result.GetType() == typeof(string))
-                    this.Frame.Navigate(typeof(SubscriptionMasterDetail));
+                    this.Frame.Navigate(typeof(OwnedMasterDetail));
                 else if (result is JArray)
                     ErrorText.Text = result[0].errorMessage;
                 else if (result is JObject)

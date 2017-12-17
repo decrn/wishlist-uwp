@@ -19,8 +19,8 @@ namespace ClientApp.Models {
         public virtual ICollection<List> SubscribedLists { get; set; }
 
         public User() {
-            OwningLists = FakeService.GetSubscribedLists();
-            SubscribedLists = FakeService.GetOwnedLists();
+            SubscribedLists = FakeService.GetSubscribedLists();
+            OwningLists = FakeService.GetOwnedLists();
         }
 
         public void RegisterSubscription(List list) {
@@ -34,7 +34,7 @@ namespace ClientApp.Models {
             throw new NotImplementedException();
         }
 
-        public void RegisterOwnership(List list) {
+        public void RegisterOwned(List list) {
             if (!OwningLists.Contains(list)) {
                 OwningLists.Add(list);
                 FakeService.Write(list);
@@ -48,7 +48,7 @@ namespace ClientApp.Models {
             }
         }
 
-        public void RemoveOwnership(List list) {
+        public void RemoveOwned(List list) {
             if (SubscribedLists.Contains(list)) {
                 SubscribedLists.Remove(list);
                 FakeService.Delete(list);

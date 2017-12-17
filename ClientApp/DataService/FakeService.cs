@@ -13,7 +13,7 @@ namespace ClientApp.DataService {
         public static String Name = "Fake Data Service";
         public static String JWTToken = "";
 
-        public bool IsLoggedIn {
+        public static bool IsLoggedIn {
             get { return JWTToken != ""; }
         }
 
@@ -49,6 +49,7 @@ namespace ClientApp.DataService {
 
             return new List<List>() {
                     new List() { ListId=3, Name="Tutti and Frutti Baby Shower", OwnerUserId="Desmond Tutu", Color=Color.FromArgb(255, 247, 34, 176) },
+                    new List() { ListId=4, Name="Lala in Nanaland", OwnerUserId="Zazu"}
                 };
         }
 
