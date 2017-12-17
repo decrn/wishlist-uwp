@@ -2,6 +2,7 @@
 using ClientApp.ViewModels.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -49,10 +50,7 @@ namespace ClientApp.ViewModels {
 
                 return itemnames;
             }
-        }
-
-
-        
+        }        
 
         public static ListViewModel FromList(List list) {
             var viewModel = new ListViewModel();

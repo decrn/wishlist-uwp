@@ -38,9 +38,9 @@ namespace ClientApp.DataService {
             Debug.WriteLine("GET for Subscribed Lists.");
 
             return new List<List>() {
-                    new List() { ListId=0, Name="John Locke's Birthday Wishes", OwnerUserId="John Locke's Mama"},
-                    new List() { ListId=1, Name="Jessica's Maternity List", OwnerUserId="Jessica" },
-                    new List() { ListId=2, Name="Babyborrel van den Sep De Laet", OwnerUserId="Senne De Laet"}
+                    new List() { Name="John Locke's Birthday Wishes", OwnerUserId="John Locke's Mama"},
+                    new List() { Name="Jessica's Maternity List", OwnerUserId="Jessica" },
+                    new List() { Name="Babyborrel van den Sep De Laet", OwnerUserId="Senne De Laet"}
                 };
         }
 
@@ -48,8 +48,8 @@ namespace ClientApp.DataService {
             Debug.WriteLine("GET for Owned Lists.");
 
             return new List<List>() {
-                    new List() { ListId=3, Name="Tutti and Frutti Baby Shower", OwnerUserId="Desmond Tutu", Color=Color.FromArgb(255, 247, 34, 176) },
-                    new List() { ListId=4, Name="Lala in Nanaland", OwnerUserId="Zazu"}
+                    new List() { Name="Tutti and Frutti Baby Shower", OwnerUserId="Desmond Tutu", Color=Color.FromArgb(255, 247, 34, 176) },
+                    new List() { Name="Lala in Nanaland", OwnerUserId="Zazu"}
                 };
         }
 
@@ -57,11 +57,16 @@ namespace ClientApp.DataService {
         public static List<Item> GetListItems(List list) {
             Debug.WriteLine("GET items for list with name " + list.Name);
 
-            return new List<Item>() {
-                new Item() { ProductName="Baby Wipes", List=list },
-                new Item() { ProductName="Baby shampoo", List=list, CheckedByUserId="temp" },
-                new Item() { ProductName="Packet of Cigarettes", List=list, ItemPriceUsd=5.55 }
+            var items = new List<Item>() {
+                new Item() {ProductName = "Baby Wipes", List = list},
+                new Item() {ProductName = "Baby shampoo", List = list, CheckedByUserId = "temp"},
+                new Item() {ProductName = "Packet of Cigarettes", List = list, ItemPriceUsd = 5.55}
             };
+
+            if (list.ListId == 0 || list.ListId == 4)
+                items.Add(new Item() { ProductName = "Pacifiers", List = list });
+
+            return items;
         }
 
         public static void Write(List list) {

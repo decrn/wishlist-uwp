@@ -8,11 +8,17 @@ using Newtonsoft.Json;
 using Windows.UI;
 using ClientApp.DataService;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using ClientApp.ViewModels;
 
 namespace ClientApp.Models {
     public class List {
-        public int ListId { get; set; }
+
+        private int _listId;
+        public int ListId {
+            get { return _listId; }
+            set { _listId = value; updateItems(); }
+        }
 
         public string Name { get; set; }
 
@@ -30,9 +36,15 @@ namespace ClientApp.Models {
 
         public List() {
             Items = new List<Item>();
-            foreach (var item in FakeService.GetListItems(this)) {
-                // awaiting better way to define an order in list items, this will have to do for now...
-                Items.Add(item);
+        }
+
+        private void updateItems() {
+            Debug.WriteLine("updateitems");
+            if (Items.Count < 0) {
+                foreach (var item in FakeService.GetListItems(this)) {
+                    // awaiting better way to define an order in list items, this will have to do for now...
+                    Items.Add(item);
+                }
             }
         }
 
