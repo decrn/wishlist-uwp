@@ -82,6 +82,12 @@ Returns: JSON
 Returns: JSON List with all items
 
 ### Edit list
+`PUT /api/Lists/{id}`
+
+- JWT Token of list owner in Headers
+- List model
+
+### Edit list
 `PATCH /api/Lists/{id}`
 
 - JWT Token of list owner in Headers
@@ -116,24 +122,6 @@ Returns: JSON List with all items
 `PUT /api/Items/{id}`
 
 - JWT Token of list subscriber in Headers
-
-### Edit item
-For editing and (un)checking items.
-
-`PATCH /api/Items/{id}`
-
-- JWT Token of item owner in Headers
-- Partial item model like this:
-
-```
-[
-	{
-		"Op": "replace",
-		"Path": "Name",
-		"Value": "test"
-	}
-]
-```
 
 ### New item
 `POST /api/Items/{id}`
