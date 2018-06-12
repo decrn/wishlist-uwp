@@ -31,6 +31,7 @@ namespace ServerApp.Models {
         public bool IsReadOnly { get; set; }
 
         // optional
+        [JsonIgnore]
         public int Color { get; set; }
 
         // optional: consider default icon?

@@ -8,49 +8,52 @@ using Newtonsoft.Json;
 using Windows.UI;
 using ClientApp.DataService;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using ClientApp.ViewModels;
 
 namespace ClientApp.Models {
     public class List {
-        public int ListId { get; set; }
+
+        private int _listId;
+        public int ListId {
+            get { return _listId; }
+            set { _listId = value; updateItems(); }
+        }
 
         public string Name { get; set; }
-
-        public string EditableHash { get; set; }
-
-        public string ViewableHash { get; set; }
 
         public string OwnerUserId { get; set; }
 
         public string Description { get; set; }
 
-        public bool isReadOnly { get; set; }
+        public bool IsReadOnly { get; set; }
 
         public Color Color { get; set; }
 
-        public char Icon { get; set; }
+        public string Icon { get; set; }
 
         public virtual List<Item> Items { get; set; }
 
         public List() {
             Items = new List<Item>();
-            foreach (var item in FakeService.GetListItems(this)) {
-                // awaiting better way to define an order in list items, this will have to do for now...
-                Items.Add(item);
-            }
+        }
+
+        private void updateItems() {
+            if (Items.Count < 1)
+                Items = RealService.GetListItems(this);
         }
 
         public void AddItem(Item item) {
             if (!Items.Contains(item)) {
                 Items.Add(item);
-                FakeService.Write(this);
+                RealService.Write(this);
             }
         }
 
         public void RemoveItem(Item item) {
             if (Items.Contains(item)) {
                 Items.Remove(item);
-                FakeService.Delete(this);
+                RealService.Delete(this);
             }
         }
 

@@ -1,6 +1,8 @@
 ﻿using ClientApp.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -23,23 +25,30 @@ namespace ClientApp
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class ListDetailPage : Page
+    public sealed partial class OwnedDetailPage : Page
     {
         private static DependencyProperty s_listProperty
-            = DependencyProperty.Register("List", typeof(ListViewModel), typeof(ListDetailPage), new PropertyMetadata(null));
+            = DependencyProperty.Register("Owned", typeof(ListViewModel), typeof(OwnedDetailPage), new PropertyMetadata(null));
 
         public static DependencyProperty ListProperty {
             get { return s_listProperty; }
         }
 
-        public ListViewModel list {
+        public ListViewModel List {
             get { return (ListViewModel)GetValue(s_listProperty); }
             set { SetValue(s_listProperty, value); }
         }
 
         public UserViewModel User { get; set; }
 
-        public ListDetailPage() {
+        private ObservableCollection<string> _items;
+
+        public ObservableCollection<string> ListItems {
+            get { return this._items; }
+        }
+
+
+        public OwnedDetailPage() {
             this.InitializeComponent();
             this.User = new UserViewModel();
         }
@@ -47,8 +56,14 @@ namespace ClientApp
         protected override void OnNavigatedTo(NavigationEventArgs e) {
             base.OnNavigatedTo(e);
 
+            Debug.Write(e.Parameter);
+
             // Parameter is list ID
-            list = ListViewModel.FromList(User.GetListById((int)e.Parameter));
+            var listid = 0;
+            if (e.Parameter != "" && e.Parameter != null)
+                List = ListViewModel.FromList(User.GetOwnedById((int)e.Parameter));
+            else
+                List = ListViewModel.FromList(User.GetOwnedById(0));
 
             var backStack = Frame.BackStack;
             var backStackCount = backStack.Count;
@@ -61,11 +76,18 @@ namespace ClientApp
                 // will show the correct list in the side-by-side view.
                 var modifiedEntry = new PageStackEntry(
                     masterPageEntry.SourcePageType,
-                    list.ListId,
+                    List.ListId,
                     masterPageEntry.NavigationTransitionInfo
                     );
                 backStack.Add(modifiedEntry);
             }
+
+            //
+            _items = new ObservableCollection<string>();
+            foreach (var item in List.Items) {
+                _items.Add(item.ProductName);
+            }
+            
 
             // Register for hardware and software back request from the system
             SystemNavigationManager systemNavigationManager = SystemNavigationManager.GetForCurrentView();
@@ -91,6 +113,9 @@ namespace ClientApp
         void NavigateBackForWideState(bool useTransition) {
             // Evict this page from the cache as we may not need it again.
             NavigationCacheMode = NavigationCacheMode.Disabled;
+
+            if (!Frame.CanGoBack)
+                return;
 
             if (useTransition) {
                 Frame.GoBack(new EntranceNavigationTransitionInfo());

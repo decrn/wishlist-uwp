@@ -6,18 +6,41 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI;
 
 namespace ClientApp.DataService {
     public class FakeService {
         public static String Name = "Fake Data Service";
+        public static String JWTToken = "";
+
+        public static bool IsLoggedIn {
+            get { return JWTToken != ""; }
+        }
+
+        public static dynamic Login(string email, string password) {
+            Debug.WriteLine("GET /login/ for JWT Token with email " + email);
+            JWTToken = "temp";
+            return JWTToken;
+        }
+
+        public static dynamic Register(string email, string password) {
+            Debug.WriteLine("GET /register/ for JWT Token with email " + email);
+            JWTToken = "temp";
+            return JWTToken;
+        }
+
+        public static void Logout() {
+            Debug.WriteLine("Logout");
+            JWTToken = "";
+        }
 
         public static List<List> GetSubscribedLists() {
             Debug.WriteLine("GET for Subscribed Lists.");
 
             return new List<List>() {
-                    new List() { ListId=2, Name="John Locke's Birthday Wishes", OwnerUserId="John Locke's Mama"},
-                    new List() { ListId=3, Name="Jessica's Maternity List", OwnerUserId="Jessica" },
-                    new List() { ListId=4, Name="Babyborrel van den Sep De Laet", OwnerUserId="Senne De Laet"}
+                    new List() { Name="John Locke's Birthday Wishes", OwnerUserId="John Locke's Mama"},
+                    new List() { Name="Jessica's Maternity List", OwnerUserId="Jessica" },
+                    new List() { Name="Babyborrel van den Sep De Laet", OwnerUserId="Senne De Laet"}
                 };
         }
 
@@ -25,19 +48,25 @@ namespace ClientApp.DataService {
             Debug.WriteLine("GET for Owned Lists.");
 
             return new List<List>() {
-                    new List() { ListId=1, Name="Tutti and Frutti Baby Shower", OwnerUserId="Desmond Tutu", Color=Windows.UI.Color.FromArgb(255,247, 34, 176)},
+                    new List() { Name="Tutti and Frutti Baby Shower", OwnerUserId="Desmond Tutu", Color=Color.FromArgb(255, 247, 34, 176) },
+                    new List() { Name="Lala in Nanaland", OwnerUserId="Zazu"}
                 };
         }
 
         // probably not gonna work? We called observable in een observable maar let's see I guess
-        public static ObservableCollection<Item> GetListItems(List list) {
+        public static List<Item> GetListItems(List list) {
             Debug.WriteLine("GET items for list with name " + list.Name);
 
-            return new ObservableCollection<Item>() {
-                new Item() { ProductName="Baby Wipes", List=list, IsCompleted=false },
-                new Item() { ProductName="Baby shampoo", List=list, IsCompleted=true },
-                new Item() { ProductName="Packet of Cigarettes", List=list, IsCompleted=false, ItemPriceUsd=5.55 }
+            var items = new List<Item>() {
+                new Item() {ProductName = "Baby Wipes", List = list},
+                new Item() {ProductName = "Baby shampoo", List = list, CheckedByUserId = "temp"},
+                new Item() {ProductName = "Packet of Cigarettes", List = list, ItemPriceUsd = 5.55}
             };
+
+            if (list.ListId == 0 || list.ListId == 4)
+                items.Add(new Item() { ProductName = "Pacifiers", List = list });
+
+            return items;
         }
 
         public static void Write(List list) {
@@ -47,6 +76,20 @@ namespace ClientApp.DataService {
         public static void Delete(List list) {
             Debug.WriteLine("POST List with name DELETE" + list.Name);
         }
+
+        private static List<Item> GenerateSomeItems(List list) {
+            List<Item> randItems = new List<Item>();
+            Random rnd = new Random();
+
+            string[] items = new string[] { "toys", "window wipers", "lullaby", "flashlight", "dentures", "visual studio licence", "box cutters", "tissues" };
+
+            for (int i = 0; i < rnd.Next(2, 6); i++) {
+                randItems.Add(new Item() { ProductName = items[rnd.Next(0, 4)], List = list });
+            }
+
+            return randItems;
+        }
+
 
     }
 }

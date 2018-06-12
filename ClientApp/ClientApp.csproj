@@ -95,12 +95,22 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataService\RealService.cs" />
     <Compile Include="DataService\FakeService.cs" />
-    <Compile Include="ListDetailPage.xaml.cs">
-      <DependentUpon>ListDetailPage.xaml</DependentUpon>
+    <Compile Include="LoginRegisterPage.xaml.cs">
+      <DependentUpon>LoginRegisterPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ListMasterDetail.xaml.cs">
-      <DependentUpon>ListMasterDetail.xaml</DependentUpon>
+    <Compile Include="OwnedDetailPage.xaml.cs">
+      <DependentUpon>OwnedDetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SubscriptionDetailPage.xaml.cs">
+      <DependentUpon>SubscriptionDetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="OwnedMasterDetail.xaml.cs">
+      <DependentUpon>OwnedMasterDetail.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SubscriptionsMasterDetail.xaml.cs">
+      <DependentUpon>SubscriptionsMasterDetail.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -120,6 +130,41 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\LargeTile.scale-100.png" />
+    <Content Include="Assets\LargeTile.scale-125.png" />
+    <Content Include="Assets\LargeTile.scale-150.png" />
+    <Content Include="Assets\LargeTile.scale-200.png" />
+    <Content Include="Assets\LargeTile.scale-400.png" />
+    <Content Include="Assets\SmallTile.scale-100.png" />
+    <Content Include="Assets\SmallTile.scale-125.png" />
+    <Content Include="Assets\SmallTile.scale-150.png" />
+    <Content Include="Assets\SmallTile.scale-200.png" />
+    <Content Include="Assets\SmallTile.scale-400.png" />
+    <Content Include="Assets\SplashScreen.scale-100.png" />
+    <Content Include="Assets\SplashScreen.scale-125.png" />
+    <Content Include="Assets\SplashScreen.scale-150.png" />
+    <Content Include="Assets\SplashScreen.scale-400.png" />
+    <Content Include="Assets\Square150x150Logo.scale-100.png" />
+    <Content Include="Assets\Square150x150Logo.scale-125.png" />
+    <Content Include="Assets\Square150x150Logo.scale-150.png" />
+    <Content Include="Assets\Square150x150Logo.scale-400.png" />
+    <Content Include="Assets\Square44x44Logo.altform-unplated_targetsize-16.png" />
+    <Content Include="Assets\Square44x44Logo.altform-unplated_targetsize-256.png" />
+    <Content Include="Assets\Square44x44Logo.altform-unplated_targetsize-32.png" />
+    <Content Include="Assets\Square44x44Logo.altform-unplated_targetsize-48.png" />
+    <Content Include="Assets\Square44x44Logo.scale-100.png" />
+    <Content Include="Assets\Square44x44Logo.scale-125.png" />
+    <Content Include="Assets\Square44x44Logo.scale-150.png" />
+    <Content Include="Assets\Square44x44Logo.scale-400.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-16.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-24.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-256.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-32.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-48.png" />
+    <Content Include="Assets\Wide310x150Logo.scale-100.png" />
+    <Content Include="Assets\Wide310x150Logo.scale-125.png" />
+    <Content Include="Assets\Wide310x150Logo.scale-150.png" />
+    <Content Include="Assets\Wide310x150Logo.scale-400.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -134,11 +179,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="ListDetailPage.xaml">
+    <Page Include="LoginRegisterPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ListMasterDetail.xaml">
+    <Page Include="OwnedDetailPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SubscriptionDetailPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="OwnedMasterDetail.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SubscriptionsMasterDetail.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -154,8 +211,10 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>10.0.3</Version>
     </PackageReference>
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt">
+      <Version>5.1.0</Version>
+    </PackageReference>
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

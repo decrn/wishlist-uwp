@@ -9,10 +9,8 @@ using System;
 namespace ClientApp.Models {
     public class User {
 
-        // Id
-        // Email
-        // UserName
-        // PasswordHash
+        public string Id;
+        public string Email;
         
         [JsonIgnore]
         public virtual ICollection<List> OwningLists { get; set; }
@@ -21,14 +19,14 @@ namespace ClientApp.Models {
         public virtual ICollection<List> SubscribedLists { get; set; }
 
         public User() {
-            OwningLists = FakeService.GetSubscribedLists();
-            SubscribedLists = FakeService.GetOwnedLists();
+            SubscribedLists = RealService.GetSubscribedLists();
+            OwningLists = RealService.GetOwnedLists();
         }
 
         public void RegisterSubscription(List list) {
             if (!SubscribedLists.Contains(list)) {
                 SubscribedLists.Add(list);
-                FakeService.Write(list);
+                RealService.Write(list);
             }
         }
 
@@ -36,38 +34,38 @@ namespace ClientApp.Models {
             throw new NotImplementedException();
         }
 
-        public void RegisterOwnership(List list) {
+        public void RegisterOwned(List list) {
             if (!OwningLists.Contains(list)) {
                 OwningLists.Add(list);
-                FakeService.Write(list);
+                RealService.Write(list);
             }
         }
 
         public void RemoveSubscription(List list) {
             if (SubscribedLists.Contains(list)) {
                 SubscribedLists.Remove(list);
-                FakeService.Delete(list);
+                RealService.Delete(list);
             }
         }
 
-        public void RemoveOwnership(List list) {
+        public void RemoveOwned(List list) {
             if (SubscribedLists.Contains(list)) {
                 SubscribedLists.Remove(list);
-                FakeService.Delete(list);
+                RealService.Delete(list);
             }
         }
 
         public void Add(List list) {
             if (!OwningLists.Contains(list)) {
                 OwningLists.Add(list);
-                FakeService.Write(list);
+                RealService.Write(list);
             }
         }
 
         public void Delete(List list) {
             if (OwningLists.Contains(list)) {
                 OwningLists.Remove(list);
-                FakeService.Delete(list);
+                RealService.Delete(list);
             }
         }
 

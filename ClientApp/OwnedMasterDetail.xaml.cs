@@ -1,6 +1,9 @@
-﻿using ClientApp.ViewModels;
+﻿using ClientApp.Models;
+using ClientApp.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -22,12 +25,12 @@ namespace ClientApp
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class ListMasterDetail : Page
+    public sealed partial class OwnedMasterDetail : Page
     {
         private ListViewModel _lastSelectedList;
         public UserViewModel User { get; set; }
 
-        public ListMasterDetail() {
+        public OwnedMasterDetail() {
             this.InitializeComponent();
             this.User = new UserViewModel();
         }
@@ -35,16 +38,16 @@ namespace ClientApp
         protected override void OnNavigatedTo(NavigationEventArgs e) {
             base.OnNavigatedTo(e);
 
-            var lists = MasterListView.ItemsSource as List<ListViewModel>;
+            var owned = MasterListView.ItemsSource as List<ListViewModel>;
 
-            if (lists == null) {
-                lists = new List<ListViewModel>();
+            if (owned == null) {
+                owned = new List<ListViewModel>();
 
-                foreach (var list in User.Lists) {
-                    lists.Add(ListViewModel.FromList(list));
+                foreach (var list in User.Owned) {
+                    owned.Add(ListViewModel.FromList(list));
                 }
 
-                MasterListView.ItemsSource = lists;
+                MasterListView.ItemsSource = owned;
             }
 
             // Keep track of where the user was browsing, so they don't have to scroll down again every time they go back to the master view
@@ -52,7 +55,7 @@ namespace ClientApp
                 // Parameter is list ID
                 var id = (int)e.Parameter;
                 _lastSelectedList =
-                    lists.Where((list) => list.ListId == id).FirstOrDefault();
+                    owned.Where((list) => list.ListId == id).FirstOrDefault();
             }
 
             UpdateForVisualState(AdaptiveStates.CurrentState);
@@ -71,7 +74,7 @@ namespace ClientApp
 
             if (isNarrow && oldState == DefaultState && _lastSelectedList != null) {
                 // Resize down to the detail item. Don't play a transition.
-                Frame.Navigate(typeof(ListDetailPage), _lastSelectedList.ListId, new SuppressNavigationTransitionInfo());
+                Frame.Navigate(typeof(OwnedDetailPage), _lastSelectedList.ListId, new SuppressNavigationTransitionInfo());
             }
 
             EntranceNavigationTransitionInfo.SetIsTargetElement(MasterListView, isNarrow);
@@ -86,7 +89,7 @@ namespace ClientApp
 
             if (AdaptiveStates.CurrentState == NarrowState) {
                 // Use "drill in" transition for navigating from master list to detail view
-                Frame.Navigate(typeof(ListDetailPage), clickedList.ListId, new DrillInNavigationTransitionInfo());
+                Frame.Navigate(typeof(OwnedDetailPage), clickedList.ListId, new DrillInNavigationTransitionInfo());
             } else {
                 // Play a refresh animation when the user switches detail items.
                 EnableContentTransitions();
@@ -106,6 +109,26 @@ namespace ClientApp
         private void DisableContentTransitions() {
             if (DetailContentPresenter != null) {
                 DetailContentPresenter.ContentTransitions.Clear();
+            }
+        }
+
+        // navigation link to subscribed lists
+        private void HyperlinkButton_Click(object sender, RoutedEventArgs e) {
+            this.Frame.BackStack.Clear();
+            this.Frame.Navigate(typeof(SubscriptionMasterDetail));
+        }
+
+        ContentDialog NewList = new ContentDialog() {
+            Title = "Create a new list",
+            Content = new TextBox() { PlaceholderText = "Enter a list name" },
+            PrimaryButtonText = "Create list",
+            CloseButtonText = "Cancel"
+        };
+
+        private async void HyperlinkButton_Click_1(object sender, RoutedEventArgs e) {
+            var result = await NewList.ShowAsync();
+            if (result == ContentDialogResult.Primary) {
+                // Handle the creation
             }
         }
     }

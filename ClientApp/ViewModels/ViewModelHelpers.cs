@@ -12,7 +12,7 @@ namespace ClientApp.ViewModels {
 
         /**
          * Ripped from someone way smarter than me for reference: 
-         * https://github.com/johnshew/Minimal-UWP-MVVM-CRUD/blob/master/Simple%20MVVM%20UWP%20with%20CRUD/ViewModels/ViewModelHelpers.cs#L23
+         * https://github.com/johnshew/Minimal-UWP-MVVM-CRUD/blob/master/Simple%20MVVM%20UWP%20with%20CRUD/ViewModels/ViewModelHelpers.cs
          */
 
         public class NotificationBase : INotifyPropertyChanged {
