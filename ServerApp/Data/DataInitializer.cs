@@ -64,6 +64,19 @@ namespace ServerApp.Data
 
                 _context.SaveChanges();
 
+                // TODO: fix seed notifications
+                //var notifications = new Notification[]
+                //{
+                //    new Notification { Type=NotificationType.DeadlineReminder, ListId = lists[2].ListId },
+                //    new Notification { Type=NotificationType.JoinRequest, UserId = users[1].Id },
+                //    new Notification { Type=NotificationType.ListInvitation, ListId = lists[1].ListId },
+                //    new Notification { Type=NotificationType.ListInvitation, ListId = lists[0].ListId }
+                //};
+                //foreach (Notification n in notifications)
+                //    _context.Notification.Add(n);
+
+                //_context.SaveChanges();
+
                 // seed list subscriptions
                 var sqlStatement = "INSERT INTO [UserListSubscription] VALUES ";
                 var subs = new UserListSubscription[]

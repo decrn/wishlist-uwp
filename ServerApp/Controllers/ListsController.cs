@@ -74,7 +74,7 @@ namespace ServerApp.Controllers {
 
         // PUT: api/Lists/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutList([FromRoute] int id, [FromBody] List list) {
+        public async Task<IActionResult> UpdateListPut([FromRoute] int id, [FromBody] List list) {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
@@ -93,7 +93,7 @@ namespace ServerApp.Controllers {
 
         // PATCH: api/Lists/5
         [HttpPatch("{id}")]
-        public async Task<IActionResult> PatchList([FromRoute] int id, [FromBody] JsonPatchDocument<List> patch) {
+        public async Task<IActionResult> UpdateListPatch([FromRoute] int id, [FromBody] JsonPatchDocument<List> patch) {
             List list = await _context.List.SingleOrDefaultAsync(m => m.ListId == id);
             patch.ApplyTo(list, ModelState);
 
@@ -107,6 +107,25 @@ namespace ServerApp.Controllers {
             await _context.SaveChangesAsync();
 
             return Ok(list);
+        }
+
+        // POST: api/Lists/5
+        [HttpPost("{id}")]
+        public async Task<IActionResult> SendListInvitations([FromRoute] int id, [FromBody] List list) {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (id != list.ListId)
+                return BadRequest();
+
+            User user = await _userManager.GetUserAsync(HttpContext.User);
+            if (list.OwnerUserId != user.Id)
+                return Forbid();
+
+            list.SubscribedUsers.ToList().ForEach(u => u.User.InviteToList(list));
+            await _context.SaveChangesAsync();
+
+            return Ok();
         }
 
         // POST: api/Lists

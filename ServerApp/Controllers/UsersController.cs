@@ -66,5 +66,21 @@ namespace ServerApp.Controllers {
             return Ok(publicuser);
         }
 
+        // POST: api/Users/5
+        [HttpPost("{id}")]
+        public async Task<IActionResult> SendRequestToUser([FromRoute] string id) {
+            User loggedinuser = await _userManager.GetUserAsync(HttpContext.User);
+            User user = await _context.User.Include(u => u.Notifications).FirstOrDefaultAsync(m => m.Id == id);
+
+            if (user == null)
+                return NotFound();
+
+            // TODO: Improve notification constructor
+            user.Notifications.Add(new Notification() { Type = NotificationType.JoinRequest, UserId = loggedinuser.Id });
+
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+
     }
 }

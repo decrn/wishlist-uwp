@@ -21,6 +21,9 @@ namespace ServerApp.Models {
         [MaxLength(500)]
         public string Description { get; set; }
 
+        [Required]
+        public DateTime Deadline { get; set; }
+
         [ForeignKey("User")]
         public string OwnerUserId { get; set; }
 
@@ -41,5 +44,14 @@ namespace ServerApp.Models {
         public virtual ICollection<Item> Items { get; set; }
 
         public virtual ICollection<UserListSubscription> SubscribedUsers { get; set; }
+
+        public bool IsSoon() {
+            TimeSpan diff = Deadline - DateTime.Now;
+
+            if (diff.TotalSeconds > 0 && diff.TotalHours < 24*3)
+                return true;
+
+            return false;
+        }
     }
 }
