@@ -44,14 +44,13 @@ namespace ServerApp.Controllers {
 
                 if (result.Succeeded) {
                     User user = _userManager.Users.SingleOrDefault(r => r.Email == model.Email);
-                    return await GenerateJwtToken(user);
+                    return Json(new { success = true, data = await GenerateJwtToken(user) });
                 }
 
-                return Json(result);
+                return Json(new { success = false, errors = new[] { new { message = "Not logged in", data = result } } });
             }
 
-            IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
-            return Json(allErrors);
+            return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => new { message = e.ErrorMessage }) });
         }
 
         // POST: api/Account/Register
@@ -63,10 +62,7 @@ namespace ServerApp.Controllers {
                     var addr = new System.Net.Mail.MailAddress(model.Email);
                     if (addr.Address != model.Email) throw new Exception();
                 } catch {
-                    return Json(new[] {
-                            new {errorMessage = "Not a valid email"}
-                        }
-                    );
+                    return Json(new { success = false, errors = new[] { new { message = "Not a valid email address" } } });
                 }
 
                 User user = new User {
@@ -78,14 +74,13 @@ namespace ServerApp.Controllers {
 
                 IdentityResult result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded) {
-                    return await GenerateJwtToken(user);
+                    return Json(new { success = true, data = await GenerateJwtToken(user) });
                 }
 
-                return Json(result);
+                return Json(new { success = false, errors = result.Errors.Select(e => new { message = e.Description, data = e.Code }) });
             }
 
-            IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
-            return Json(allErrors);
+            return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => new { message = e.ErrorMessage }) });
         }
 
         // GET: api/Account/Logout
