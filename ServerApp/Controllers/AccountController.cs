@@ -70,6 +70,8 @@ namespace ServerApp.Controllers {
                 }
 
                 User user = new User {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
                     Email = model.Email,
                     UserName = model.Email
                 };

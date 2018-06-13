@@ -12,6 +12,9 @@ namespace ServerApp.Models {
         // UserName
         // PasswordHash
 
+        public string FirstName;
+        public string LastName;
+
         [JsonIgnore]
         public virtual ICollection<List> OwningLists { get; set; }
 

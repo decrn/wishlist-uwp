@@ -38,8 +38,8 @@ namespace ServerApp {
                 options.Password.RequireUppercase = false;
                 options.Password.RequireLowercase = false;
             })
-                .AddEntityFrameworkStores<WishContext>()
-                .AddDefaultTokenProviders();
+            .AddEntityFrameworkStores<WishContext>()
+            .AddDefaultTokenProviders();
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // => remove default claims
             services
