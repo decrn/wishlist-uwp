@@ -56,6 +56,8 @@ namespace ServerApp.Controllers {
 
             var publicuser = new {
                 Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
                 userName = user.UserName,
                 Email = user.Email,
                 Lists = _context.List.Where(l => l.OwnerUserId == user.Id).Where(l => !l.IsHidden || loggedinuser.Id == id)
