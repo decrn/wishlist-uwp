@@ -29,21 +29,21 @@ namespace ServerApp.Controllers {
         // GET: api/Lists/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetList([FromRoute] int id) {
-            var list = _context.List.Include(l => l.Items).Include(l => l.SubscribedUsers).SingleOrDefault(m => m.ListId == id);
-            
+            var list = _context.List
+                .Include(l => l.Items)
+                .Include(l => l.SubscribedUsers)
+                    .ThenInclude(s => s.User)
+                .SingleOrDefault(m => m.ListId == id);
+
             if (list == null)
                 return NotFound();
-
-            // server doesn't return anything when SubscribedUsers is set
-            var subs = list.SubscribedUsers;
-            list.SubscribedUsers = null;
             
             User user = await _userManager.GetUserAsync(HttpContext.User);
 
             if (!list.IsHidden)
                 return Ok(list);
 
-            if (list.OwnerUserId == user.Id || subs.Any(s => s.UserId == user.Id))
+            if (list.OwnerUser.Id == user.Id || list.SubscribedUsers.Any(s => s.UserId == user.Id))
                 return Ok(list);
 
             return Forbid();
@@ -57,16 +57,12 @@ namespace ServerApp.Controllers {
             if (list == null)
                 return NotFound();
 
-            // server doesn't return anything when SubscribedUsers is set
-            var subs = list.SubscribedUsers;
-            list.SubscribedUsers = null;
-
             User user = await _userManager.GetUserAsync(HttpContext.User);
 
             if (!list.IsHidden)
                 return Ok(list.Items);
 
-            if (list.OwnerUserId == user.Id || subs.Any(s => s.UserId == user.Id))
+            if (list.OwnerUser.Id == user.Id || list.SubscribedUsers.Any(s => s.UserId == user.Id))
                 return Ok(list.Items);
 
             return Forbid();
@@ -82,7 +78,7 @@ namespace ServerApp.Controllers {
                 return BadRequest();
 
             User user = await _userManager.GetUserAsync(HttpContext.User);
-            if (list.OwnerUserId != user.Id)
+            if (list.OwnerUser.Id != user.Id)
                 return Forbid();
 
             _context.Entry(list).State = EntityState.Modified;
@@ -101,7 +97,7 @@ namespace ServerApp.Controllers {
                 return BadRequest(ModelState);
 
             User user = await _userManager.GetUserAsync(HttpContext.User);
-            if (list.OwnerUserId != user.Id)
+            if (list.OwnerUser.Id != user.Id)
                 return Forbid();
 
             await _context.SaveChangesAsync();
@@ -119,7 +115,7 @@ namespace ServerApp.Controllers {
                 return BadRequest();
 
             User user = await _userManager.GetUserAsync(HttpContext.User);
-            if (list.OwnerUserId != user.Id)
+            if (list.OwnerUser.Id != user.Id)
                 return Forbid();
 
             list.SubscribedUsers.ToList().ForEach(u => u.User.InviteToList(list));
@@ -135,7 +131,7 @@ namespace ServerApp.Controllers {
                 return BadRequest(ModelState);
 
             User user = await _userManager.GetUserAsync(HttpContext.User);
-            list.OwnerUserId = user.Id;
+            list.OwnerUser.Id = user.Id;
 
             _context.List.Add(list);
             await _context.SaveChangesAsync();
@@ -155,7 +151,7 @@ namespace ServerApp.Controllers {
                 return NotFound();
 
             User user = await _userManager.GetUserAsync(HttpContext.User);
-            if (list.OwnerUserId != user.Id)
+            if (list.OwnerUser.Id != user.Id)
                 return Forbid();
 
             _context.List.Remove(list);

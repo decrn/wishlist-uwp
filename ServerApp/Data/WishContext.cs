@@ -18,10 +18,14 @@ namespace ServerApp.Data {
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<User>().ToTable("User");
+
             modelBuilder.Entity<List>().ToTable("List");
             modelBuilder.Entity<Item>().ToTable("Item");
+
             modelBuilder.Entity<Notification>().ToTable("Notification");
+            modelBuilder.Entity<Notification>().HasOne(n => n.OwnerUser).WithMany(u => u.Notifications);
+            modelBuilder.Entity<Notification>().HasOne(n => n.SubjectUser);
+            modelBuilder.Entity<Notification>().HasOne(n => n.SubjectList);
         }
     }
 }

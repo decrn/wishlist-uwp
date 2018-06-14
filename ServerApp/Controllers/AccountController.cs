@@ -15,6 +15,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc;
 using ServerApp.Data;
 using ServerApp.Models;
+using ServerApp.ViewModels;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace ServerApp.Controllers {
@@ -85,10 +86,70 @@ namespace ServerApp.Controllers {
 
         // GET: api/Account/Logout
         [Authorize]
+        [HttpGet]
         public async Task<IActionResult> Logout() {
             await _signInManager.SignOutAsync();
             return Ok();
         }
+
+        // POST: api/Account/Password
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditAccountViewModel model) {
+
+            if (ModelState.IsValid) {
+
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                    return Json(new { success = false, errors = new[] { new { message = "Account doesn't exist" } } });
+
+                if (model.Email != user.UserName) {
+                    var setUserNameResult = await _userManager.SetUserNameAsync(user, model.Email);
+                    if (!setUserNameResult.Succeeded) {
+                        return Json(new { success = false, errors = setUserNameResult.Errors.Select(e => new { message = e.Description }) });
+                    }
+                }
+
+                if (model.Email != user.Email) {
+                    var setEmailResult = await _userManager.SetEmailAsync(user, model.Email);
+                    if (!setEmailResult.Succeeded) {
+                        return Json(new { success = false, errors = setEmailResult.Errors.Select(e => new { message = e.Description }) });
+                    }
+                }
+
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
+                await _userManager.UpdateAsync(user);
+
+                return Json(new { success = true, data = user });
+
+            }
+
+            return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => new { message = e.ErrorMessage }) });
+        }
+ 
+        // POST: api/Account/Password
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Password(ChangePasswordViewModel model) {
+            if (ModelState.IsValid) {
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                    return Json(new { success = false, errors = new[] { new { message = "Account doesn't exist" } } });
+
+                var changePasswordResult = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+                if (!changePasswordResult.Succeeded) {
+                    return Json(new { success = false, errors = changePasswordResult.Errors.Select(e => new { message = e.Description }) });
+                }
+
+                return Json(new { success = true });
+            }
+
+            return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => new { message = e.ErrorMessage }) });
+        }
+
+
+        // Helpers
 
         private async Task<object> GenerateJwtToken(IdentityUser user) {
             var claims = new List<Claim>

@@ -17,8 +17,7 @@ namespace ServerApp.Models {
         [MaxLength(100)]
         public string ProductName { get; set; }
 
-        [ForeignKey("User")]
-        public string CheckedByUserId { get; set; }
+        public User CheckedByUser { get; set; }
 
         // optional
         public string ProductInfoUrl { get; set; }
@@ -27,12 +26,9 @@ namespace ServerApp.Models {
         public string ProductImageUrl { get; set; }
 
         // optional
-        public double ItemPriceUsd { get; set; }
-
-        [ForeignKey("List")]
-        public int ListId { get; set; }
+        public double? ItemPriceUsd { get; set; }
 
         [JsonIgnore]
-        public virtual List List { get; set; }
+        public List List { get; set; }
     }
 }

@@ -17,6 +17,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ServerApp.Data;
 using ServerApp.Models;
+using dotnet_g24.Services;
 
 namespace ServerApp {
     public class Startup {
@@ -61,6 +62,7 @@ namespace ServerApp {
                 });
 
             services.AddTransient<DataInitializer>();
+            services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddMvc();
         }
@@ -78,5 +80,6 @@ namespace ServerApp {
             if (env.IsDevelopment())
                 dataInitializer.Seed().Wait();
         }
+
     }
 }

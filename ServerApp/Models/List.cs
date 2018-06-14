@@ -24,8 +24,7 @@ namespace ServerApp.Models {
         [Required]
         public DateTime Deadline { get; set; }
 
-        [ForeignKey("User")]
-        public string OwnerUserId { get; set; }
+        public User OwnerUser { get; set; }
 
         // defaults to false
         public bool IsHidden { get; set; }
@@ -34,8 +33,7 @@ namespace ServerApp.Models {
         public bool IsReadOnly { get; set; }
 
         // optional
-        [JsonIgnore]
-        public int Color { get; set; }
+        public int? Color { get; set; }
 
         // optional: consider default icon?
         public string Icon { get; set; }

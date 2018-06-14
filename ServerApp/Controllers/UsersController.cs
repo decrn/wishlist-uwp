@@ -26,7 +26,7 @@ namespace ServerApp.Controllers {
         [HttpGet("Lists")]
         public async Task<IEnumerable<List>> GetOwnedLists() {
             User user = await _userManager.GetUserAsync(HttpContext.User);
-            return _context.List.Where(l => l.OwnerUserId == user.Id);
+            return _context.List.Where(l => l.OwnerUser.Id == user.Id);
         }
 
         // GET: api/Users/Subscriptions
@@ -60,7 +60,7 @@ namespace ServerApp.Controllers {
                 LastName = user.LastName,
                 userName = user.UserName,
                 Email = user.Email,
-                Lists = _context.List.Where(l => l.OwnerUserId == user.Id).Where(l => !l.IsHidden || loggedinuser.Id == id)
+                Lists = _context.List.Where(l => l.OwnerUser.Id == user.Id).Where(l => !l.IsHidden || loggedinuser.Id == id)
             };
 
             return Ok(publicuser);
@@ -70,13 +70,12 @@ namespace ServerApp.Controllers {
         [HttpPost("{id}")]
         public async Task<IActionResult> SendRequestToUser([FromRoute] string id) {
             User loggedinuser = await _userManager.GetUserAsync(HttpContext.User);
-            User user = await _context.User.Include(u => u.Notifications).FirstOrDefaultAsync(m => m.Id == id);
+            User selecteduser = await _context.User.Include(u => u.Notifications).FirstOrDefaultAsync(m => m.Id == id);
 
-            if (user == null)
+            if (selecteduser == null)
                 return NotFound();
 
-            // TODO: Improve notification constructor
-            user.Notifications.Add(new Notification() { Type = NotificationType.JoinRequest, UserId = loggedinuser.Id });
+            new Notification(selecteduser, NotificationType.JoinRequest, null, loggedinuser);
 
             await _context.SaveChangesAsync();
             return Ok();

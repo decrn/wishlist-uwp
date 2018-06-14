@@ -31,7 +31,9 @@ namespace ServerApp.Controllers {
         public async Task<IEnumerable<Notification>> GetNotifications()
         {
             User user = await _userManager.GetUserAsync(HttpContext.User);
-            return _context.Notification.Where(n => n.UserId == user.Id);
+            return _context.Notification.Where(n => n.OwnerUser.Id == user.Id)
+                .Include(n => n.SubjectUser)
+                .Include(n => n.SubjectList);
         }
 
         // PUT: api/Notifications
@@ -39,7 +41,7 @@ namespace ServerApp.Controllers {
         public async Task<IActionResult> MarkAllNotificationsAsRead()
         {
             User user = await _userManager.GetUserAsync(HttpContext.User);
-            IEnumerable<Notification> notifications = _context.Notification.Where(n => n.UserId == user.Id && n.IsUnread);
+            IEnumerable<Notification> notifications = _context.Notification.Where(n => n.OwnerUser.Id == user.Id && n.IsUnread);
             notifications.ToList().ForEach(n => n.MarkAsRead());
 
             await _context.SaveChangesAsync();
@@ -50,7 +52,7 @@ namespace ServerApp.Controllers {
         [HttpPut("{id}")]
         public async Task<IActionResult> MarkNotificationAsRead([FromRoute] int id) {
             User user = await _userManager.GetUserAsync(HttpContext.User);
-            Notification notification = _context.Notification.SingleOrDefault(n => n.UserId == user.Id && n.NotificationId == id);
+            Notification notification = _context.Notification.SingleOrDefault(n => n.OwnerUser.Id == user.Id && n.NotificationId == id);
 
             if (notification == null)
                 return NotFound();
@@ -65,12 +67,12 @@ namespace ServerApp.Controllers {
         [HttpGet("Deadlines")]
         public async Task<IEnumerable<Notification>> CheckForDeadlines() {
             User user = await _userManager.GetUserAsync(HttpContext.User);
-            IEnumerable<Notification> notifications = _context.Notification.Where(n => n.UserId == user.Id && n.Type == NotificationType.DeadlineReminder);
+            IEnumerable<Notification> notifications = _context.Notification.Where(n => n.OwnerUser.Id == user.Id && n.Type == NotificationType.DeadlineReminder);
 
             // TODO: Improve notification constructor
             user.SubscribedLists.ToList().ForEach(l => {
-                if (l.List.IsSoon() && !notifications.Any(n => n.ListId == l.ListId))
-                    user.Notifications.Add(new Notification() { Type = NotificationType.DeadlineReminder, ListId = l.ListId });
+                if (l.List.IsSoon() && !notifications.Any(n => n.SubjectList.ListId == l.ListId))
+                    new Notification(user, NotificationType.DeadlineReminder, l.List);
             });
 
             await _context.SaveChangesAsync();

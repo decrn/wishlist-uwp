@@ -13,24 +13,37 @@ namespace ServerApp.Models {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int NotificationId { get; set; }
 
-        [Required]
-        public string Message { get; set; }
+        public User OwnerUser { get; set; }
 
         [Required]
         public NotificationType Type { get; set; }
 
         public bool IsUnread { get; set; } = true;
 
-        [ForeignKey("User")]
-        public string UserId { get; set; }
+        public User SubjectUser { get; set; }
 
         // null in case of JoinRequest
-        [ForeignKey("List")]
-        public int ListId { get; set; }
+        public List SubjectList { get; set; }
+
+
+        public Notification() {}
+
+        public Notification(User user, NotificationType type, List list=null, User otheruser=null) {
+            OwnerUser = user;
+            Type = type;
+
+            if (list != null)
+                SubjectList = list;
+
+            if (otheruser != null)
+                SubjectUser = otheruser;
+        }
+
 
         public void MarkAsRead() {
             IsUnread = false;
         }
+
     }
 }
 
