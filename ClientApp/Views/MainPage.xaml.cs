@@ -88,7 +88,9 @@ namespace ClientApp {
                     {typeof(UserPage), "user"}
                 };
 
-                String stringTag = lookup[ContentFrame.SourcePageType];
+                Type type = ContentFrame.SourcePageType;
+                if (!lookup.Keys.Contains(type)) return;
+                String stringTag = lookup[type];
 
                 // set the new SelectedItem  
                 foreach (NavigationViewItemBase item in NavView.MenuItems) {

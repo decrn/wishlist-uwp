@@ -5,13 +5,48 @@
     xmlns:local="using:ClientApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    Background="{ThemeResource SystemControlAltLowAcrylicWindowBrush}">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" Height="171" Width="236">
-        <TextBox x:Name="EmailBox" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" PlaceholderText="Email" VerticalAlignment="Top" Width="210" IsSpellCheckEnabled="False"/>
-        <PasswordBox x:Name="PasswordBox" HorizontalAlignment="Left" Margin="10,47,0,0" PlaceholderText="Password" VerticalAlignment="Top" Width="210"/>
-        <Button Content="Login" HorizontalAlignment="Left" Margin="10,84,0,0" VerticalAlignment="Top" Click="Login"/>
-        <Button Content="Register" HorizontalAlignment="Left" Margin="146,84,0,0" VerticalAlignment="Top" Click="Register"/>
-        <TextBlock x:Name="ErrorText" HorizontalAlignment="Left" Margin="10,121,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="56" Width="210" Foreground="#FFA60000"/>
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+
+        <StackPanel Padding="25" Grid.Column="0" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" BorderThickness="1" BorderBrush="#888">
+
+            <TextBox x:Name="FirstNameBox" Margin="10" TextWrapping="Wrap" PlaceholderText="FirstName" Width="210" IsSpellCheckEnabled="False" Visibility="Collapsed"/>
+            <TextBox x:Name="LastNameBox" Margin="10" TextWrapping="Wrap" PlaceholderText="LastName" Width="210" IsSpellCheckEnabled="False" Visibility="Collapsed"/>
+
+            <TextBox x:Name="EmailBox" Margin="10" TextWrapping="Wrap" PlaceholderText="Email" Width="210" IsSpellCheckEnabled="False"/>
+            <PasswordBox x:Name="PasswordBox" Margin="10" PlaceholderText="Password" Width="210"/>
+            
+            <PasswordBox x:Name="ConfirmPasswordBox" Margin="10" PlaceholderText="ConfirmPassword" Width="210" Visibility="Collapsed"/>
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Login" Margin="10" Click="Login"/>
+                <Button Content="Register" Margin="10" Click="Register"/>
+            </StackPanel>
+            <TextBlock x:Name="ErrorText" Margin="10" TextWrapping="Wrap" Text="" Visibility="Collapsed" Height="56" Width="210" Foreground="#FFA60000"/>
+
+        </StackPanel>
+
+        <StackPanel Margin="25 0 0 0" Padding="25" Grid.Column="1" VerticalAlignment="Center" BorderThickness="1 0 0 0" BorderBrush="#888">
+            <Button Margin="7" Click="LoginGoogle" Background="White" BorderThickness="1" BorderBrush="#888">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/Assets/images/google.png" Width="16" Margin="0 0 10 0" />
+                    <TextBlock Text="Login with Google"/>
+                </StackPanel>
+            </Button>
+            <Button Margin="7" Click="LoginFacebook" Background="White" BorderThickness="1" BorderBrush="#888">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/Assets/images/facebook.png" Width="16" Margin="0 0 10 0" />
+                    <TextBlock Text="Login with Facebook"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+        
     </Grid>
 </Page>
