@@ -128,11 +128,6 @@
             Margin="12,8,8,8"
             Style="{ThemeResource TitleTextBlockStyle}" 
             Grid.Column="0"/>
-            <HyperlinkButton Content="View created lists"
-             Margin="12,8,8,8"
-             Click="HyperlinkButton_Click"
-             HorizontalAlignment="Right"
-             Grid.Column="1"/>
         </Grid>
 
         <ListView

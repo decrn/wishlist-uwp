@@ -19,14 +19,14 @@ namespace ClientApp.Models {
         public virtual ICollection<List> SubscribedLists { get; set; }
 
         public User() {
-            SubscribedLists = RealService.GetSubscribedLists();
-            OwningLists = RealService.GetOwnedLists();
+            SubscribedLists = App.dataService.GetSubscribedLists();
+            OwningLists = App.dataService.GetOwnedLists();
         }
 
         public void RegisterSubscription(List list) {
             if (!SubscribedLists.Contains(list)) {
                 SubscribedLists.Add(list);
-                RealService.Write(list);
+                App.dataService.Write(list);
             }
         }
 
@@ -37,35 +37,35 @@ namespace ClientApp.Models {
         public void RegisterOwned(List list) {
             if (!OwningLists.Contains(list)) {
                 OwningLists.Add(list);
-                RealService.Write(list);
+                App.dataService.Write(list);
             }
         }
 
         public void RemoveSubscription(List list) {
             if (SubscribedLists.Contains(list)) {
                 SubscribedLists.Remove(list);
-                RealService.Delete(list);
+                App.dataService.Delete(list);
             }
         }
 
         public void RemoveOwned(List list) {
             if (SubscribedLists.Contains(list)) {
                 SubscribedLists.Remove(list);
-                RealService.Delete(list);
+                App.dataService.Delete(list);
             }
         }
 
         public void Add(List list) {
             if (!OwningLists.Contains(list)) {
                 OwningLists.Add(list);
-                RealService.Write(list);
+                App.dataService.Write(list);
             }
         }
 
         public void Delete(List list) {
             if (OwningLists.Contains(list)) {
                 OwningLists.Remove(list);
-                RealService.Delete(list);
+                App.dataService.Delete(list);
             }
         }
 

@@ -1,7 +1,9 @@
-﻿using ClientApp.ViewModels;
+﻿using ClientApp.Models;
+using ClientApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -23,12 +25,12 @@ namespace ClientApp
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class SubscriptionMasterDetail : Page
+    public sealed partial class OwnedMasterDetail : Page
     {
         private ListViewModel _lastSelectedList;
         public UserViewModel User { get; set; }
 
-        public SubscriptionMasterDetail() {
+        public OwnedMasterDetail() {
             this.InitializeComponent();
             this.User = new UserViewModel();
         }
@@ -36,16 +38,16 @@ namespace ClientApp
         protected override void OnNavigatedTo(NavigationEventArgs e) {
             base.OnNavigatedTo(e);
 
-            var subscriptions = MasterListView.ItemsSource as List<ListViewModel>;
+            var owned = MasterListView.ItemsSource as List<ListViewModel>;
 
-            if (subscriptions == null) {
-                subscriptions = new List<ListViewModel>();
+            if (owned == null) {
+                owned = new List<ListViewModel>();
 
-                foreach (var sub in User.Subscriptions) {
-                    subscriptions.Add(ListViewModel.FromList(sub));
+                foreach (var list in User.Owned) {
+                    owned.Add(ListViewModel.FromList(list));
                 }
 
-                MasterListView.ItemsSource = subscriptions;
+                MasterListView.ItemsSource = owned;
             }
 
             // Keep track of where the user was browsing, so they don't have to scroll down again every time they go back to the master view
@@ -53,10 +55,8 @@ namespace ClientApp
                 // Parameter is list ID
                 var id = (int)e.Parameter;
                 _lastSelectedList =
-                    subscriptions.Where((list) => list.ListId == id).FirstOrDefault();
+                    owned.Where((list) => list.ListId == id).FirstOrDefault();
             }
-
-            
 
             UpdateForVisualState(AdaptiveStates.CurrentState);
 
@@ -74,7 +74,7 @@ namespace ClientApp
 
             if (isNarrow && oldState == DefaultState && _lastSelectedList != null) {
                 // Resize down to the detail item. Don't play a transition.
-                Frame.Navigate(typeof(SubscriptionDetailPage), _lastSelectedList.ListId, new SuppressNavigationTransitionInfo());
+                Frame.Navigate(typeof(OwnedDetailPage), _lastSelectedList.ListId, new SuppressNavigationTransitionInfo());
             }
 
             EntranceNavigationTransitionInfo.SetIsTargetElement(MasterListView, isNarrow);
@@ -89,7 +89,7 @@ namespace ClientApp
 
             if (AdaptiveStates.CurrentState == NarrowState) {
                 // Use "drill in" transition for navigating from master list to detail view
-                Frame.Navigate(typeof(SubscriptionDetailPage), clickedList.ListId, new DrillInNavigationTransitionInfo());
+                Frame.Navigate(typeof(OwnedDetailPage), clickedList.ListId, new DrillInNavigationTransitionInfo());
             } else {
                 // Play a refresh animation when the user switches detail items.
                 EnableContentTransitions();
@@ -112,10 +112,11 @@ namespace ClientApp
             }
         }
 
-        // navigation link to own created lists
-        private void HyperlinkButton_Click(object sender, RoutedEventArgs e) {
-            this.Frame.BackStack.Clear();
-            this.Frame.Navigate(typeof(OwnedMasterDetail));
-        }
+        ContentDialog NewList = new ContentDialog() {
+            Title = "Create a new list",
+            Content = new TextBox() { PlaceholderText = "Enter a list name" },
+            PrimaryButtonText = "Create list",
+            CloseButtonText = "Cancel"
+        };
     }
 }

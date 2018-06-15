@@ -40,20 +40,20 @@ namespace ClientApp.Models {
 
         private void updateItems() {
             if (Items.Count < 1)
-                Items = RealService.GetListItems(this);
+                Items = App.dataService.GetListItems(this);
         }
 
         public void AddItem(Item item) {
             if (!Items.Contains(item)) {
                 Items.Add(item);
-                RealService.Write(this);
+                App.dataService.Write(this);
             }
         }
 
         public void RemoveItem(Item item) {
             if (Items.Contains(item)) {
                 Items.Remove(item);
-                RealService.Delete(this);
+                App.dataService.Delete(this);
             }
         }
 

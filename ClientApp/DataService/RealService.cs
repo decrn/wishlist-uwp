@@ -16,16 +16,19 @@ using Newtonsoft.Json.Linq;
 using HttpClient = System.Net.Http.HttpClient;
 
 namespace ClientApp.DataService {
-    public class RealService {
+
+    public class RealService : IDataService {
+
         static Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
 
         public static String Name = "Real Data Service";
+        public static readonly string BaseUri = "http://localhost:64042/api/";
 
         public static String JWTToken = localSettings.Values.ContainsKey("JWTToken") ? localSettings.Values["JWTToken"].ToString() : "";
 
         // ACCOUNT
 
-        public static bool validJWT(string obj) {
+        public bool validJWT(string obj) {
             try
             {
                 var handler = new JwtSecurityTokenHandler();
@@ -38,11 +41,11 @@ namespace ClientApp.DataService {
             }
         }
 
-        public static bool IsLoggedIn {
-            get { return JWTToken != ""; }
+        public bool IsLoggedIn() {
+            return JWTToken != "";
         }
 
-        public static dynamic Login(string email, string password) {
+        public dynamic Login(string email, string password) {
             Debug.WriteLine("GET /login/ for JWT Token with email " + email);
 
             var httpClient = new HttpClient();
@@ -53,7 +56,7 @@ namespace ClientApp.DataService {
 
             var response = "";
             Task task = Task.Run(async () => {
-                var res = await httpClient.PostAsync(new Uri(App.BaseUri + "Account/Login"), content);
+                var res = await httpClient.PostAsync(new Uri(BaseUri + "Account/Login"), content);
                 response = await res.Content.ReadAsStringAsync();
             });
             task.Wait();
@@ -65,7 +68,7 @@ namespace ClientApp.DataService {
             return obj;
         }
 
-        public static dynamic Register(string email, string password) {
+        public dynamic Register(string email, string password) {
             Debug.WriteLine("GET /register/ for JWT Token with email "+ email);
 
             var httpClient = new HttpClient();
@@ -76,7 +79,7 @@ namespace ClientApp.DataService {
 
             var response = "";
             Task task = Task.Run(async () => {
-                var res = await httpClient.PostAsync(new Uri(App.BaseUri + "Account/Register"), content);
+                var res = await httpClient.PostAsync(new Uri(BaseUri + "Account/Register"), content);
                 response = await res.Content.ReadAsStringAsync();
             });
             task.Wait();
@@ -86,14 +89,14 @@ namespace ClientApp.DataService {
             return obj;
         }
 
-        public static void Logout() {
+        public void Logout() {
             Debug.WriteLine("Logout");
             JWTToken = "";
         }
 
         // LISTS
 
-        public static List<List> GetSubscribedLists() {
+        public List<List> GetSubscribedLists() {
             Debug.WriteLine("GET for Subscribed Lists.");
 
             var httpClient = new HttpClient();
@@ -101,14 +104,14 @@ namespace ClientApp.DataService {
 
             var response = "";
             Task task = Task.Run(async () => {
-                response = await httpClient.GetStringAsync(new Uri(App.BaseUri + "Users/Subscriptions")); // sends GET request
+                response = await httpClient.GetStringAsync(new Uri(BaseUri + "Users/Subscriptions")); // sends GET request
             });
             task.Wait();
             // TODO: convert int representation of color to Color
             return JsonConvert.DeserializeObject<List<List>>(response);
         }
 
-        public static List<List> GetOwnedLists() {
+        public List<List> GetOwnedLists() {
             Debug.WriteLine("GET for Owned Lists.");
 
             var httpClient = new HttpClient();
@@ -116,14 +119,14 @@ namespace ClientApp.DataService {
 
             var response = "";
             Task task = Task.Run(async () => {
-                response = await httpClient.GetStringAsync(new Uri(App.BaseUri + "Users/Lists")); // sends GET request
+                response = await httpClient.GetStringAsync(new Uri(BaseUri + "Users/Lists")); // sends GET request
             });
             task.Wait();
             // TODO: convert int representation of color to Color
             return JsonConvert.DeserializeObject<List<List>>(response);
         }
 
-        public static List<Item> GetListItems(List list) {
+        public List<Item> GetListItems(List list) {
             Debug.WriteLine("GET items for list with name " + list.Name);
 
             var httpClient = new HttpClient();
@@ -131,14 +134,14 @@ namespace ClientApp.DataService {
 
             string response = "";
             Task task = Task.Run(async () => {
-                response = await httpClient.GetStringAsync(new Uri(App.BaseUri + "Lists/"+list.ListId+"/Items")); // sends GET request
+                response = await httpClient.GetStringAsync(new Uri(BaseUri + "Lists/"+list.ListId+"/Items")); // sends GET request
             });
             task.Wait();
             var obj = JsonConvert.DeserializeObject<List<Item>>(response);
             return obj;
         }
 
-        public static void Write(List list) {
+        public void Write(List list) {
             Debug.WriteLine("POST List with name " + list.Name);
 
             var httpClient = new HttpClient();
@@ -148,15 +151,15 @@ namespace ClientApp.DataService {
                 JsonConvert.SerializeObject(list),
                 System.Text.Encoding.UTF8
             );
-            httpClient.PostAsync(new Uri(App.BaseUri + "Lists/"+list.ListId), content);
+            httpClient.PostAsync(new Uri(BaseUri + "Lists/"+list.ListId), content);
         }
         
-        public static void Delete(List list) {
+        public void Delete(List list) {
             Debug.WriteLine("DELETE List with name " + list.Name);
 
             var httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWTToken);
-            httpClient.DeleteAsync(new Uri(App.BaseUri + "Lists/" + list.ListId));
+            httpClient.DeleteAsync(new Uri(BaseUri + "Lists/" + list.ListId));
         }
 
     }
