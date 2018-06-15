@@ -19,7 +19,7 @@
     </Page.Transitions>
 
     <!-- Don't realize our content by default. See PageRoot_Loaded. -->
-    <StackPanel x:Name="RootPanel" x:DeferLoadStrategy="Lazy">
+    <StackPanel x:Name="RootPanel" x:DeferLoadStrategy="Lazy" Margin="0 40 0 0">
 
         <TextBlock
                     Margin="12,8,8,8"

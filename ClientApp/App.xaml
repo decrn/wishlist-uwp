@@ -40,6 +40,13 @@
                     <Style x:Key="ListBodyTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource BodyTextBlockStyle}"/>
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
+            
+            <!--Acryl-->
+
+            <AcrylicBrush x:Key="NavigationViewDefaultPaneBackground" BackgroundSource="Backdrop" TintColor="{ThemeResource SystemAccentColor}" TintOpacity=".6" Opacity="1"/>
+            <AcrylicBrush x:Key="NavigationViewExpandedPaneBackground" BackgroundSource="HostBackdrop" TintColor="{ThemeResource SystemAccentColor}" TintOpacity=".3" Opacity=".7"/>
+
+            <AcrylicBrush x:Key="MiddlePaneBackground" BackgroundSource="HostBackdrop" TintColor="{ThemeResource SystemAccentColor}" TintOpacity=".2" Opacity=".4"/>
 
         </ResourceDictionary>
     </Application.Resources>

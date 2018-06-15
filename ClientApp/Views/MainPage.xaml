@@ -12,7 +12,7 @@
         <NavigationView x:Name="NavView"
                     ItemInvoked="NavView_ItemInvoked"
                     Loaded="NavView_Loaded"
-                    xmlns:appmodel="using:Windows.ApplicationModel"
+                    xmlns:appmodel="using:Windows.ApplicationModel" OpenPaneLength="275"
                     PaneTitle="{x:Bind appmodel:Package.Current.DisplayName}"
                     IsBackButtonVisible="Collapsed">
 
@@ -32,9 +32,9 @@
             </NavigationView.MenuItems>
 
 
-            <!--Right-->
+            <!--Right (negative top margin to get rid of navigationview header)-->
 
-            <Frame x:Name="ContentFrame" Margin="24,-10,24,24" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Frame x:Name="ContentFrame" Margin="0 -60 0 0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <Frame.ContentTransitions>
                     <TransitionCollection>
                         <NavigationThemeTransition/>

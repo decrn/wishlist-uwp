@@ -7,8 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewmodels="using:ClientApp.ViewModels"
     mc:Ignorable="d"
-    NavigationCacheMode="Enabled"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    NavigationCacheMode="Enabled">
     <Page.Transitions>
         <TransitionCollection>
             <NavigationThemeTransition />
@@ -17,7 +16,7 @@
 
     <Page.Resources>
         <DataTemplate x:Key="MasterListViewItemTemplate" x:DataType="viewmodels:ListViewModel">
-            <Grid Margin="0,11,0,13">
+            <Grid Margin="0 12">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -54,15 +53,6 @@
                     Style="{ThemeResource TitleTextBlockStyle}"
                     HorizontalAlignment="Left"
                     Text="{x:Bind Name}"/>
-                <!--
-                <ListView x:Name="templist">
-                    <x:String>Item 1</x:String>
-                    <x:String>Item 2</x:String>
-                    <x:String>Item 3</x:String>
-                    <x:String>Item 4</x:String>
-                    <x:String>Item 5</x:String>
-                </ListView>
-                -->
                 <ListView x:Name="Items" ItemsSource="{x:Bind ItemNames}" SelectionMode="Multiple">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="x:String">
@@ -85,7 +75,7 @@
         </DataTemplate>
     </Page.Resources>
 
-    <Grid x:Name="LayoutRoot" Loaded="LayoutRoot_Loaded">
+    <Grid x:Name="LayoutRoot" Loaded="LayoutRoot_Loaded" Background="{ThemeResource MiddlePaneBackground}">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="AdaptiveStates" CurrentStateChanged="AdaptiveStates_CurrentStateChanged">
                 <VisualState x:Name="DefaultState">
@@ -118,21 +108,18 @@
             <ColumnDefinition x:Name="DetailColumn" Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition x:Name="LeftMaster" Width="*" />
-                <ColumnDefinition x:Name="RightMaster" Width="*" />
-            </Grid.ColumnDefinitions>
-            <TextBlock
+        <!--Left-->
+
+        <TextBlock
             Text="Subscriptions"
-            Margin="12,8,8,8"
+            Margin="12 8 8 8"
+            Padding="0 30 0 0"
             Style="{ThemeResource TitleTextBlockStyle}" 
-            Grid.Column="0"/>
-        </Grid>
+            Grid.Column="0" Grid.Row="0"/>
 
         <ListView
             x:Name="MasterListView"
-            Grid.Row="1"
+            Grid.Column="0" Grid.Row="1"
             ItemContainerTransitions="{x:Null}"
             ItemTemplate="{StaticResource MasterListViewItemTemplate}"
             IsItemClickEnabled="True"
@@ -144,15 +131,18 @@
             </ListView.ItemContainerStyle>
         </ListView>
 
+        <!--Right-->
+
         <ContentPresenter
             x:Name="DetailContentPresenter"
             Grid.Column="1"
             Grid.RowSpan="2"
+            Padding="24 30 24 0"
             BorderThickness="1,0,0,0"
-            Padding="24,0"
             BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}"
             Content="{x:Bind MasterListView.SelectedItem, Mode=OneWay}"
-            ContentTemplate="{StaticResource DetailContentTemplate}">
+            ContentTemplate="{StaticResource DetailContentTemplate}"
+            Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
             <ContentPresenter.ContentTransitions>
                 <!-- Empty by default. See MasterListView_ItemClick -->
                 <TransitionCollection />
