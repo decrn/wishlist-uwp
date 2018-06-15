@@ -98,28 +98,28 @@
     <Compile Include="DataService\IDataService.cs" />
     <Compile Include="DataService\RealService.cs" />
     <Compile Include="DataService\FakeService.cs" />
-    <Compile Include="LoginRegisterPage.xaml.cs">
+    <Compile Include="Views\LoginRegisterPage.xaml.cs">
       <DependentUpon>LoginRegisterPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="OwnedDetailPage.xaml.cs">
+    <Compile Include="Views\OwnedDetailPage.xaml.cs">
       <DependentUpon>OwnedDetailPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserPage.xaml.cs">
+    <Compile Include="Views\UserPage.xaml.cs">
       <DependentUpon>UserPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SettingsPage.xaml.cs">
+    <Compile Include="Views\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SubscriptionDetailPage.xaml.cs">
+    <Compile Include="Views\SubscriptionDetailPage.xaml.cs">
       <DependentUpon>SubscriptionDetailPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="OwnedMasterDetail.xaml.cs">
+    <Compile Include="Views\OwnedMasterDetail.xaml.cs">
       <DependentUpon>OwnedMasterDetail.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SubscriptionsMasterDetail.xaml.cs">
+    <Compile Include="Views\SubscriptionsMasterDetail.xaml.cs">
       <DependentUpon>SubscriptionsMasterDetail.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainPage.xaml.cs">
+    <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Item.cs" />
@@ -186,35 +186,35 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="LoginRegisterPage.xaml">
+    <Page Include="Views\LoginRegisterPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="OwnedDetailPage.xaml">
+    <Page Include="Views\OwnedDetailPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserPage.xaml">
+    <Page Include="Views\UserPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="SettingsPage.xaml">
+    <Page Include="Views\SettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SubscriptionDetailPage.xaml">
+    <Page Include="Views\SubscriptionDetailPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="OwnedMasterDetail.xaml">
+    <Page Include="Views\OwnedMasterDetail.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="SubscriptionsMasterDetail.xaml">
+    <Page Include="Views\SubscriptionsMasterDetail.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainPage.xaml">
+    <Page Include="Views\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
