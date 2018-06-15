@@ -9,32 +9,34 @@ using System.Threading.Tasks;
 using Windows.UI;
 
 namespace ClientApp.DataService {
-    public class FakeService {
+
+    public class FakeService : IDataService {
+
         public static String Name = "Fake Data Service";
         public static String JWTToken = "";
 
-        public static bool IsLoggedIn {
-            get { return JWTToken != ""; }
+        public bool IsLoggedIn() {
+            return JWTToken != "";
         }
 
-        public static dynamic Login(string email, string password) {
+        public dynamic Login(string email, string password) {
             Debug.WriteLine("GET /login/ for JWT Token with email " + email);
             JWTToken = "temp";
             return JWTToken;
         }
 
-        public static dynamic Register(string email, string password) {
+        public dynamic Register(string email, string password) {
             Debug.WriteLine("GET /register/ for JWT Token with email " + email);
             JWTToken = "temp";
             return JWTToken;
         }
 
-        public static void Logout() {
+        public void Logout() {
             Debug.WriteLine("Logout");
             JWTToken = "";
         }
 
-        public static List<List> GetSubscribedLists() {
+        public List<List> GetSubscribedLists() {
             Debug.WriteLine("GET for Subscribed Lists.");
 
             return new List<List>() {
@@ -44,7 +46,7 @@ namespace ClientApp.DataService {
                 };
         }
 
-        public static List<List> GetOwnedLists() {
+        public List<List> GetOwnedLists() {
             Debug.WriteLine("GET for Owned Lists.");
 
             return new List<List>() {
@@ -54,7 +56,7 @@ namespace ClientApp.DataService {
         }
 
         // probably not gonna work? We called observable in een observable maar let's see I guess
-        public static List<Item> GetListItems(List list) {
+        public List<Item> GetListItems(List list) {
             Debug.WriteLine("GET items for list with name " + list.Name);
 
             var items = new List<Item>() {
@@ -69,15 +71,15 @@ namespace ClientApp.DataService {
             return items;
         }
 
-        public static void Write(List list) {
+        public void Write(List list) {
             Debug.WriteLine("POST List with name " + list.Name);
         }
         
-        public static void Delete(List list) {
+        public void Delete(List list) {
             Debug.WriteLine("POST List with name DELETE" + list.Name);
         }
 
-        private static List<Item> GenerateSomeItems(List list) {
+        private List<Item> GenerateSomeItems(List list) {
             List<Item> randItems = new List<Item>();
             Random rnd = new Random();
 
@@ -89,7 +91,6 @@ namespace ClientApp.DataService {
 
             return randItems;
         }
-
 
     }
 }

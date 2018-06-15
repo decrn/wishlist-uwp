@@ -7,15 +7,42 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <StackPanel>
-        <ListView x:Name="list">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel>
-                        <TextBlock Text="{Binding Name}"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </StackPanel>
+    <Grid>
+
+        <NavigationView x:Name="NavView"
+                    ItemInvoked="NavView_ItemInvoked"
+                    Loaded="NavView_Loaded"
+                    xmlns:appmodel="using:Windows.ApplicationModel"
+                    PaneTitle="{x:Bind appmodel:Package.Current.DisplayName}"
+                    IsBackButtonVisible="Collapsed">
+
+            <!-- Left -->
+
+            <NavigationView.MenuItems>
+                <NavigationViewItem x:Uid="OwnedNavItem" Icon="AllApps" Content="My Lists" Tag="owned" />
+                <NavigationViewItem x:Uid="SubscriptionNavItem" Icon="List" Content="Subscriptions" Tag="subscription"/>
+                <NavigationViewItem x:Uid="UserNavItem" Icon="Contact" Content="User" Tag="user">
+                    <NavigationViewItem.ContextFlyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem Text="Edit details" Icon="Edit" Tag="account" Click="EditAccount" />
+                            <MenuFlyoutItem Text="Logout" Icon="Permissions" Tag="logout" Click="Logout" />
+                        </MenuFlyout>
+                    </NavigationViewItem.ContextFlyout>
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+
+
+            <!--Right-->
+
+            <Frame x:Name="ContentFrame" Margin="24,-10,24,24" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Frame.ContentTransitions>
+                    <TransitionCollection>
+                        <NavigationThemeTransition/>
+                    </TransitionCollection>
+                </Frame.ContentTransitions>
+            </Frame>
+
+        </NavigationView>
+
+    </Grid>
 </Page>

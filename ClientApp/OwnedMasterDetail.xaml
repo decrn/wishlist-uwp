@@ -129,11 +129,6 @@
             Margin="12,8,8,8"
             Style="{ThemeResource TitleTextBlockStyle}" 
             Grid.Column="0"/>
-            <HyperlinkButton Content="View subscribed lists"
-             Margin="12,8,8,8"
-             Click="HyperlinkButton_Click"
-             HorizontalAlignment="Right"
-             Grid.Column="1"/>
         </Grid>
 
         <ListView
@@ -165,11 +160,6 @@
                 <TransitionCollection />
             </ContentPresenter.ContentTransitions>
         </ContentPresenter>
-        <Grid Grid.Row="2">
-            <HyperlinkButton Content="Create a new list"
-             Margin="12,8,8,8"
-             Click="HyperlinkButton_Click_1"
-             HorizontalAlignment="Left" />
-        </Grid>
+
     </Grid>
 </Page>

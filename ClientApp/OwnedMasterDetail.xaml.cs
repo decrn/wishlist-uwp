@@ -112,24 +112,11 @@ namespace ClientApp
             }
         }
 
-        // navigation link to subscribed lists
-        private void HyperlinkButton_Click(object sender, RoutedEventArgs e) {
-            this.Frame.BackStack.Clear();
-            this.Frame.Navigate(typeof(SubscriptionMasterDetail));
-        }
-
         ContentDialog NewList = new ContentDialog() {
             Title = "Create a new list",
             Content = new TextBox() { PlaceholderText = "Enter a list name" },
             PrimaryButtonText = "Create list",
             CloseButtonText = "Cancel"
         };
-
-        private async void HyperlinkButton_Click_1(object sender, RoutedEventArgs e) {
-            var result = await NewList.ShowAsync();
-            if (result == ContentDialogResult.Primary) {
-                // Handle the creation
-            }
-        }
     }
 }
