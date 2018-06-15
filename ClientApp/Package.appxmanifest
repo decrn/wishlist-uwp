@@ -3,8 +3,8 @@
   <Identity Name="e9d53089-5dc2-44ca-85d6-c080ea82e0ea" Publisher="CN=denis" Version="1.0.0.0" />
   <mp:PhoneIdentity PhoneProductId="e9d53089-5dc2-44ca-85d6-c080ea82e0ea" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>TodoListClient</DisplayName>
-    <PublisherDisplayName>denis</PublisherDisplayName>
+    <DisplayName>WishList</DisplayName>
+    <PublisherDisplayName>Denis &amp; Tuur</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>
