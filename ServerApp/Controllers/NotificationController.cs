@@ -30,10 +30,23 @@ namespace ServerApp.Controllers {
         [HttpGet]
         public async Task<IEnumerable<Notification>> GetNotifications()
         {
+
+            // first search for new deadlines and add notifications
             User user = await _userManager.GetUserAsync(HttpContext.User);
-            return _context.Notification.Where(n => n.OwnerUser.Id == user.Id)
-                .Include(n => n.SubjectUser)
-                .Include(n => n.SubjectList);
+            IEnumerable<Notification> notifications = _context.Notification.Where(n => n.OwnerUser.Id == user.Id && n.Type == NotificationType.DeadlineReminder);
+
+            user.SubscribedLists.ToList().ForEach(l => {
+                if (l.List.IsSoon() && !notifications.Any(n => n.SubjectList.ListId == l.ListId))
+                    new Notification(user, NotificationType.DeadlineReminder, l.List);
+            });
+
+            await _context.SaveChangesAsync();
+
+            // TODO: test return all notifications
+            return user.Notifications;
+            //return _context.Notification.Where(n => n.OwnerUser.Id == user.Id)
+            //    .Include(n => n.SubjectUser)
+            //    .Include(n => n.SubjectList);
         }
 
         // PUT: api/Notifications
@@ -61,22 +74,6 @@ namespace ServerApp.Controllers {
 
             await _context.SaveChangesAsync();
             return Ok(notification);
-        }
-
-        // GET: api/Notifications/Deadlines
-        [HttpGet("Deadlines")]
-        public async Task<IEnumerable<Notification>> CheckForDeadlines() {
-            User user = await _userManager.GetUserAsync(HttpContext.User);
-            IEnumerable<Notification> notifications = _context.Notification.Where(n => n.OwnerUser.Id == user.Id && n.Type == NotificationType.DeadlineReminder);
-
-            // TODO: Improve notification constructor
-            user.SubscribedLists.ToList().ForEach(l => {
-                if (l.List.IsSoon() && !notifications.Any(n => n.SubjectList.ListId == l.ListId))
-                    new Notification(user, NotificationType.DeadlineReminder, l.List);
-            });
-
-            await _context.SaveChangesAsync();
-            return await GetNotifications();
         }
 
     }

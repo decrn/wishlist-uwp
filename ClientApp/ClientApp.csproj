@@ -98,6 +98,9 @@
     <Compile Include="DataService\IDataService.cs" />
     <Compile Include="DataService\RealService.cs" />
     <Compile Include="DataService\FakeService.cs" />
+    <Compile Include="Models\Notification.cs" />
+    <Compile Include="ViewModels\EditAccountViewModel.cs" />
+    <Compile Include="ViewModels\RegisterViewModel.cs" />
     <Compile Include="Views\LoginRegisterPage.xaml.cs">
       <DependentUpon>LoginRegisterPage.xaml</DependentUpon>
     </Compile>
@@ -223,13 +226,13 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>5.4.0</Version>
+      <Version>6.1.5</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>10.0.3</Version>
+      <Version>11.0.2</Version>
     </PackageReference>
     <PackageReference Include="System.IdentityModel.Tokens.Jwt">
-      <Version>5.1.0</Version>
+      <Version>5.2.2</Version>
     </PackageReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

@@ -13,7 +13,9 @@ namespace ClientApp.Models {
 
         public string ProductName { get; set; }
 
-        public string CheckedByUserId { get; set; }
+        public User CheckedByUser { get; set; }
+
+        public string Description { get; set; }
 
         public string ProductInfoUrl { get; set; }
 
@@ -24,8 +26,8 @@ namespace ClientApp.Models {
         public virtual List List { get; set; }
 
         public bool IsCompleted {
-            get { return CheckedByUserId != null; }
-            set { CheckedByUserId = ""; }
+            get { return CheckedByUser != null; }
+            set { CheckedByUser = null; }
         }
     }
 }

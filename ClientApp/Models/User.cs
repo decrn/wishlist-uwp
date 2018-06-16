@@ -11,12 +11,14 @@ namespace ClientApp.Models {
 
         public string Id;
         public string Email;
-        
-        [JsonIgnore]
+        public string FirstName;
+        public string LastName;
+
         public virtual ICollection<List> OwningLists { get; set; }
 
-        [JsonIgnore]
         public virtual ICollection<List> SubscribedLists { get; set; }
+
+        public virtual ICollection<Notification> Notifications { get; set; }
 
         public User() {
             SubscribedLists = App.dataService.GetSubscribedLists();
@@ -26,7 +28,7 @@ namespace ClientApp.Models {
         public void RegisterSubscription(List list) {
             if (!SubscribedLists.Contains(list)) {
                 SubscribedLists.Add(list);
-                App.dataService.Write(list);
+                App.dataService.EditList(list);
             }
         }
 
@@ -37,40 +39,40 @@ namespace ClientApp.Models {
         public void RegisterOwned(List list) {
             if (!OwningLists.Contains(list)) {
                 OwningLists.Add(list);
-                App.dataService.Write(list);
+                App.dataService.EditList(list);
             }
         }
 
         public void RemoveSubscription(List list) {
             if (SubscribedLists.Contains(list)) {
                 SubscribedLists.Remove(list);
-                App.dataService.Delete(list);
+                App.dataService.DeleteList(list);
             }
         }
 
         public void RemoveOwned(List list) {
             if (SubscribedLists.Contains(list)) {
                 SubscribedLists.Remove(list);
-                App.dataService.Delete(list);
+                App.dataService.DeleteList(list);
             }
         }
 
         public void Add(List list) {
             if (!OwningLists.Contains(list)) {
                 OwningLists.Add(list);
-                App.dataService.Write(list);
+                App.dataService.EditList(list);
             }
         }
 
         public void Delete(List list) {
             if (OwningLists.Contains(list)) {
                 OwningLists.Remove(list);
-                App.dataService.Delete(list);
+                App.dataService.DeleteList(list);
             }
         }
 
-        public void UpdateOwnedList(List list) {
-            // update... requires iterating over lists with linq, fuck that
+        public string GetFullName() {
+            return FirstName + " " + LastName;
         }
 
         // add methods for users to be able to change their info, pw, emails, ...

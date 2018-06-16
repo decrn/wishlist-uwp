@@ -32,7 +32,7 @@
 
                 <!-- creator of the list-->
                 <TextBlock
-                    Text="{x:Bind OwnerUserId}"
+                    Text="{x:Bind OwnerUser.GetFullName()}"
                     Grid.Row="1"
                     MaxLines="1"
                     Style="{ThemeResource ListBodyTextBlockStyle}" />

@@ -22,17 +22,22 @@ namespace ClientApp.Models {
 
         public string Name { get; set; }
 
-        public string OwnerUserId { get; set; }
-
         public string Description { get; set; }
 
-        public bool IsReadOnly { get; set; }
+        public DateTime Deadline { get; set; }
 
-        public Color Color { get; set; }
+        public User OwnerUser { get; set; }
+
+        public bool IsHidden { get; set; }
+
+        // TODO: convert string to Color?
+        public string Color { get; set; }
 
         public string Icon { get; set; }
 
         public virtual List<Item> Items { get; set; }
+
+        public virtual List<User> SubscribedUsers { get; set; }
 
         public List() {
             Items = new List<Item>();
@@ -46,17 +51,17 @@ namespace ClientApp.Models {
         public void AddItem(Item item) {
             if (!Items.Contains(item)) {
                 Items.Add(item);
-                App.dataService.Write(this);
+                App.dataService.EditList(this);
             }
         }
 
         public void RemoveItem(Item item) {
             if (Items.Contains(item)) {
                 Items.Remove(item);
-                App.dataService.Delete(this);
+                App.dataService.DeleteList(this);
             }
         }
 
-        // add methods to check item off, make item read only, ...
+        // add methods to check item off, ...
     }
 }

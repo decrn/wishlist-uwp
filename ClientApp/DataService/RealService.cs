@@ -14,29 +14,31 @@ using Windows.Web.Http.Headers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using HttpClient = System.Net.Http.HttpClient;
+using ClientApp.ViewModels;
 
 namespace ClientApp.DataService {
 
     public class RealService : IDataService {
 
-        static Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+        // TODO: add super class or helper to deal with to/from json conversion & http calls
+
 
         public static String Name = "Real Data Service";
         public static readonly string BaseUri = "http://localhost:64042/api/";
 
+        static Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
         public static String JWTToken = localSettings.Values.ContainsKey("JWTToken") ? localSettings.Values["JWTToken"].ToString() : "";
+        public static User LoggedInUser;
+
 
         // ACCOUNT
 
-        public bool validJWT(string obj) {
-            try
-            {
+        private bool ValidateJWT(string obj) {
+            try {
                 var handler = new JwtSecurityTokenHandler();
                 var token = handler.ReadToken(obj) as JwtSecurityToken;
                 return true;
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 return false;
             }
         }
@@ -46,7 +48,6 @@ namespace ClientApp.DataService {
         }
 
         public dynamic Login(string email, string password) {
-            Debug.WriteLine("GET /login/ for JWT Token with email " + email);
 
             var httpClient = new HttpClient();
             var content = new FormUrlEncodedContent(new[] {
@@ -61,20 +62,31 @@ namespace ClientApp.DataService {
             });
             task.Wait();
 
-            var obj = JsonConvert.DeserializeObject<object>(response);
-            if (validJWT(obj.ToString()))
-                localSettings.Values["JWTToken"] = obj.ToString();
+            JObject obj = JObject.Parse(response);
             
+            if (obj.ContainsKey("success") && obj["success"].ToString() == "True") {
+                var token = obj["data"]["token"].ToString();
+                if (ValidateJWT(token)) {
+                    // TODO: uncomment when login / register is fixed
+                    //localSettings.Values["JWTToken"] = token;
+                    LoggedInUser = new User();
+                }
+            }
+
             return obj;
+            
         }
 
-        public dynamic Register(string email, string password) {
-            Debug.WriteLine("GET /register/ for JWT Token with email "+ email);
+        public dynamic Register(RegisterViewModel vm) {
 
             var httpClient = new HttpClient();
+            
             var content = new FormUrlEncodedContent(new[] {
-                new KeyValuePair<string, string>("Email", email),
-                new KeyValuePair<string, string>("Password", password),
+                new KeyValuePair<string, string>("FirstName", vm.FirstName),
+                new KeyValuePair<string, string>("Email", vm.LastName),
+                new KeyValuePair<string, string>("Email", vm.Email),
+                new KeyValuePair<string, string>("Password", vm.Password),
+                new KeyValuePair<string, string>("ConfirmPassword", vm.ConfirmPassword),
             });
 
             var response = "";
@@ -89,30 +101,39 @@ namespace ClientApp.DataService {
             return obj;
         }
 
-        public void Logout() {
-            Debug.WriteLine("Logout");
-            JWTToken = "";
+        public dynamic ChangePassword(string oldpassword, string newpassword, string confirmpassword) {
+            throw new NotImplementedException();
         }
 
-        // LISTS
+        public dynamic EditAccount(EditAccountViewModel vm) {
+            throw new NotImplementedException();
+        }
 
-        public List<List> GetSubscribedLists() {
-            Debug.WriteLine("GET for Subscribed Lists.");
+        public void Logout() {
 
             var httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWTToken);
-
-            var response = "";
             Task task = Task.Run(async () => {
-                response = await httpClient.GetStringAsync(new Uri(BaseUri + "Users/Subscriptions")); // sends GET request
+                var res = await httpClient.GetAsync(new Uri(BaseUri + "Account/Logout"));
             });
             task.Wait();
-            // TODO: convert int representation of color to Color
-            return JsonConvert.DeserializeObject<List<List>>(response);
+
+            JWTToken = "";
+            LoggedInUser = null;
+            localSettings.Values.Remove("JWTToken");
+        }
+
+
+        // USERS
+
+        public User GetCurrentUser() {
+            throw new NotImplementedException();
+        }
+
+        public User GetUser(string id) {
+            throw new NotImplementedException();
         }
 
         public List<List> GetOwnedLists() {
-            Debug.WriteLine("GET for Owned Lists.");
 
             var httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWTToken);
@@ -126,23 +147,50 @@ namespace ClientApp.DataService {
             return JsonConvert.DeserializeObject<List<List>>(response);
         }
 
+        public List<List> GetSubscribedLists() {
+
+            var httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWTToken);
+
+            var response = "";
+            Task task = Task.Run(async () => {
+                response = await httpClient.GetStringAsync(new Uri(BaseUri + "Users/Subscriptions")); // sends GET request
+            });
+            task.Wait();
+            
+            return JsonConvert.DeserializeObject<List<List>>(response);
+        }
+
+        public List<List> GetUsersPublicLists(string id) {
+            throw new NotImplementedException();
+        }
+
+
+        // LISTS
+
+        public List GetList(string id) {
+            throw new NotImplementedException();
+        }
+
         public List<Item> GetListItems(List list) {
-            Debug.WriteLine("GET items for list with name " + list.Name);
 
             var httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWTToken);
 
             string response = "";
             Task task = Task.Run(async () => {
-                response = await httpClient.GetStringAsync(new Uri(BaseUri + "Lists/"+list.ListId+"/Items")); // sends GET request
+                response = await httpClient.GetStringAsync(new Uri(BaseUri + "Lists/" + list.ListId + "/Items")); // sends GET request
             });
             task.Wait();
             var obj = JsonConvert.DeserializeObject<List<Item>>(response);
             return obj;
         }
 
-        public void Write(List list) {
-            Debug.WriteLine("POST List with name " + list.Name);
+        public dynamic NewList(List list) {
+            throw new NotImplementedException();
+        }
+
+        public dynamic EditList(List list) {
 
             var httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWTToken);
@@ -152,15 +200,57 @@ namespace ClientApp.DataService {
                 System.Text.Encoding.UTF8
             );
             httpClient.PostAsync(new Uri(BaseUri + "Lists/"+list.ListId), content);
+
+            return null;
+        }
+
+        public void SendInvitations(List list) {
+            throw new NotImplementedException();
         }
         
-        public void Delete(List list) {
-            Debug.WriteLine("DELETE List with name " + list.Name);
+        public void DeleteList(List list) {
 
             var httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWTToken);
             httpClient.DeleteAsync(new Uri(BaseUri + "Lists/" + list.ListId));
         }
 
+
+        // ITEMS
+
+        public void MarkItem(Item item) {
+            throw new NotImplementedException();
+        }
+
+        public void UnMarkItem(Item item) {
+            throw new NotImplementedException();
+        }
+
+        public dynamic NewItem(Item item) {
+            throw new NotImplementedException();
+        }
+
+        public dynamic EditItem(Item item) {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteItem(Item item) {
+            throw new NotImplementedException();
+        }
+
+
+        // NOTIFICATIONS
+
+        public List<Notification> GetNotifications() {
+            throw new NotImplementedException();
+        }
+
+        public void MarkAllNotificationsAsRead() {
+            throw new NotImplementedException();
+        }
+
+        public void MarkNotificationAsRead(Notification notification) {
+            throw new NotImplementedException();
+        }
     }
 }

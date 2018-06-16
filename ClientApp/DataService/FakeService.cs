@@ -1,4 +1,5 @@
 ﻿using ClientApp.Models;
+using ClientApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,11 +14,14 @@ namespace ClientApp.DataService {
     public class FakeService : IDataService {
 
         public static String Name = "Fake Data Service";
+        public static User LoggedInUser;
         public static String JWTToken = "";
+
+        // USER
 
         public bool IsLoggedIn() {
             return JWTToken != "";
-        }
+        }        
 
         public dynamic Login(string email, string password) {
             Debug.WriteLine("GET /login/ for JWT Token with email " + email);
@@ -25,8 +29,8 @@ namespace ClientApp.DataService {
             return JWTToken;
         }
 
-        public dynamic Register(string email, string password) {
-            Debug.WriteLine("GET /register/ for JWT Token with email " + email);
+        public dynamic Register(RegisterViewModel vm) {
+            Debug.WriteLine("GET /register/ for JWT Token with email " + vm.Email);
             JWTToken = "temp";
             return JWTToken;
         }
@@ -34,63 +38,91 @@ namespace ClientApp.DataService {
         public void Logout() {
             Debug.WriteLine("Logout");
             JWTToken = "";
+            LoggedInUser = null;
         }
 
-        public List<List> GetSubscribedLists() {
-            Debug.WriteLine("GET for Subscribed Lists.");
+        public dynamic ChangePassword(string oldpassword, string newpassword, string confirmpassword) {
+            throw new NotImplementedException();
+        }
 
-            return new List<List>() {
-                    new List() { Name="John Locke's Birthday Wishes", OwnerUserId="John Locke's Mama"},
-                    new List() { Name="Jessica's Maternity List", OwnerUserId="Jessica" },
-                    new List() { Name="Babyborrel van den Sep De Laet", OwnerUserId="Senne De Laet"}
-                };
+        public dynamic EditAccount(EditAccountViewModel vm) {
+            throw new NotImplementedException();
+        }
+
+        public User GetCurrentUser() {
+            throw new NotImplementedException();
+        }
+
+        public User GetUser(string id) {
+            throw new NotImplementedException();
         }
 
         public List<List> GetOwnedLists() {
-            Debug.WriteLine("GET for Owned Lists.");
-
-            return new List<List>() {
-                    new List() { Name="Tutti and Frutti Baby Shower", OwnerUserId="Desmond Tutu", Color=Color.FromArgb(255, 247, 34, 176) },
-                    new List() { Name="Lala in Nanaland", OwnerUserId="Zazu"}
-                };
+            throw new NotImplementedException();
         }
 
-        // probably not gonna work? We called observable in een observable maar let's see I guess
+        public List<List> GetSubscribedLists() {
+            throw new NotImplementedException();
+        }
+
+        public List<List> GetUsersPublicLists(string id) {
+            throw new NotImplementedException();
+        }
+
+        public List GetList(string id) {
+            throw new NotImplementedException();
+        }
+
+        public dynamic NewList(List list) {
+            throw new NotImplementedException();
+        }
+
         public List<Item> GetListItems(List list) {
-            Debug.WriteLine("GET items for list with name " + list.Name);
-
-            var items = new List<Item>() {
-                new Item() {ProductName = "Baby Wipes", List = list},
-                new Item() {ProductName = "Baby shampoo", List = list, CheckedByUserId = "temp"},
-                new Item() {ProductName = "Packet of Cigarettes", List = list, ItemPriceUsd = 5.55}
-            };
-
-            if (list.ListId == 0 || list.ListId == 4)
-                items.Add(new Item() { ProductName = "Pacifiers", List = list });
-
-            return items;
+            throw new NotImplementedException();
         }
 
-        public void Write(List list) {
-            Debug.WriteLine("POST List with name " + list.Name);
-        }
-        
-        public void Delete(List list) {
-            Debug.WriteLine("POST List with name DELETE" + list.Name);
+        public dynamic EditList(List list) {
+            throw new NotImplementedException();
         }
 
-        private List<Item> GenerateSomeItems(List list) {
-            List<Item> randItems = new List<Item>();
-            Random rnd = new Random();
-
-            string[] items = new string[] { "toys", "window wipers", "lullaby", "flashlight", "dentures", "visual studio licence", "box cutters", "tissues" };
-
-            for (int i = 0; i < rnd.Next(2, 6); i++) {
-                randItems.Add(new Item() { ProductName = items[rnd.Next(0, 4)], List = list });
-            }
-
-            return randItems;
+        public void SendInvitations(List list) {
+            throw new NotImplementedException();
         }
 
+        public void DeleteList(List list) {
+            throw new NotImplementedException();
+        }
+
+        public void MarkItem(Item item) {
+            throw new NotImplementedException();
+        }
+
+        public void UnMarkItem(Item item) {
+            throw new NotImplementedException();
+        }
+
+        public dynamic NewItem(Item item) {
+            throw new NotImplementedException();
+        }
+
+        public dynamic EditItem(Item item) {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteItem(Item item) {
+            throw new NotImplementedException();
+        }
+
+        public List<Notification> GetNotifications() {
+            throw new NotImplementedException();
+        }
+
+        public void MarkAllNotificationsAsRead() {
+            throw new NotImplementedException();
+        }
+
+        public void MarkNotificationAsRead(Notification notification) {
+            throw new NotImplementedException();
+        }
     }
 }

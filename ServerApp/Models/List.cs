@@ -29,11 +29,8 @@ namespace ServerApp.Models {
         // defaults to false
         public bool IsHidden { get; set; }
 
-        // defaults to false?
-        public bool IsReadOnly { get; set; }
-
         // optional
-        public int? Color { get; set; }
+        public string Color { get; set; }
 
         // optional: consider default icon?
         public string Icon { get; set; }

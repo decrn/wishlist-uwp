@@ -1,4 +1,5 @@
 ﻿using ClientApp.Models;
+using ClientApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,27 +20,70 @@ namespace ClientApp.DataService {
 
     public interface IDataService {
 
+
         // ACCOUNT
 
         bool IsLoggedIn();
 
         dynamic Login(string email, string password);
 
-        dynamic Register(string email, string password);
+        dynamic Register(RegisterViewModel vm);
+
+        dynamic ChangePassword(string oldpassword, string newpassword, string confirmpassword);
+
+        dynamic EditAccount(EditAccountViewModel vm);
 
         void Logout();
 
-        // LISTS
 
-        List<List> GetSubscribedLists();
+        // USERS
+
+        User GetCurrentUser();
+
+        User GetUser(string id);
 
         List<List> GetOwnedLists();
 
+        List<List> GetSubscribedLists();
+
+        List<List> GetUsersPublicLists(string id);
+
+
+        // LISTS
+
+        List GetList(string id);
+
         List<Item> GetListItems(List list);
 
-        void Write(List list);
+        dynamic NewList(List list);
 
-        void Delete(List list);
+        dynamic EditList(List list);
+
+        void SendInvitations(List list);
+
+        void DeleteList(List list);
+
+
+        // ITEMS
+
+        void MarkItem(Item item);
+
+        void UnMarkItem(Item item);
+
+        dynamic NewItem(Item item);
+
+        dynamic EditItem(Item item);
+
+        void DeleteItem(Item item);
+
+
+        // NOTIFICATIONS
+
+        List<Notification> GetNotifications();
+
+        void MarkAllNotificationsAsRead();
+
+        void MarkNotificationAsRead(Notification notification);
 
     }
 }

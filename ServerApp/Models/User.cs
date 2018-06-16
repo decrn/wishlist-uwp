@@ -27,7 +27,7 @@ namespace ServerApp.Models {
             new Notification(this, NotificationType.ListInvitation, list);
         }
 
-        public string getFullName() {
+        public string GetFullName() {
             return FirstName + " " + LastName;
         }
 

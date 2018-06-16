@@ -20,6 +20,9 @@ namespace ServerApp.Models {
         public User CheckedByUser { get; set; }
 
         // optional
+        public string Description { get; set; }
+
+        // optional
         public string ProductInfoUrl { get; set; }
 
         // optional

@@ -22,12 +22,12 @@ namespace ClientApp.ViewModels {
             set { SetProperty(This.Name, value, () => This.Name = value); }
         }
 
-        public string OwnerUserId {
-            get { return This.OwnerUserId; }
-            set { SetProperty(This.OwnerUserId, value, () => This.OwnerUserId = value); }
+        public User OwnerUser {
+            get { return This.OwnerUser; }
+            set { SetProperty(This.OwnerUser, value, () => This.OwnerUser = value); }
         }
 
-        public Color Color {
+        public string Color {
             get { return This.Color; }
             set { SetProperty(This.Color, value, () => This.Color = value); }
         }
@@ -59,7 +59,7 @@ namespace ClientApp.ViewModels {
 
             viewModel.ListId = list.ListId;
             viewModel.Name = list.Name;
-            viewModel.OwnerUserId = list.OwnerUserId;
+            viewModel.OwnerUser = list.OwnerUser;
             viewModel.Color = list.Color;
             viewModel.Items = list.Items;
 

@@ -4,8 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ServerApp.ViewModels {
-    public class RegisterViewModel {
+namespace ClientApp.ViewModels {
+    public class EditAccountViewModel {
 
         [Required]
         public string FirstName { get; set; }
@@ -17,12 +17,5 @@ namespace ServerApp.ViewModels {
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
-        [Required]
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
-
-        [DataType(DataType.Password)]
-        [Compare("Password")]
-        public string ConfirmPassword { get; set; }
     }
 }
