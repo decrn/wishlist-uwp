@@ -43,6 +43,10 @@ namespace ClientApp
             if (owned == null) {
                 owned = new List<ListViewModel>();
 
+                // TODO: Fix this crappy way for loading lists
+                if (User.Owned.Count < 1)
+                    User.Owned = App.dataService.GetOwnedLists().Select(l => ListViewModel.FromList(l)).ToList();
+
                 foreach (var list in User.Owned) {
                     owned.Add(ListViewModel.FromList(list));
                 }

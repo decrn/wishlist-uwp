@@ -41,6 +41,10 @@ namespace ClientApp
             if (subscriptions == null) {
                 subscriptions = new List<ListViewModel>();
 
+                // TODO: Fix this crappy way for loading lists
+                if (User.Subscriptions.Count < 1)
+                    User.Subscriptions = App.dataService.GetSubscribedLists().Select(l => ListViewModel.FromList(l)).ToList();
+
                 foreach (var sub in User.Subscriptions) {
                     subscriptions.Add(ListViewModel.FromList(sub));
                 }
