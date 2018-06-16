@@ -8,6 +8,7 @@
         <ResourceDictionary>
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Dark">
+
                     <Style x:Key="ListCaptionAltTextblockStyle" TargetType="TextBlock" BasedOn="{StaticResource CaptionTextBlockStyle}">
                         <Setter Property="FontSize" Value="13"/>
                         <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
@@ -16,9 +17,17 @@
                     <Style x:Key="ListBodyTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource BodyTextBlockStyle}">
                         <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
                     </Style>
+
+                    <AcrylicBrush x:Key="NavigationViewDefaultPaneBackground" BackgroundSource="Backdrop"  TintColor="{ThemeResource SystemAccentColor}" TintOpacity=".6" Opacity="1" FallbackColor="{ThemeResource SystemAccentColor}"/>
+
+                    <AcrylicBrush x:Key="NavigationViewExpandedPaneBackground" BackgroundSource="HostBackdrop" TintColor="{ThemeResource SystemAccentColor}" TintOpacity=".3" Opacity=".3" FallbackColor="{ThemeResource SystemAccentColor}"/>
+
+                    <AcrylicBrush x:Key="MiddlePaneBackground" BackgroundSource="HostBackdrop" TintColor="{ThemeResource SystemAccentColor}" TintOpacity=".5" Opacity=".2" FallbackColor="{ThemeResource SystemAccentColor}"/>
+
                 </ResourceDictionary>
 
                 <ResourceDictionary x:Key="Light">
+
                     <Style x:Key="ListCaptionAltTextblockStyle" TargetType="TextBlock" BasedOn="{StaticResource CaptionTextBlockStyle}">
                         <Setter Property="FontSize" Value="13"/>
                         <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
@@ -27,6 +36,13 @@
                     <Style x:Key="ListBodyTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource BodyTextBlockStyle}">
                         <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
                     </Style>
+
+                    <AcrylicBrush x:Key="NavigationViewDefaultPaneBackground" BackgroundSource="Backdrop"  TintColor="{ThemeResource SystemAccentColor}" TintOpacity=".6" Opacity="1" FallbackColor="{ThemeResource SystemAccentColor}"/>
+
+                    <AcrylicBrush x:Key="NavigationViewExpandedPaneBackground" BackgroundSource="HostBackdrop" TintColor="{ThemeResource SystemAccentColor}" TintOpacity=".5" Opacity=".7" FallbackColor="{ThemeResource SystemAccentColor}"/>
+
+                    <AcrylicBrush x:Key="MiddlePaneBackground" BackgroundSource="HostBackdrop" TintColor="{ThemeResource SystemAccentColor}" TintOpacity=".3" Opacity=".4" FallbackColor="LightGray"/>
+
                 </ResourceDictionary>
 
                 <ResourceDictionary x:Key="HighContrast">
@@ -39,14 +55,6 @@
                     <Style x:Key="ListBodyTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource BodyTextBlockStyle}"/>
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
-            
-            <!--Acryl-->
-
-            <AcrylicBrush x:Key="NavigationViewDefaultPaneBackground" BackgroundSource="Backdrop"  TintColor="{ThemeResource SystemAccentColor}" TintOpacity=".6" Opacity="1" FallbackColor="{ThemeResource SystemAccentColor}"/>
-
-            <AcrylicBrush x:Key="NavigationViewExpandedPaneBackground" BackgroundSource="HostBackdrop" TintColor="{ThemeResource SystemAccentColor}" TintOpacity=".3" Opacity=".7" FallbackColor="{ThemeResource SystemAccentColor}"/>
-
-            <AcrylicBrush x:Key="MiddlePaneBackground" BackgroundSource="HostBackdrop" TintColor="{ThemeResource SystemAccentColor}" TintOpacity=".2" Opacity=".4" FallbackColor="LightGray"/>
 
         </ResourceDictionary>
     </Application.Resources>

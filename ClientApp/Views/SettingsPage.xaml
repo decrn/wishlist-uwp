@@ -11,17 +11,18 @@
     <StackPanel Orientation="Vertical" Padding="24">
         <TextBlock
             Text="Settings"
-            Margin="8"
+            Margin="0 24"
             Style="{ThemeResource TitleTextBlockStyle}"/>
 
         <StackPanel Orientation="Horizontal">
-            <TextBlock>Theme: </TextBlock>
+            <TextBlock VerticalAlignment="Center">Theme: </TextBlock>
             <!--Tag of setting should be Theme enum value-->
-            <ComboBox x:Name="ThemeComboBox"  SelectionChanged="SelectTheme">
+            <ComboBox x:Name="ThemeComboBox"  SelectionChanged="SelectTheme" Margin="10 0">
                 <ComboBoxItem Content="System" Tag="System" />
                 <ComboBoxItem Content="Light" Tag="Light" />
                 <ComboBoxItem Content="Dark" Tag="Dark" />
             </ComboBox>
+            <TextBlock VerticalAlignment="Center" FontSize="10"> (Will be updated after app restart)</TextBlock>
         </StackPanel>
 
 
