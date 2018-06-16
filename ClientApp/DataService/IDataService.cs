@@ -46,12 +46,10 @@ namespace ClientApp.DataService {
 
         List<List> GetSubscribedLists();
 
-        List<List> GetUsersPublicLists(string id);
-
 
         // LISTS
 
-        List GetList(string id);
+        List GetList(int id);
 
         List<Item> GetListItems(List list);
 

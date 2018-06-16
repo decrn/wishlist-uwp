@@ -14,11 +14,11 @@ namespace ClientApp.Models {
         public string FirstName;
         public string LastName;
 
-        public virtual ICollection<List> OwningLists { get; set; }
+        public virtual ICollection<List> OwningLists { get; set; } = new List<List>();
 
-        public virtual ICollection<List> SubscribedLists { get; set; }
+        public virtual ICollection<List> SubscribedLists { get; set; } = new List<List>();
 
-        public virtual ICollection<Notification> Notifications { get; set; }
+        public virtual ICollection<Notification> Notifications { get; set; } = new List<Notification>();
 
         public User() {
             

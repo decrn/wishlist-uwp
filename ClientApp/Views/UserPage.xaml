@@ -8,7 +8,9 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        <TextBlock>Edit Account</TextBlock>
-    </Grid>
+    <StackPanel Padding="24">
+        <TextBlock x:Name="Id">ID</TextBlock>
+        <TextBlock x:Name="Email">Email</TextBlock>
+        <TextBlock x:Name="NameHeader">Full name</TextBlock>
+    </StackPanel>
 </Page>

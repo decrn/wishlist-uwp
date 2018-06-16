@@ -22,7 +22,9 @@ namespace ClientApp {
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e) {
-            //MainPage.Current.setHeader("Settings");
+            Id.Text = App.dataService.GetCurrentUser().Id;
+            Email.Text = App.dataService.GetCurrentUser().Email;
+            NameHeader.Text = App.dataService.GetCurrentUser().GetFullName();
         }
     }
 

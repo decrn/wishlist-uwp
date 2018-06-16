@@ -1,5 +1,6 @@
 ﻿using ClientApp.Models;
 using ClientApp.ViewModels;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,9 +14,8 @@ namespace ClientApp.DataService {
 
     public class FakeService : IDataService {
 
-        public static String Name = "Fake Data Service";
-        public static User LoggedInUser;
-        public static String JWTToken = "";
+        public static readonly string Name = "Fake Data Service";
+        private string JWTToken = "";
 
         // USER
 
@@ -24,105 +24,119 @@ namespace ClientApp.DataService {
         }        
 
         public dynamic Login(string email, string password) {
-            Debug.WriteLine("GET /login/ for JWT Token with email " + email);
             JWTToken = "temp";
-            return JWTToken;
+            return JObject.FromObject( new { success = true, data = new {user = GetCurrentUser(), token = JWTToken} });
         }
 
         public dynamic Register(RegisterViewModel vm) {
-            Debug.WriteLine("GET /register/ for JWT Token with email " + vm.Email);
             JWTToken = "temp";
-            return JWTToken;
+            return JObject.FromObject(new { success = true, data = new { user = GetCurrentUser(), token = JWTToken } });
         }
 
         public void Logout() {
             Debug.WriteLine("Logout");
             JWTToken = "";
-            LoggedInUser = null;
         }
 
         public dynamic ChangePassword(string oldpassword, string newpassword, string confirmpassword) {
-            throw new NotImplementedException();
+            return JObject.FromObject(new { success = true });
         }
 
         public dynamic EditAccount(EditAccountViewModel vm) {
-            throw new NotImplementedException();
+            return JObject.FromObject(new { success = true });
         }
 
         public User GetCurrentUser() {
-            throw new NotImplementedException();
+            return new User() {
+                FirstName = "Peter",
+                LastName = "Petersson",
+                Email = "peter@domain.com",
+                Id = "4875185"
+            };
         }
 
         public User GetUser(string id) {
-            throw new NotImplementedException();
+            return new User() {
+                FirstName = "Jan",
+                LastName = "Janssens",
+                Email = "jan@domain.com",
+                Id = "54674654"
+            };
         }
 
         public List<List> GetOwnedLists() {
-            throw new NotImplementedException();
+            return new List<List> {
+                new List { ListId=0, Name="Verjaardag Jan", OwnerUser=GetCurrentUser(), Description="Voor op het feestje af te geven", Deadline=new DateTime(2018,12,31) },
+                new List { ListId=1, Name="Babyborrel Charlotte", OwnerUser=GetCurrentUser(), Description="Een jonge spruit!", Deadline=new DateTime(2019,05,12) },
+                new List { ListId=2, Name="Trouw", OwnerUser=GetCurrentUser(), Description="Al gepasseerd eigenlijk", Deadline=new DateTime(2018,01,01) }
+            };
         }
 
         public List<List> GetSubscribedLists() {
-            throw new NotImplementedException();
+            return new List<List> {
+                new List { ListId=0, Name="Verjaardag Jan", OwnerUser=GetUser(""), Description="Voor op het feestje af te geven", Deadline=new DateTime(2018,12,31) },
+                new List { ListId=1, Name="Babyborrel Charlotte", OwnerUser=GetUser(""), Description="Een jonge spruit!", Deadline=new DateTime(2019,05,12) },
+                new List { ListId=2, Name="Trouw", OwnerUser=GetUser(""), Description="Al gepasseerd eigenlijk", Deadline=new DateTime(2018,01,01) }
+            };
         }
 
-        public List<List> GetUsersPublicLists(string id) {
-            throw new NotImplementedException();
-        }
-
-        public List GetList(string id) {
-            throw new NotImplementedException();
+        public List GetList(int id) {
+            return new List { ListId = 0, Name = "Verjaardag Jan", OwnerUser = GetUser(""), Description = "Voor op het feestje af te geven", Deadline = new DateTime(2018, 12, 31) };
         }
 
         public dynamic NewList(List list) {
-            throw new NotImplementedException();
+            return JObject.FromObject(new { success = true });
         }
 
         public List<Item> GetListItems(List list) {
-            throw new NotImplementedException();
+            return new List<Item> {
+                new Item { ItemId=0, ProductName="Playstation", List=GetList(0), CheckedByUser=GetCurrentUser() },
+                new Item { ItemId=1, ProductName="Tent", List=GetList(0), ItemPriceUsd=19.99, CheckedByUser=GetUser("") },
+                new Item { ItemId=2, ProductName="Ovenschotel", List=GetList(0), ItemPriceUsd=9.99 },
+                new Item { ItemId=3, ProductName="Barbies", List=GetList(0) }
+            };
         }
 
         public dynamic EditList(List list) {
-            throw new NotImplementedException();
+            return JObject.FromObject(new { success = true });
         }
 
         public void SendInvitations(List list) {
-            throw new NotImplementedException();
         }
 
         public void DeleteList(List list) {
-            throw new NotImplementedException();
         }
 
         public void MarkItem(Item item) {
-            throw new NotImplementedException();
         }
 
         public void UnMarkItem(Item item) {
-            throw new NotImplementedException();
         }
 
         public dynamic NewItem(Item item) {
-            throw new NotImplementedException();
+            return JObject.FromObject(new { success = true });
         }
 
         public dynamic EditItem(Item item) {
-            throw new NotImplementedException();
+            return JObject.FromObject(new { success = true });
         }
 
         public void DeleteItem(Item item) {
-            throw new NotImplementedException();
         }
 
         public List<Notification> GetNotifications() {
-            throw new NotImplementedException();
+            return new List<Notification> {
+                new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.DeadlineReminder, SubjectList = GetList(0), NotificationId = 0 },
+                new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.JoinRequest, SubjectUser = GetUser(""), NotificationId = 1 },
+                new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.ListInvitation, SubjectList = GetList(0), NotificationId = 2 },
+                new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.ListInvitation, SubjectList = GetList(0), NotificationId = 3 }
+            };
         }
 
         public void MarkAllNotificationsAsRead() {
-            throw new NotImplementedException();
         }
 
         public void MarkNotificationAsRead(Notification notification) {
-            throw new NotImplementedException();
         }
     }
 }

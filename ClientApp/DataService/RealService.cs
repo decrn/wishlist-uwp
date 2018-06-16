@@ -22,16 +22,15 @@ namespace ClientApp.DataService {
 
         // TODO: add super class or helper to deal with to/from json conversion & http calls
 
-
-        public static String Name = "Real Data Service";
+        public static readonly string Name = "Real Data Service";
         public static readonly string BaseUri = "http://localhost:64042/api/";
 
-        static Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-        public static String JWTToken = localSettings.Values.ContainsKey("JWTToken") ? localSettings.Values["JWTToken"].ToString() : "";
-        public static User LoggedInUser;
+        private static Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+        private string JWTToken = localSettings.Values.ContainsKey("JWTToken") ? localSettings.Values["JWTToken"].ToString() : "";
+        private User LoggedInUser;
 
 
-        // ACCOUNT
+        #region ACCOUNT
 
         private bool ValidateJWT(string obj) {
             try {
@@ -128,15 +127,28 @@ namespace ClientApp.DataService {
             localSettings.Values.Remove("JWTToken");
         }
 
+        #endregion
 
-        // USERS
+        #region USERS
 
         public User GetCurrentUser() {
-            throw new NotImplementedException();
+            return GetUser("");
         }
 
         public User GetUser(string id) {
-            throw new NotImplementedException();
+            var httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWTToken);
+            var response = "";
+            Task task = Task.Run(async () => {
+                var res = await httpClient.GetAsync(new Uri(BaseUri + "Users/"+ id));
+                response = await res.Content.ReadAsStringAsync();
+            });
+            task.Wait();
+
+            JObject obj = JObject.Parse(response);
+            User user = obj.ToObject<User>();
+
+            return user;
         }
 
         public List<List> GetOwnedLists() {
@@ -146,10 +158,15 @@ namespace ClientApp.DataService {
 
             var response = "";
             Task task = Task.Run(async () => {
-                response = await httpClient.GetStringAsync(new Uri(BaseUri + "Users/Lists")); // sends GET request
+                response = await httpClient.GetStringAsync(new Uri(BaseUri + "Users/Lists"));
             });
             task.Wait();
-            return JsonConvert.DeserializeObject<List<List>>(response);
+
+            JArray obj = JArray.Parse(response);
+            List<List> lists = obj.ToObject<List<List>>();
+
+            return lists;
+
         }
 
         public List<List> GetSubscribedLists() {
@@ -162,18 +179,18 @@ namespace ClientApp.DataService {
                 response = await httpClient.GetStringAsync(new Uri(BaseUri + "Users/Subscriptions")); // sends GET request
             });
             task.Wait();
-            
-            return JsonConvert.DeserializeObject<List<List>>(response);
+
+            JArray obj = JArray.Parse(response);
+            List<List> lists = obj.ToObject<List<List>>();
+
+            return lists;
         }
 
-        public List<List> GetUsersPublicLists(string id) {
-            throw new NotImplementedException();
-        }
+        #endregion
 
+        #region LISTS
 
-        // LISTS
-
-        public List GetList(string id) {
+        public List GetList(int id) {
             throw new NotImplementedException();
         }
 
@@ -220,8 +237,9 @@ namespace ClientApp.DataService {
             httpClient.DeleteAsync(new Uri(BaseUri + "Lists/" + list.ListId));
         }
 
+        #endregion
 
-        // ITEMS
+        #region ITEMS
 
         public void MarkItem(Item item) {
             throw new NotImplementedException();
@@ -243,8 +261,9 @@ namespace ClientApp.DataService {
             throw new NotImplementedException();
         }
 
+        #endregion
 
-        // NOTIFICATIONS
+        #region NOTIFICATIONS
 
         public List<Notification> GetNotifications() {
             throw new NotImplementedException();
@@ -257,5 +276,7 @@ namespace ClientApp.DataService {
         public void MarkNotificationAsRead(Notification notification) {
             throw new NotImplementedException();
         }
+
+        #endregion
     }
 }
