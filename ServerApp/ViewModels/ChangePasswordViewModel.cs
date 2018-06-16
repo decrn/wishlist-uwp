@@ -9,10 +9,11 @@ namespace ServerApp.ViewModels {
 
         [Required]
         [DataType(DataType.Password)]
+        [MinLength(10)]
         public string OldPassword { get; set; }
 
         [Required]
-        [StringLength(100, MinimumLength = 6)]
+        [MinLength(10)]
         [DataType(DataType.Password)]
         public string NewPassword { get; set; }
 

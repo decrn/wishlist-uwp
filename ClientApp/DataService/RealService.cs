@@ -67,9 +67,8 @@ namespace ClientApp.DataService {
             if (obj.ContainsKey("success") && obj["success"].ToString() == "True") {
                 var token = obj["data"]["token"].ToString();
                 if (ValidateJWT(token)) {
-                    // TODO: uncomment when login / register is fixed
-                    //localSettings.Values["JWTToken"] = token;
-                    LoggedInUser = new User();
+                    localSettings.Values["JWTToken"] = token;
+                    LoggedInUser = obj["data"]["user"].ToObject<User>();
                 }
             }
 
@@ -83,7 +82,7 @@ namespace ClientApp.DataService {
             
             var content = new FormUrlEncodedContent(new[] {
                 new KeyValuePair<string, string>("FirstName", vm.FirstName),
-                new KeyValuePair<string, string>("Email", vm.LastName),
+                new KeyValuePair<string, string>("LastName", vm.LastName),
                 new KeyValuePair<string, string>("Email", vm.Email),
                 new KeyValuePair<string, string>("Password", vm.Password),
                 new KeyValuePair<string, string>("ConfirmPassword", vm.ConfirmPassword),
@@ -96,8 +95,15 @@ namespace ClientApp.DataService {
             });
             task.Wait();
 
-            var obj = JsonConvert.DeserializeObject<object>(response);
-            Debug.WriteLine(obj);
+            JObject obj = JObject.Parse(response);
+
+            if (obj.ContainsKey("success") && obj["success"].ToString() == "True") {
+                var token = obj["data"]["token"].ToString();
+                if (ValidateJWT(token)) {
+                    localSettings.Values["JWTToken"] = token;
+                    LoggedInUser = obj["data"]["user"].ToObject<User>();
+                }
+            }
             return obj;
         }
 
@@ -143,7 +149,6 @@ namespace ClientApp.DataService {
                 response = await httpClient.GetStringAsync(new Uri(BaseUri + "Users/Lists")); // sends GET request
             });
             task.Wait();
-            // TODO: convert int representation of color to Color
             return JsonConvert.DeserializeObject<List<List>>(response);
         }
 

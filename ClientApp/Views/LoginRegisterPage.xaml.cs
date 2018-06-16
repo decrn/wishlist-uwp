@@ -30,10 +30,7 @@ namespace ClientApp {
         private void Login(object sender, RoutedEventArgs e) {
 
             if (registerMode) {
-                FirstNameBox.Visibility = Visibility.Collapsed;
-                LastNameBox.Visibility = Visibility.Collapsed;
-                ConfirmPasswordBox.Visibility = Visibility.Collapsed;
-                registerMode = false;
+                ToggleRegisterMode();
             } else {
 
                 ErrorText.Visibility = Visibility.Collapsed;
@@ -58,10 +55,7 @@ namespace ClientApp {
         private void Register(object sender, RoutedEventArgs e) {
 
             if (!registerMode) {
-                FirstNameBox.Visibility = Visibility.Visible;
-                LastNameBox.Visibility = Visibility.Visible;
-                ConfirmPasswordBox.Visibility = Visibility.Visible;
-                registerMode = true;
+                ToggleRegisterMode();
             } else {
                 // TODO: can you make viewmodels in xaml?
                 RegisterViewModel vm = new RegisterViewModel() {
@@ -72,20 +66,17 @@ namespace ClientApp {
                     ConfirmPassword = ConfirmPasswordBox.Password
                 };
 
-                try {
-                    dynamic result = App.dataService.Register(vm);
+                JObject result = App.dataService.Register(vm);
 
-                    if (result.GetType() == typeof(string))
-                        this.Frame.Navigate(typeof(MainPage));
-                    else if (result is JArray) {
-                        ErrorText.Text = result[0].errorMessage;
-                        ErrorText.Visibility = Visibility.Visible;
-                    } else if (result is JObject) {
-                        ErrorText.Text = result.errors[0].description;
-                        ErrorText.Visibility = Visibility.Visible;
-                    }
-                } catch (Exception ex) {
-                    ErrorText.Text = "Something went wrong while registering";
+                if (result["success"].ToString() == "True") {
+                    this.Frame.Navigate(typeof(MainPage));
+                } else {
+                    var test = result["errors"];
+                    if (result["errors"] == null)
+                        ErrorText.Text = "Wrong credentials";
+                    else
+                        ErrorText.Text = result["errors"][0]["message"].ToString();
+                    ErrorText.Visibility = Visibility.Visible;
                 }
 
             }
@@ -100,6 +91,24 @@ namespace ClientApp {
         private void LoginFacebook(object sender, RoutedEventArgs e) {
             // TODO: Implement Facebook Login
             Login(sender, e);
+        }
+
+        private void OnTextBoxKeyDown(object sender, KeyRoutedEventArgs e) {
+            if (e.Key == Windows.System.VirtualKey.Enter) {
+                if (registerMode)
+                    Register(null,null);
+                else
+                    Login(null, null);
+            }
+                
+        }
+
+        private void ToggleRegisterMode() {
+            FirstNameBox.Visibility = registerMode ? Visibility.Collapsed : Visibility.Visible;
+            LastNameBox.Visibility = registerMode ? Visibility.Collapsed : Visibility.Visible;
+            ConfirmPasswordBox.Visibility = registerMode ? Visibility.Collapsed : Visibility.Visible;
+            ErrorText.Visibility = Visibility.Collapsed;
+            registerMode = !registerMode;
         }
 
     }

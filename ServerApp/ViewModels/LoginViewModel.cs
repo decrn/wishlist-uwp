@@ -8,10 +8,12 @@ namespace ServerApp.ViewModels {
     public class LoginViewModel {
         [Required]
         [DataType(DataType.EmailAddress)]
+        [EmailAddress]
         public string Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
+        [MinLength(10)]
         public string Password { get; set; }
     }
 }

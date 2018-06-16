@@ -21,8 +21,7 @@ namespace ClientApp.Models {
         public virtual ICollection<Notification> Notifications { get; set; }
 
         public User() {
-            SubscribedLists = App.dataService.GetSubscribedLists();
-            OwningLists = App.dataService.GetOwnedLists();
+            
         }
 
         public void RegisterSubscription(List list) {

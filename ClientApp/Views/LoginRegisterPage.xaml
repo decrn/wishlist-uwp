@@ -18,17 +18,19 @@
 
         <StackPanel Padding="25" Grid.Column="0" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" BorderThickness="1" BorderBrush="#888">
 
-            <TextBox x:Name="FirstNameBox" Margin="10" TextWrapping="Wrap" PlaceholderText="FirstName" Width="210" IsSpellCheckEnabled="False" Visibility="Collapsed"/>
-            <TextBox x:Name="LastNameBox" Margin="10" TextWrapping="Wrap" PlaceholderText="LastName" Width="210" IsSpellCheckEnabled="False" Visibility="Collapsed"/>
+            <TextBox x:Name="FirstNameBox" Margin="10" TextWrapping="Wrap" PlaceholderText="FirstName" Width="210" IsSpellCheckEnabled="False" Visibility="Collapsed" KeyDown="OnTextBoxKeyDown"/>
+            <TextBox x:Name="LastNameBox" Margin="10" TextWrapping="Wrap" PlaceholderText="LastName" Width="210" IsSpellCheckEnabled="False" Visibility="Collapsed" KeyDown="OnTextBoxKeyDown"/>
 
-            <TextBox x:Name="EmailBox" Margin="10" TextWrapping="Wrap" PlaceholderText="Email" Width="210" IsSpellCheckEnabled="False"/>
-            <PasswordBox x:Name="PasswordBox" Margin="10" PlaceholderText="Password" Width="210"/>
+            <TextBox x:Name="EmailBox" Margin="10" TextWrapping="Wrap" PlaceholderText="Email" Width="210" IsSpellCheckEnabled="False" KeyDown="OnTextBoxKeyDown"/>
+            <PasswordBox x:Name="PasswordBox" Margin="10" PlaceholderText="Password" Width="210" KeyDown="OnTextBoxKeyDown"/>
+
+            <PasswordBox x:Name="ConfirmPasswordBox" Margin="10" PlaceholderText="ConfirmPassword" Width="210" Visibility="Collapsed" KeyDown="OnTextBoxKeyDown"/>
             
-            <PasswordBox x:Name="ConfirmPasswordBox" Margin="10" PlaceholderText="ConfirmPassword" Width="210" Visibility="Collapsed"/>
             <StackPanel Orientation="Horizontal">
                 <Button Content="Login" Margin="10" Click="Login"/>
                 <Button Content="Register" Margin="10" Click="Register"/>
             </StackPanel>
+            
             <TextBlock x:Name="ErrorText" Margin="10" TextWrapping="Wrap" Text="" Visibility="Collapsed" Height="56" Width="210" Foreground="#FFA60000"/>
 
         </StackPanel>
