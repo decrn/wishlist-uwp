@@ -8,7 +8,22 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid Padding="24">
-        <TextBlock>Settings</TextBlock>
-    </Grid>
+    <StackPanel Orientation="Vertical" Padding="24">
+        <TextBlock
+            Text="Settings"
+            Margin="8"
+            Style="{ThemeResource TitleTextBlockStyle}"/>
+
+        <StackPanel Orientation="Horizontal">
+            <TextBlock>Theme: </TextBlock>
+            <!--Tag of setting should be Theme enum value-->
+            <ComboBox x:Name="ThemeComboBox"  SelectionChanged="SelectTheme">
+                <ComboBoxItem Content="System" Tag="System" />
+                <ComboBoxItem Content="Light" Tag="Light" />
+                <ComboBoxItem Content="Dark" Tag="Dark" />
+            </ComboBox>
+        </StackPanel>
+
+
+    </StackPanel>
 </Page>

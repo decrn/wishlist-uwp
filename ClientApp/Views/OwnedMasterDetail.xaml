@@ -63,7 +63,7 @@
                                 </Grid.ColumnDefinitions>
                                 <Image Source="Assets/placeholder.png" Width="44" Height="44"
                        HorizontalAlignment="Left"/>
-                                <TextBlock Text="{x:Bind}" Foreground="Black"
+                                <TextBlock Text="{x:Bind}"
                            FontSize="15" Grid.Column="1"
                            VerticalAlignment="Center"
                            Padding="0,0,54,0"/>

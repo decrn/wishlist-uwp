@@ -36,13 +36,13 @@
         </StackPanel>
 
         <StackPanel Margin="25 0 0 0" Padding="25" Grid.Column="1" VerticalAlignment="Center" BorderThickness="1 0 0 0" BorderBrush="#888">
-            <Button Margin="7" Click="LoginGoogle" Background="White" BorderThickness="1" BorderBrush="#888">
+            <Button Margin="7" Click="LoginGoogle" Background="{ThemeResource SystemAltHighColor}" BorderThickness="1" BorderBrush="#888">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="/Assets/images/google.png" Width="16" Margin="0 0 10 0" />
                     <TextBlock Text="Login with Google"/>
                 </StackPanel>
             </Button>
-            <Button Margin="7" Click="LoginFacebook" Background="White" BorderThickness="1" BorderBrush="#888">
+            <Button Margin="7" Click="LoginFacebook" Background="{ThemeResource SystemAltHighColor}" BorderThickness="1" BorderBrush="#888">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="/Assets/images/facebook.png" Width="16" Margin="0 0 10 0" />
                     <TextBlock Text="Login with Facebook"/>

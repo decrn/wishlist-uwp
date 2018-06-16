@@ -1,41 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
+﻿using ClientApp.DataService;
+using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-using ClientApp.DataService;
 using Windows.ApplicationModel.Core;
 using Windows.UI;
 using Windows.UI.ViewManagement;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 
 namespace ClientApp {
 
     sealed partial class App : Application {
 
+        public static IDataService dataService;
+        public static SettingsService settingsService;
+
         public App() {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
-            dataService = new FakeService();
             //dataService = new RealService();
-        }
+            dataService = new FakeService();
+            settingsService = new SettingsService();
 
-        public static IDataService dataService;
+            if (settingsService.GetThemeSetting() == Theme.Light)
+                this.RequestedTheme = ApplicationTheme.Light;
+            else if (settingsService.GetThemeSetting() == Theme.Dark)
+                this.RequestedTheme = ApplicationTheme.Dark;
+        }
 
         protected override void OnLaunched(LaunchActivatedEventArgs e) {
             Frame rootFrame = Window.Current.Content as Frame;
-
+            
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
             if (rootFrame == null) {
@@ -88,9 +84,15 @@ namespace ClientApp {
             deferral.Complete();
         }
 
-        public static void goToLogin() {
+        // Methods
+
+        public static void GoToLogin() {
             Frame rootFrame = Window.Current.Content as Frame;
             rootFrame.Navigate(typeof(LoginRegisterPage));
+        }
+
+        public void SetApplicationTheme(ApplicationTheme theme) {
+            this.RequestedTheme = theme;
         }
     }
 }

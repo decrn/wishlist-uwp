@@ -112,7 +112,7 @@ namespace ClientApp {
 
         private async void Logout(object sender, RoutedEventArgs e) {
             App.dataService.Logout();
-            App.goToLogin();
+            App.GoToLogin();
         }
     }
 }
