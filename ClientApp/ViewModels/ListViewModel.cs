@@ -36,9 +36,10 @@ namespace ClientApp.ViewModels {
             get { return This.Items==null ? "" : This.Items.Count + " items"; }
         }
 
-        public List<Item> Items {
-            get { return This.Items ?? new List<Item>(); }
-            set { SetProperty(This.Items, value, () => This.Items = value); }
+        List<ItemViewModel> _Items = new List<ItemViewModel>();
+        public List<ItemViewModel> Items {
+            get { return _Items; }
+            set { SetProperty(ref _Items, value); }
         }
 
         public List<string> ItemNames {
@@ -61,7 +62,8 @@ namespace ClientApp.ViewModels {
             viewModel.Name = list.Name;
             viewModel.OwnerUser = list.OwnerUser;
             viewModel.Color = list.Color;
-            viewModel.Items = list.Items;
+            if (list.Items != null)
+                viewModel.Items = list.Items.Select(i => ItemViewModel.FromItem(i)).ToList();
 
             return viewModel;
         }

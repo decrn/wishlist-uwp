@@ -84,6 +84,10 @@ namespace ClientApp
 
             //
             _items = new ObservableCollection<string>();
+            // TODO: Fix this crappy way for loading items
+            if (List.Items.Count < 1)
+                List.Items = App.dataService.GetListItems(List).Select(i => ItemViewModel.FromItem(i)).ToList();
+
             foreach (var item in List.Items) {
                 _items.Add(item.ProductName);
                 //if (item.IsCompleted) { Items.SelectedItems.Add(item); }

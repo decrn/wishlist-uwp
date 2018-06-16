@@ -21,7 +21,7 @@ namespace ClientApp.Models {
 
         public string ProductImageUrl { get; set; }
 
-        public double ItemPriceUsd { get; set; }
+        public double? ItemPriceUsd { get; set; }
 
         public virtual List List { get; set; }
 

@@ -27,8 +27,8 @@ namespace ClientApp {
         public App() {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
-            dataService = new FakeService();
-            //dataService = new RealService();
+            //dataService = new FakeService();
+            dataService = new RealService();
         }
 
         public static IDataService dataService;

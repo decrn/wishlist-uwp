@@ -191,7 +191,20 @@ namespace ClientApp.DataService {
         #region LISTS
 
         public List GetList(int id) {
-            throw new NotImplementedException();
+
+            var httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWTToken);
+
+            var response = "";
+            Task task = Task.Run(async () => {
+                response = await httpClient.GetStringAsync(new Uri(BaseUri + "Lists/"+id)); // sends GET request
+            });
+            task.Wait();
+
+            JArray obj = JArray.Parse(response);
+            List list = obj.ToObject<List>();
+
+            return list;
         }
 
         public List<Item> GetListItems(List list) {
@@ -204,8 +217,11 @@ namespace ClientApp.DataService {
                 response = await httpClient.GetStringAsync(new Uri(BaseUri + "Lists/" + list.ListId + "/Items")); // sends GET request
             });
             task.Wait();
-            var obj = JsonConvert.DeserializeObject<List<Item>>(response);
-            return obj;
+
+            JArray obj = JArray.Parse(response);
+            List<Item> items = obj.ToObject<List<Item>>();
+
+            return items;
         }
 
         public dynamic NewList(List list) {
@@ -266,7 +282,20 @@ namespace ClientApp.DataService {
         #region NOTIFICATIONS
 
         public List<Notification> GetNotifications() {
-            throw new NotImplementedException();
+
+            var httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWTToken);
+
+            string response = "";
+            Task task = Task.Run(async () => {
+                response = await httpClient.GetStringAsync(new Uri(BaseUri + "Notifications"));
+            });
+            task.Wait();
+
+            JArray obj = JArray.Parse(response);
+            List<Notification> notifs = obj.ToObject<List<Notification>>();
+
+            return notifs;
         }
 
         public void MarkAllNotificationsAsRead() {

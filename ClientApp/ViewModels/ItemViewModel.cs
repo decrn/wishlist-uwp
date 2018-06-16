@@ -10,7 +10,7 @@ namespace ClientApp.ViewModels {
     public class ItemViewModel : NotificationBase<Item> {
         public ItemViewModel(Item item = null) : base(item) { }
 
-        public string Name {
+        public string ProductName {
             get { return This.ProductName; }
             set { SetProperty(This.ProductName, value, () => This.ProductName = value); }
         }
@@ -21,7 +21,17 @@ namespace ClientApp.ViewModels {
         }
 
         public override string ToString() {
-            return Name;
+            return ProductName;
         }
+
+        public static ItemViewModel FromItem(Item item) {
+            var viewModel = new ItemViewModel();
+
+            viewModel.ProductName = item.ProductName;
+            viewModel.IsCompleted= item.IsCompleted;
+
+            return viewModel;
+        }
+
     }
 }
