@@ -70,6 +70,10 @@ namespace ClientApp {
                 case "user":
                     item.ContextFlyout.ShowAt(item);
                     break;
+
+                case "notification":
+                    item.ContextFlyout.ShowAt(item);
+                    break;
             }
         }
 

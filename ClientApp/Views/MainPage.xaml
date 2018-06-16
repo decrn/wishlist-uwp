@@ -19,8 +19,26 @@
             <!-- Left -->
 
             <NavigationView.MenuItems>
+                <!--List of icons: https://docs.microsoft.com/en-us/uwp/api/windows.ui.xaml.controls.symbol-->
                 <NavigationViewItem x:Uid="OwnedNavItem" Icon="AllApps" Content="My Lists" Tag="owned" />
                 <NavigationViewItem x:Uid="SubscriptionNavItem" Icon="List" Content="Subscriptions" Tag="subscription"/>
+                <NavigationViewItem x:Uid="NotificationNavItem" Icon="PostUpdate" Content="Notifications" Tag="notification">
+                    <NavigationViewItem.ContextFlyout>
+                        <Flyout>
+                            <StackPanel Width="350" Height="300">
+                                <TextBlock Margin="0,8" Style="{ThemeResource TitleTextBlockStyle}">Notifications</TextBlock>
+                                <!--TODO: Implement Notification List in seperate class-->
+                                <ListView>
+                                    <ListViewItem><TextBlock>Notification</TextBlock></ListViewItem>
+                                    <ListViewItem><TextBlock>Notification</TextBlock></ListViewItem>
+                                    <ListViewItem><TextBlock>Notification</TextBlock></ListViewItem>
+                                    <ListViewItem><TextBlock>Notification</TextBlock></ListViewItem>
+                                    <ListViewItem><TextBlock>Notification</TextBlock></ListViewItem>
+                                </ListView>
+                            </StackPanel>
+                        </Flyout>
+                    </NavigationViewItem.ContextFlyout>
+                </NavigationViewItem>
                 <NavigationViewItem x:Uid="UserNavItem" Icon="Contact" Content="User" Tag="user">
                     <NavigationViewItem.ContextFlyout>
                         <MenuFlyout>
