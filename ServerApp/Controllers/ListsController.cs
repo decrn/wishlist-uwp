@@ -29,21 +29,21 @@ namespace ServerApp.Controllers {
         // GET: api/Lists/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetList([FromRoute] int id) {
-            var list = _context.List.Include(l => l.Items).Include(l => l.SubscribedUsers).SingleOrDefault(m => m.ListId == id);
-            
+            var list = _context.List
+                .Include(l => l.Items)
+                .Include(l => l.SubscribedUsers)
+                    .ThenInclude(s => s.User)
+                .SingleOrDefault(m => m.ListId == id);
+
             if (list == null)
                 return NotFound();
-
-            // server doesn't return anything when SubscribedUsers is set
-            var subs = list.SubscribedUsers;
-            list.SubscribedUsers = null;
             
             User user = await _userManager.GetUserAsync(HttpContext.User);
 
             if (!list.IsHidden)
                 return Ok(list);
 
-            if (list.OwnerUserId == user.Id || subs.Any(s => s.UserId == user.Id))
+            if (list.OwnerUser.Id == user.Id || list.SubscribedUsers.Any(s => s.UserId == user.Id))
                 return Ok(list);
 
             return Forbid();
@@ -57,16 +57,12 @@ namespace ServerApp.Controllers {
             if (list == null)
                 return NotFound();
 
-            // server doesn't return anything when SubscribedUsers is set
-            var subs = list.SubscribedUsers;
-            list.SubscribedUsers = null;
-
             User user = await _userManager.GetUserAsync(HttpContext.User);
 
             if (!list.IsHidden)
                 return Ok(list.Items);
 
-            if (list.OwnerUserId == user.Id || subs.Any(s => s.UserId == user.Id))
+            if (list.OwnerUser.Id == user.Id || list.SubscribedUsers.Any(s => s.UserId == user.Id))
                 return Ok(list.Items);
 
             return Forbid();
@@ -74,7 +70,7 @@ namespace ServerApp.Controllers {
 
         // PUT: api/Lists/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutList([FromRoute] int id, [FromBody] List list) {
+        public async Task<IActionResult> UpdateListPut([FromRoute] int id, [FromBody] List list) {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
@@ -82,7 +78,7 @@ namespace ServerApp.Controllers {
                 return BadRequest();
 
             User user = await _userManager.GetUserAsync(HttpContext.User);
-            if (list.OwnerUserId != user.Id)
+            if (list.OwnerUser.Id != user.Id)
                 return Forbid();
 
             _context.Entry(list).State = EntityState.Modified;
@@ -93,7 +89,7 @@ namespace ServerApp.Controllers {
 
         // PATCH: api/Lists/5
         [HttpPatch("{id}")]
-        public async Task<IActionResult> PatchList([FromRoute] int id, [FromBody] JsonPatchDocument<List> patch) {
+        public async Task<IActionResult> UpdateListPatch([FromRoute] int id, [FromBody] JsonPatchDocument<List> patch) {
             List list = await _context.List.SingleOrDefaultAsync(m => m.ListId == id);
             patch.ApplyTo(list, ModelState);
 
@@ -101,12 +97,31 @@ namespace ServerApp.Controllers {
                 return BadRequest(ModelState);
 
             User user = await _userManager.GetUserAsync(HttpContext.User);
-            if (list.OwnerUserId != user.Id)
+            if (list.OwnerUser.Id != user.Id)
                 return Forbid();
 
             await _context.SaveChangesAsync();
 
             return Ok(list);
+        }
+
+        // POST: api/Lists/5
+        [HttpPost("{id}")]
+        public async Task<IActionResult> SendListInvitations([FromRoute] int id, [FromBody] List list) {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (id != list.ListId)
+                return BadRequest();
+
+            User user = await _userManager.GetUserAsync(HttpContext.User);
+            if (list.OwnerUser.Id != user.Id)
+                return Forbid();
+
+            list.SubscribedUsers.ToList().ForEach(u => u.User.InviteToList(list));
+            await _context.SaveChangesAsync();
+
+            return Ok();
         }
 
         // POST: api/Lists
@@ -116,7 +131,7 @@ namespace ServerApp.Controllers {
                 return BadRequest(ModelState);
 
             User user = await _userManager.GetUserAsync(HttpContext.User);
-            list.OwnerUserId = user.Id;
+            list.OwnerUser.Id = user.Id;
 
             _context.List.Add(list);
             await _context.SaveChangesAsync();
@@ -136,7 +151,7 @@ namespace ServerApp.Controllers {
                 return NotFound();
 
             User user = await _userManager.GetUserAsync(HttpContext.User);
-            if (list.OwnerUserId != user.Id)
+            if (list.OwnerUser.Id != user.Id)
                 return Forbid();
 
             _context.List.Remove(list);

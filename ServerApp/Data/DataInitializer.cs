@@ -42,9 +42,9 @@ namespace ServerApp.Data
                 // seed list
                 var lists = new List[]
                 {
-                    new List { ListId=0, Name="a", OwnerUserId=users[0].Id, Description="Description" },
-                    new List { ListId=1, Name="b", OwnerUserId=users[0].Id, Description="Description" },
-                    new List { ListId=2, Name="c", OwnerUserId=users[1].Id, Description="Description" }
+                    new List { ListId=0, Name="Verjaardag Jan", OwnerUser=users[0], Description="Voor op het feestje af te geven", Deadline=new DateTime(2018,12,31) },
+                    new List { ListId=1, Name="Babyborrel Charlotte", OwnerUser=users[0], Description="Een jonge spruit!", Deadline=new DateTime(2019,05,12) },
+                    new List { ListId=2, Name="Trouw", OwnerUser=users[1], Description="Al gepasseerd eigenlijk", Deadline=new DateTime(2018,01,01) }
                 };
                 foreach (List l in lists)
                     _context.List.Add(l);
@@ -54,13 +54,25 @@ namespace ServerApp.Data
                 // seed items
                 var items = new Item[]
                 {
-                    new Item { ItemId=0, ProductName="a", ListId=0, CheckedByUserId=users[1].Id },
-                    new Item { ItemId=1, ProductName="b", ListId=0, ItemPriceUsd=19.99, CheckedByUserId=users[2].Id },
-                    new Item { ItemId=2, ProductName="c", ListId=1, ItemPriceUsd=9.99 },
-                    new Item { ItemId=3, ProductName="d", ListId=2 }
+                    new Item { ItemId=0, ProductName="Playstation", List=lists[0], CheckedByUser=users[1] },
+                    new Item { ItemId=1, ProductName="Tent", List=lists[0], ItemPriceUsd=19.99, CheckedByUser=users[2] },
+                    new Item { ItemId=2, ProductName="Ovenschotel", List=lists[1], ItemPriceUsd=9.99 },
+                    new Item { ItemId=3, ProductName="Barbies", List=lists[2] }
                 };
                 foreach (Item i in items)
                     _context.Item.Add(i);
+
+                _context.SaveChanges();
+
+                var notifications = new Notification[]
+                {
+                    new Notification(users[0], NotificationType.DeadlineReminder, lists[0]) { NotificationId = 0 },
+                    new Notification(users[0], NotificationType.JoinRequest, null, users[1]) { NotificationId = 1 },
+                    new Notification(users[0], NotificationType.ListInvitation, lists[1]) { NotificationId = 2 },
+                    new Notification(users[1], NotificationType.ListInvitation, lists[2]) { NotificationId = 3 }
+                };
+                foreach (Notification n in notifications)
+                    _context.Notification.Add(n);
 
                 _context.SaveChanges();
 
@@ -76,7 +88,6 @@ namespace ServerApp.Data
                     sqlStatement += "( " + s.Id + ", " + s.ListId + ", '" + s.UserId + "' ),";
 
                 sqlStatement = sqlStatement.Remove(sqlStatement.Length - 1) + ";";
-                Debug.WriteLine(sqlStatement);
                 _context.Database.ExecuteSqlCommand(sqlStatement);
             }
         }
