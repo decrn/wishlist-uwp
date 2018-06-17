@@ -1,25 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using ClientApp.Models;
-using Newtonsoft.Json;
 
 
 namespace ClientApp {
-    
+
     public sealed partial class MainPage : Page {
 
         public static MainPage Current;
@@ -68,10 +57,12 @@ namespace ClientApp {
                     break;
 
                 case "user":
+                    item.ContextFlyout.Placement = FlyoutPlacementMode.Right;
                     item.ContextFlyout.ShowAt(item);
                     break;
 
                 case "notification":
+                    item.ContextFlyout.Placement = FlyoutPlacementMode.Right;
                     item.ContextFlyout.ShowAt(item);
                     break;
             }

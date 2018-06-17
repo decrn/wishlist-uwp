@@ -5,6 +5,7 @@
     xmlns:local="using:ClientApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Views="using:ClientApp.Views"
     mc:Ignorable="d">
 
     <Grid>
@@ -24,19 +25,7 @@
                 <NavigationViewItem x:Uid="SubscriptionNavItem" Icon="List" Content="Subscriptions" Tag="subscription"/>
                 <NavigationViewItem x:Uid="NotificationNavItem" Icon="PostUpdate" Content="Notifications" Tag="notification">
                     <NavigationViewItem.ContextFlyout>
-                        <Flyout>
-                            <StackPanel Width="350" Height="300">
-                                <TextBlock Margin="0,8" Style="{ThemeResource TitleTextBlockStyle}">Notifications</TextBlock>
-                                <!--TODO: Implement Notification List in seperate class-->
-                                <ListView>
-                                    <ListViewItem><TextBlock>Notification</TextBlock></ListViewItem>
-                                    <ListViewItem><TextBlock>Notification</TextBlock></ListViewItem>
-                                    <ListViewItem><TextBlock>Notification</TextBlock></ListViewItem>
-                                    <ListViewItem><TextBlock>Notification</TextBlock></ListViewItem>
-                                    <ListViewItem><TextBlock>Notification</TextBlock></ListViewItem>
-                                </ListView>
-                            </StackPanel>
-                        </Flyout>
+                        <Views:NotificationFlyout></Views:NotificationFlyout>
                     </NavigationViewItem.ContextFlyout>
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="UserNavItem" Icon="Contact" Content="User" Tag="user">
