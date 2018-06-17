@@ -122,10 +122,10 @@ namespace ClientApp.DataService {
 
         public List<Notification> GetNotifications() {
             return new List<Notification> {
-                new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.DeadlineReminder, SubjectList = GetList(1), NotificationId = 0 },
+                new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.DeadlineReminder, SubjectList = GetList(1), NotificationId = 0, IsUnread=true },
                 new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.JoinRequest, SubjectUser = GetUser(""), NotificationId = 1 },
                 new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.ListInvitation, SubjectList = GetList(2), NotificationId = 2 },
-                new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.ListInvitation, SubjectList = GetList(1), NotificationId = 3 },
+                new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.ListInvitation, SubjectList = GetList(1), NotificationId = 3, IsUnread=true },
                 new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.ListInvitation, SubjectList = GetList(0), NotificationId = 4 }
             };
         }

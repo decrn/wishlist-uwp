@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using Windows.ApplicationModel.Background;
 
 namespace ClientApp.DataService {
 
@@ -9,6 +9,13 @@ namespace ClientApp.DataService {
 
         public SettingsService() {
             _ThemeSetting = ParseEnum<Theme>(localSettings.Values["ThemeSetting"]);
+
+            foreach (var task in BackgroundTaskRegistration.AllTasks) {
+                if (task.Value.Name == "NotificationBackgroundTask") {
+                    _BackgroundTaskEnabled = true;
+                    break;
+                }
+            }
         }
 
 
@@ -21,8 +28,49 @@ namespace ClientApp.DataService {
 
         public void SetThemeSetting(object value) {
             _ThemeSetting = ParseEnum<Theme>(value);
-            bool added = localSettings.Values.TryAdd("ThemeSetting", _ThemeSetting.ToString());
-            if (!added) localSettings.Values["ThemeSetting"] = _ThemeSetting.ToString();
+            localSettings.Values["ThemeSetting"] = _ThemeSetting.ToString();
+        }
+
+        // Background Task
+
+        private bool _BackgroundTaskEnabled = false;
+
+        public bool GetBackgroundTaskEnabledSetting() {
+            return _BackgroundTaskEnabled;
+        }
+
+        public async void SetBackgroundTaskEnabledSetting(bool value) {
+            _BackgroundTaskEnabled = value;
+
+            if (value) {
+                // Register backgroundtask
+                var taskRegistered = false;
+                foreach (var task in BackgroundTaskRegistration.AllTasks) {
+                    if (task.Value.Name == "NotificationBackgroundTask") {
+                        taskRegistered = true;
+                        break;
+                    }
+                }
+
+                if (!taskRegistered) {
+                    var builder = new BackgroundTaskBuilder();
+                    builder.Name = "NotificationBackgroundTask";
+                    builder.TaskEntryPoint = "ClientApp.NotificationBackgroundTask";
+                    builder.SetTrigger(new TimeTrigger(60, false));
+                    builder.AddCondition(new SystemCondition(SystemConditionType.InternetAvailable));
+                    var requestStatus = await Windows.ApplicationModel.Background.BackgroundExecutionManager.RequestAccessAsync();
+                    if (requestStatus != BackgroundAccessStatus.AlwaysAllowed) {
+                        BackgroundTaskRegistration task = builder.Register();
+                    }
+                }
+            } else {
+                // Unregister backgroundtask
+                foreach (var task in BackgroundTaskRegistration.AllTasks) {
+                    if (task.Value.Name == "NotificationBackgroundTask") {
+                        task.Value.Unregister(true);
+                    }
+                }
+            }
         }
 
 

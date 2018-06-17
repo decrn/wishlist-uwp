@@ -14,7 +14,7 @@
             Margin="0 24"
             Style="{ThemeResource TitleTextBlockStyle}"/>
 
-        <StackPanel Orientation="Horizontal">
+        <StackPanel Orientation="Horizontal" Margin="0 10">
             <TextBlock VerticalAlignment="Center">Theme: </TextBlock>
             <!--Tag of setting should be Theme enum value-->
             <ComboBox x:Name="ThemeComboBox"  SelectionChanged="SelectTheme" Margin="10 0">
@@ -25,6 +25,10 @@
             <TextBlock VerticalAlignment="Center" FontSize="10"> (Will be updated after app restart)</TextBlock>
         </StackPanel>
 
+        <StackPanel Orientation="Horizontal" Margin="0 10">
+            <TextBlock VerticalAlignment="Center">Check for notifications in background:</TextBlock>
+            <ToggleSwitch x:Name="BackgroundTaskToggleSwitch" Margin="10 0" Toggled="ToggleBackgroundTask"></ToggleSwitch>
+        </StackPanel>
 
     </StackPanel>
 </Page>
