@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace ServerApp.Models {
     public class Notification {
 
         // autogenerate
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int NotificationId { get; set; }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public DateTime Timestamp { get; set; } = DateTime.UtcNow;
 
         public User OwnerUser { get; set; }
 

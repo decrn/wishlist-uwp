@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ServerApp.Data;
 using ServerApp.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ServerApp.Controllers {
 
@@ -32,21 +29,27 @@ namespace ServerApp.Controllers {
         {
 
             // first search for new deadlines and add notifications
-            User user = await _userManager.GetUserAsync(HttpContext.User);
-            IEnumerable<Notification> notifications = _context.Notification.Where(n => n.OwnerUser.Id == user.Id && n.Type == NotificationType.DeadlineReminder);
+            string userid = _userManager.GetUserId(HttpContext.User);
+            User user = await _context.User
+                                        .Include(u=>u.Notifications)
+                                            .ThenInclude(n=>n.SubjectList)
+                                        .Include(u => u.Notifications)
+                                            .ThenInclude(n => n.SubjectUser)
+                                        .Include(u=>u.SubscribedLists)
+                                            .ThenInclude(s=>s.List)
+                                        .SingleOrDefaultAsync(u => u.Id == userid);
 
             user.SubscribedLists.ToList().ForEach(l => {
-                if (l.List.IsSoon() && !notifications.Any(n => n.SubjectList.ListId == l.ListId))
-                    new Notification(user, NotificationType.DeadlineReminder, l.List);
+                // Check if list deadline is soon & if there are already any Deadlinereminders for this list
+                if (l.List.IsSoon() && !user.Notifications.Any(n => n.Type == NotificationType.DeadlineReminder && n.SubjectList.ListId == l.ListId)) {
+                    Notification notif = new Notification(user, NotificationType.DeadlineReminder, l.List);
+                    _context.Notification.Add(notif);
+                    //user.Notifications.Add(notif);
+                }
             });
 
             await _context.SaveChangesAsync();
-
-            // TODO: test return all notifications
             return user.Notifications;
-            //return _context.Notification.Where(n => n.OwnerUser.Id == user.Id)
-            //    .Include(n => n.SubjectUser)
-            //    .Include(n => n.SubjectList);
         }
 
         // PUT: api/Notifications

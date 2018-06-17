@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ServerApp.Models;
 
@@ -26,6 +22,8 @@ namespace ServerApp.Data {
             modelBuilder.Entity<Notification>().HasOne(n => n.OwnerUser).WithMany(u => u.Notifications);
             modelBuilder.Entity<Notification>().HasOne(n => n.SubjectUser);
             modelBuilder.Entity<Notification>().HasOne(n => n.SubjectList);
+
+            //modelBuilder.Entity<User>().HasMany(n => n.Notifications);
         }
     }
 }
