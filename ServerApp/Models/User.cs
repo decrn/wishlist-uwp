@@ -1,9 +1,6 @@
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
-using System;
+using System.Collections.Generic;
 
 namespace ServerApp.Models {
     public class User : IdentityUser {
@@ -11,8 +8,8 @@ namespace ServerApp.Models {
         // Id
         // Email
 
-        public string FirstName;
-        public string LastName;
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
 
         [JsonIgnore]
         public virtual ICollection<List> OwningLists { get; set; }
