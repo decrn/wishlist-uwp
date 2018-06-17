@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace ClientApp.Models {
     public class Notification {
 
         // autogenerate
         public int NotificationId { get; set; }
+
+        public DateTime Timestamp { get; set; }
 
         public User OwnerUser { get; set; }
 
