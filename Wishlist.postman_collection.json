@@ -1,0 +1,479 @@
+{
+	"info": {
+		"name": "Wishlist",
+		"_postman_id": "7fd599a5-7d37-4b3b-f719-afe0fc707b26",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Email",
+							"value": "a@domain.com",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Password",
+							"value": "qwerty12345",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:{{port}}/api/Account/Login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"Account",
+						"Login"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Register",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "FirstName",
+							"value": "Jan",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "LastName",
+							"value": "Janssens",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Email",
+							"value": "g@domain.com",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Password",
+							"value": "qwerty12345",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "ConfirmPassword",
+							"value": "qwerty12345",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:{{port}}/api/Account/Register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"Account",
+						"Register"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Change Password",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "OldPassword",
+							"value": "qwerty12345",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "NewPassword",
+							"value": "qwerty1234",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "ConfirmPassword",
+							"value": "qwerty1234",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:{{port}}/api/Account/Password",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"Account",
+						"Password"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Account",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Email",
+							"value": "q@domain.com",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "FirstName",
+							"value": "Abc",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "LastName",
+							"value": "Def",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:{{port}}/api/Account/Edit",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"Account",
+						"Edit"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Email",
+							"value": "a@domain.com",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Password",
+							"value": "qwerty12345",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:{{port}}/api/Account/Logout",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"Account",
+						"Logout"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get User",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Email",
+							"value": "a@domain.com",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Password",
+							"value": "qwerty12345",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:{{port}}/api/Users/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"Users",
+						""
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get a List",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Email",
+							"value": "a@domain.com",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Password",
+							"value": "qwerty12345",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:{{port}}/api/Lists/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"Lists",
+						"1"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get List Items",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Email",
+							"value": "a@domain.com",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Password",
+							"value": "qwerty12345",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:{{port}}/api/Lists/1/Items",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"Lists",
+						"1",
+						"Items"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get My Lists",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Email",
+							"value": "a@domain.com",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Password",
+							"value": "qwerty12345",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:{{port}}/api/Users/Lists",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"Users",
+						"Lists"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Notifications",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Email",
+							"value": "a@domain.com",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Password",
+							"value": "qwerty12345",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:{{port}}/api/Notifications",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"Notifications"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhQGRvbWFpbi5jb20iLCJqdGkiOiI3NTc1ZTdiYS1mMzQ1LTRhOGMtYmI0MS0xYWVlMWE0NGVhZGMiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjExZjY3YmUzLWNhMDktNDRkYS1iNGRhLWZjYzYxOTVmZGQ3NSIsImV4cCI6MTUzMTg0NDAxNSwiaXNzIjoibG9jYWxob3N0IiwiYXVkIjoibG9jYWxob3N0In0.2SOC3uEhEq2JAzJWAWlsXDtUSmUl6GnRs9MybUmdaIg",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "ce2b9e68-816f-412f-b8fe-0e59a418d3dd",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "0fb2b58e-a32f-48b0-a290-0f80ca796abd",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "9b1c8025-5ee8-4b83-8769-3735c1bc18fc",
+			"key": "port",
+			"value": "64042",
+			"type": "text"
+		}
+	]
+}
