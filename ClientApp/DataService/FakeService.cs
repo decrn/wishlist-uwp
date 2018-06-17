@@ -3,12 +3,7 @@ using ClientApp.ViewModels;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.UI;
 
 namespace ClientApp.DataService {
 
@@ -81,7 +76,8 @@ namespace ClientApp.DataService {
         }
 
         public List GetList(int id) {
-            return new List { ListId = 0, Name = "Verjaardag Jan", OwnerUser = GetUser(""), Description = "Voor op het feestje af te geven", Deadline = new DateTime(2018, 12, 31) };
+                List list = new List { ListId = 0, Name = "Verjaardag Jan", OwnerUser = GetUser(""), Description = "Voor op het feestje af te geven", Deadline = new DateTime(2018, 12, 31) };
+            return list;
         }
 
         public dynamic NewList(List list) {
@@ -126,10 +122,11 @@ namespace ClientApp.DataService {
 
         public List<Notification> GetNotifications() {
             return new List<Notification> {
-                new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.DeadlineReminder, SubjectList = GetList(0), NotificationId = 0 },
+                new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.DeadlineReminder, SubjectList = GetList(1), NotificationId = 0 },
                 new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.JoinRequest, SubjectUser = GetUser(""), NotificationId = 1 },
-                new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.ListInvitation, SubjectList = GetList(0), NotificationId = 2 },
-                new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.ListInvitation, SubjectList = GetList(0), NotificationId = 3 }
+                new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.ListInvitation, SubjectList = GetList(2), NotificationId = 2 },
+                new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.ListInvitation, SubjectList = GetList(1), NotificationId = 3 },
+                new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.ListInvitation, SubjectList = GetList(0), NotificationId = 4 }
             };
         }
 

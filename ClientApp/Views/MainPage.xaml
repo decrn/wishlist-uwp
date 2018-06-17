@@ -25,7 +25,9 @@
                 <NavigationViewItem x:Uid="SubscriptionNavItem" Icon="List" Content="Subscriptions" Tag="subscription"/>
                 <NavigationViewItem x:Uid="NotificationNavItem" Icon="PostUpdate" Content="Notifications" Tag="notification">
                     <NavigationViewItem.ContextFlyout>
-                        <Views:NotificationFlyout></Views:NotificationFlyout>
+                        <Flyout>
+                            <Views:NotificationPart></Views:NotificationPart>
+                        </Flyout>
                     </NavigationViewItem.ContextFlyout>
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="UserNavItem" Icon="Contact" Content="User" Tag="user">

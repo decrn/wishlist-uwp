@@ -19,6 +19,37 @@ namespace ClientApp.Models {
         // null in case of JoinRequest
         public List SubjectList { get; set; }
 
+        public string Message {
+            get {
+                switch (Type) {
+                    case NotificationType.JoinRequest:
+                        return SubjectUser.GetFullName() + "(" + SubjectUser.Email + ") wants you to add them to one of your lists";
+                        break;
+                    case NotificationType.ListInvitation:
+                        return SubjectList.OwnerUser.GetFullName() + " invited you to their list '" + SubjectList.Name + "'";
+                        break;
+                    case NotificationType.DeadlineReminder:
+                        return "The deadline for the list '" + SubjectList.Name + "' is coming up soon!";
+                        break;
+                }
+                return "";
+            }
+        }
+
+        public string ActionVisibility {
+            get {
+                if (Type == NotificationType.JoinRequest)
+                    return "Collapsed";
+                return "Visible";
+            }
+        }
+
+        public string FormattedTimestamp {
+            get {
+                return Timestamp.ToString("dd MMMM yyyy | HH:mm");
+            }
+        }
+
         public Notification() {}
 
     }

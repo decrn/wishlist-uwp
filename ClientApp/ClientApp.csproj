@@ -102,11 +102,8 @@
     <Compile Include="Models\Notification.cs" />
     <Compile Include="ViewModels\EditAccountViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
-    <Compile Include="Views\MyUserControl1.xaml.cs">
-      <DependentUpon>MyUserControl1.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\NotificationFlyout.xaml.cs">
-      <DependentUpon>NotificationFlyout.xaml</DependentUpon>
+    <Compile Include="Views\NotificationPart.xaml.cs">
+      <DependentUpon>NotificationPart.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoginRegisterPage.xaml.cs">
       <DependentUpon>LoginRegisterPage.xaml</DependentUpon>
@@ -198,11 +195,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Views\MyUserControl1.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\NotificationFlyout.xaml">
+    <Page Include="Views\NotificationPart.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
