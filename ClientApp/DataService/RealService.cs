@@ -1,20 +1,14 @@
 ﻿using ClientApp.Models;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.Web.Http;
-using Windows.Web.Http.Headers;
+using ClientApp.ViewModels;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using HttpClient = System.Net.Http.HttpClient;
-using ClientApp.ViewModels;
 
 namespace ClientApp.DataService {
 
@@ -67,6 +61,7 @@ namespace ClientApp.DataService {
                 var token = obj["data"]["token"].ToString();
                 if (ValidateJWT(token)) {
                     localSettings.Values["JWTToken"] = token;
+                    JWTToken = token;
                     LoggedInUser = obj["data"]["user"].ToObject<User>();
                 }
             }
