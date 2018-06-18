@@ -1,21 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+﻿using ClientApp.ViewModels;
+using ClientApp.Views;
+using Newtonsoft.Json.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-using ClientApp.DataService;
-using System.Diagnostics;
-using Newtonsoft.Json.Linq;
-using ClientApp.ViewModels;
 
 namespace ClientApp {
 
@@ -93,6 +81,11 @@ namespace ClientApp {
             Login(sender, e);
         }
 
+        private void OpenForgotPassword(object sender, RoutedEventArgs e) {
+            ContentDialog dialog = new ForgotPasswordDialog();
+            dialog.ShowAsync();
+        }
+
         private void OnTextBoxKeyDown(object sender, KeyRoutedEventArgs e) {
             if (e.Key == Windows.System.VirtualKey.Enter) {
                 if (registerMode)
@@ -100,7 +93,6 @@ namespace ClientApp {
                 else
                     Login(null, null);
             }
-                
         }
 
         private void ToggleRegisterMode() {

@@ -17,6 +17,10 @@ namespace ClientApp.DataService {
 
         dynamic ChangePassword(string oldpassword, string newpassword, string confirmpassword);
 
+        dynamic ForgotPassword(string email);
+
+        dynamic ResetPassword(string email, string password, string confirmpassword, string code);
+
         dynamic EditAccount(EditAccountViewModel vm);
 
         void Logout();

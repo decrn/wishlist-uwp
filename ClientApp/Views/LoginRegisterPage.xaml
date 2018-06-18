@@ -26,12 +26,14 @@
 
             <PasswordBox x:Name="ConfirmPasswordBox" Margin="10" PlaceholderText="ConfirmPassword" Width="210" Visibility="Collapsed" KeyDown="OnTextBoxKeyDown"/>
             
+            <TextBlock x:Name="ErrorText" Margin="10" TextWrapping="Wrap" Text="" Visibility="Collapsed" Height="56" Width="210" Foreground="#FFA60000"/>
+            
             <StackPanel Orientation="Horizontal">
                 <Button Content="Login" Margin="10" Click="Login"/>
                 <Button Content="Register" Margin="10" Click="Register"/>
             </StackPanel>
-            
-            <TextBlock x:Name="ErrorText" Margin="10" TextWrapping="Wrap" Text="" Visibility="Collapsed" Height="56" Width="210" Foreground="#FFA60000"/>
+
+            <HyperlinkButton Click="OpenForgotPassword" Margin="10 0">Forgot password?</HyperlinkButton>
 
         </StackPanel>
 

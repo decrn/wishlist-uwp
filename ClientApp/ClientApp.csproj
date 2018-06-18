@@ -102,6 +102,9 @@
     <Compile Include="Models\Notification.cs" />
     <Compile Include="ViewModels\EditAccountViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
+    <Compile Include="Views\ForgotPasswordDialog.xaml.cs">
+      <DependentUpon>ForgotPasswordDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\NotificationPart.xaml.cs">
       <DependentUpon>NotificationPart.xaml</DependentUpon>
     </Compile>
@@ -195,6 +198,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Views\ForgotPasswordDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\NotificationPart.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

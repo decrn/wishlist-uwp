@@ -12,7 +12,7 @@ namespace ClientApp.DataService {
         public static readonly string Name = "Fake Data Service";
         private string JWTToken = "skippinglogin";
 
-        // USER
+        // ACCOUNT
 
         public bool IsLoggedIn() {
             return JWTToken != "";
@@ -40,6 +40,16 @@ namespace ClientApp.DataService {
         public dynamic EditAccount(EditAccountViewModel vm) {
             return JObject.FromObject(new { success = true });
         }
+
+        public dynamic ForgotPassword(string email) {
+            return JObject.FromObject(new { success = true });
+        }
+
+        public dynamic ResetPassword(string email, string password, string confirmpassword, string code) {
+            return JObject.FromObject(new { success = true });
+        }
+
+        // USER
 
         public User GetCurrentUser() {
             return new User() {
@@ -135,5 +145,6 @@ namespace ClientApp.DataService {
 
         public void MarkNotificationAsRead(Notification notification) {
         }
+
     }
 }

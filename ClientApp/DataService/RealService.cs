@@ -109,6 +109,14 @@ namespace ClientApp.DataService {
             throw new NotImplementedException();
         }
 
+        public dynamic ForgotPassword(string email) {
+            throw new NotImplementedException();
+        }
+
+        public dynamic ResetPassword(string email, string password, string confirmpassword, string code) {
+            throw new NotImplementedException();
+        }
+
         public void Logout() {
 
             var httpClient = new HttpClient();
