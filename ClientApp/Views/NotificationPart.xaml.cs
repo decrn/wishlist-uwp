@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 
 namespace ClientApp.Views {
     public sealed partial class NotificationPart : RelativePanel {
@@ -23,15 +24,21 @@ namespace ClientApp.Views {
         }
 
         public void MarkAll(object sender, RoutedEventArgs e) {
-            // TODO: Implement Mark all notifications as read
+            App.dataService.MarkAllNotificationsAsRead();
+            foreach (Notification n in notifications) {
+                n.IsUnread = false;
+            }
         }
 
         public void Mark(object sender, RoutedEventArgs e) {
-            // TODO: Implement Mark notification as read
+            Notification notif = (Notification) ((Button)sender).Tag;
+            App.dataService.MarkNotificationAsRead(notif);
         }
 
-        public void Act(object sender, RoutedEventArgs e) {
-            // TODO: Implement act on notification (open list or perhaps user?)
+
+        public void Act(object sender, TappedRoutedEventArgs e) {
+            // TODO: Implement act on notification (open list or user? in popup)
+            Notification notif = (Notification)((StackPanel)sender).Tag;
         }
     }
 }

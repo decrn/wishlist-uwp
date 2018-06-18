@@ -36,14 +36,6 @@ namespace ClientApp.Models {
             }
         }
 
-        public string ActionVisibility {
-            get {
-                if (Type == NotificationType.JoinRequest)
-                    return "Collapsed";
-                return "Visible";
-            }
-        }
-
         public string FormattedTimestamp {
             get {
                 return Timestamp.ToString("dd MMMM yyyy | HH:mm");

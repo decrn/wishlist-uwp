@@ -15,36 +15,26 @@
                 <SymbolIcon>Accept</SymbolIcon>
             </Button>
         </StackPanel>
-        
+
         <ListView x:Name="Notifications" ItemsSource="{x:Bind notifications}" ScrollViewer.VerticalScrollBarVisibility="Visible" Height="250">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="m:Notification">
-                    <Grid Margin="0 10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="230"/>
-                            <ColumnDefinition Width="100"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
+                    <StackPanel Margin="0 10" Orientation="Horizontal">
+                        <StackPanel Orientation="Vertical" Width="285" Tapped="Act" Tag="{x:Bind}">
+                            
+                            <TextBlock Text="{x:Bind Message}" FontSize="15"
+                               TextWrapping="WrapWholeWords" />
 
-                        <TextBlock Text="{x:Bind Message}" FontSize="15"
-                           Grid.Column="0" Grid.Row="0" TextWrapping="WrapWholeWords" />
-
-                        <TextBlock Text="{x:Bind FormattedTimestamp}" FontSize="10"
-                           Grid.Column="0" Grid.Row="1"/>
-
-                        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.RowSpan="1" HorizontalAlignment="Right">
-                            <Button Click="Mark" Visibility="{Binding GetActionVisibility}" Background="Transparent">
-                                <SymbolIcon>Accept</SymbolIcon>
-                            </Button>
-                            <Button Click="Act" Background="Transparent">
-                                <SymbolIcon>OpenPane</SymbolIcon>
-                            </Button>
+                            <TextBlock Text="{x:Bind FormattedTimestamp}" FontSize="10"
+                               Grid.Column="0" Grid.Row="1"/>
+                            
                         </StackPanel>
 
-                    </Grid>
+                        <Button Click="Mark" Visibility="{x:Bind IsUnread}" Background="Transparent" Tag="{x:Bind}" HorizontalAlignment="Right">
+                            <SymbolIcon>Accept</SymbolIcon>
+                        </Button>
+
+                    </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

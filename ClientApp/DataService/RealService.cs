@@ -294,11 +294,21 @@ namespace ClientApp.DataService {
         }
 
         public void MarkAllNotificationsAsRead() {
-            throw new NotImplementedException();
+
+            var httpClient = new HttpClient();
+            Task task = Task.Run(async () => {
+                var res = await httpClient.PutAsync(new Uri(BaseUri + "Notifications"), null);
+            });
+            task.Wait();
         }
 
         public void MarkNotificationAsRead(Notification notification) {
-            throw new NotImplementedException();
+
+            var httpClient = new HttpClient();
+            Task task = Task.Run(async () => {
+                var res = await httpClient.PutAsync(new Uri(BaseUri + "Notifications/"+notification.NotificationId), null);
+            });
+            task.Wait();
         }
 
         #endregion

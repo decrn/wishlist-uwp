@@ -23,7 +23,19 @@
                 <!--List of icons: https://docs.microsoft.com/en-us/uwp/api/windows.ui.xaml.controls.symbol-->
                 <NavigationViewItem x:Uid="OwnedNavItem" Icon="AllApps" Content="My Lists" Tag="owned" />
                 <NavigationViewItem x:Uid="SubscriptionNavItem" Icon="List" Content="Subscriptions" Tag="subscription"/>
-                <NavigationViewItem x:Uid="NotificationNavItem" Icon="PostUpdate" Content="Notifications" Tag="notification">
+                <NavigationViewItem x:Uid="NotificationNavItem" Icon="PostUpdate"  Tag="notification">
+                    <NavigationViewItem.Content>
+                        <StackPanel Orientation="Horizontal">
+
+                            <TextBlock Text="Notifications" VerticalAlignment="Center" />
+                            
+                            <!-- TODO: Bind badge to actual notification count -->
+                            <RelativePanel Background="{ThemeResource SystemAccentColor}" CornerRadius="10" Margin="10 0 0 0" Padding="7 3">
+                                <TextBlock Text="3" FontSize="12" Foreground="{ThemeResource SystemAltHighColor}" />
+                            </RelativePanel>
+
+                        </StackPanel>
+                    </NavigationViewItem.Content>
                     <NavigationViewItem.ContextFlyout>
                         <Flyout>
                             <Views:NotificationPart></Views:NotificationPart>
