@@ -1,10 +1,6 @@
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Newtonsoft.Json;
-using ClientApp.DataService;
 using ClientApp.ViewModels;
 using System;
+using System.Collections.Generic;
 
 namespace ClientApp.Models {
     public class User {

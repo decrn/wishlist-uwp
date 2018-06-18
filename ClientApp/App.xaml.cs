@@ -1,9 +1,14 @@
 ﻿using ClientApp.DataService;
+using Microsoft.Toolkit.Uwp.Notifications;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Background;
 using Windows.ApplicationModel.Core;
 using Windows.UI;
+using Windows.UI.Notifications;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -28,6 +33,9 @@ namespace ClientApp {
             else if (settingsService.GetThemeSetting() == Theme.Dark)
                 this.RequestedTheme = ApplicationTheme.Dark;
         }
+
+
+        // Lifecycle events
 
         protected override void OnLaunched(LaunchActivatedEventArgs e) {
             Frame rootFrame = Window.Current.Content as Frame;
@@ -84,7 +92,69 @@ namespace ClientApp {
             deferral.Complete();
         }
 
+
+        // Background task
+
+        protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args) {
+            base.OnBackgroundActivated(args);
+            IBackgroundTaskInstance taskInstance = args.TaskInstance;
+            BackgroundTaskDeferral _deferral = taskInstance.GetDeferral();
+
+            //IDataService dataService = new RealService();
+            IDataService dataService = new FakeService();
+            SettingsService settingsService = new SettingsService();
+
+            if (dataService.IsLoggedIn() && settingsService.GetBackgroundTaskEnabledSetting()) {
+
+                List<Models.Notification> notifications = dataService.GetNotifications();
+
+                notifications.FindAll(n => n.IsUnread).ForEach(n => {
+                    Debug.WriteLine(DateTime.Now + " - " + n.Message);
+                    string title = "Wishlist Notification";
+                    switch (n.Type) {
+                        case NotificationType.DeadlineReminder:
+                            title = "Wishlist Deadline Reminder";
+                            break;
+                        case NotificationType.JoinRequest:
+                            title = "Join Wishlist Request";
+                            break;
+                        case NotificationType.ListInvitation:
+                            title = "Wishlist Invitation";
+                            break;
+                    }
+                    ShowNotification(title, n.Message);
+                });
+
+            }
+
+            _deferral.Complete();
+
+        }
+
+
         // Methods
+
+        public static void ShowNotification(string title, string message) {
+            ToastContent toastContent = new ToastContent() {
+                Visual = new ToastVisual() {
+                    BindingGeneric = new ToastBindingGeneric() {
+                        Children = {
+                            new AdaptiveText() {
+                                Text = title
+                            },
+                            new AdaptiveText() {
+                                Text = message,
+                                HintMinLines = 2
+                            }
+                        }
+                    }
+                }
+            };
+
+            var toast = new ToastNotification(toastContent.GetXml());
+            toast.Group = "wishListNotifications";
+            ToastNotificationManager.CreateToastNotifier().Show(toast);
+        }
 
         public static void GoToLogin() {
             Frame rootFrame = Window.Current.Content as Frame;

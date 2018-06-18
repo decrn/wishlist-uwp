@@ -8,6 +8,13 @@ namespace ClientApp.DataService {
         private static Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
 
         public SettingsService() {
+
+            var FirstBoot = localSettings.Values["FirstBoot"];
+            if (FirstBoot == null) {
+                RegisterBackgroundTaskAsync();
+                localSettings.Values["FirstBoot"] = false;
+            }
+
             _ThemeSetting = ParseEnum<Theme>(localSettings.Values["ThemeSetting"]);
 
             foreach (var task in BackgroundTaskRegistration.AllTasks) {
@@ -39,7 +46,7 @@ namespace ClientApp.DataService {
             return _BackgroundTaskEnabled;
         }
 
-        public async void SetBackgroundTaskEnabledSetting(bool value) {
+        public void SetBackgroundTaskEnabledSetting(bool value) {
             _BackgroundTaskEnabled = value;
 
             if (value) {
@@ -53,15 +60,7 @@ namespace ClientApp.DataService {
                 }
 
                 if (!taskRegistered) {
-                    var builder = new BackgroundTaskBuilder();
-                    builder.Name = "NotificationBackgroundTask";
-                    builder.TaskEntryPoint = "ClientApp.NotificationBackgroundTask";
-                    builder.SetTrigger(new TimeTrigger(60, false));
-                    builder.AddCondition(new SystemCondition(SystemConditionType.InternetAvailable));
-                    var requestStatus = await Windows.ApplicationModel.Background.BackgroundExecutionManager.RequestAccessAsync();
-                    if (requestStatus != BackgroundAccessStatus.AlwaysAllowed) {
-                        BackgroundTaskRegistration task = builder.Register();
-                    }
+                    RegisterBackgroundTaskAsync();
                 }
             } else {
                 // Unregister backgroundtask
@@ -75,6 +74,17 @@ namespace ClientApp.DataService {
 
 
         // Helpers
+
+        public static async void RegisterBackgroundTaskAsync() {
+            var builder = new BackgroundTaskBuilder();
+            builder.Name = "NotificationBackgroundTask";
+            builder.SetTrigger(new TimeTrigger(60, false));
+            builder.AddCondition(new SystemCondition(SystemConditionType.InternetAvailable));
+            var requestStatus = await BackgroundExecutionManager.RequestAccessAsync();
+            if (requestStatus != BackgroundAccessStatus.AlwaysAllowed) {
+                BackgroundTaskRegistration task = builder.Register();
+            }
+        }
 
         public static T ParseEnum<T>(object value) {
             // return first enum value if value is null

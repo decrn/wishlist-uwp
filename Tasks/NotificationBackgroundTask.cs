@@ -1,11 +1,10 @@
-﻿using ClientApp.DataService;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Windows.ApplicationModel.Background;
 using Windows.UI.Notifications;
 
-namespace ClientApp {
+namespace Tasks {
 
     public sealed class NotificationBackgroundTask : IBackgroundTask {
 

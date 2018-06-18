@@ -23,7 +23,7 @@ namespace ClientApp.Models {
             get {
                 switch (Type) {
                     case NotificationType.JoinRequest:
-                        return SubjectUser.GetFullName() + "(" + SubjectUser.Email + ") wants you to add them to one of your lists";
+                        return SubjectUser.GetFullName() + " (" + SubjectUser.Email + ") wants you to add them to one of your lists";
                         break;
                     case NotificationType.ListInvitation:
                         return SubjectList.OwnerUser.GetFullName() + " invited you to their list '" + SubjectList.Name + "'";

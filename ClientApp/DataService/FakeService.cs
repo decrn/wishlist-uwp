@@ -10,7 +10,7 @@ namespace ClientApp.DataService {
     public class FakeService : IDataService {
 
         public static readonly string Name = "Fake Data Service";
-        private string JWTToken = "";
+        private string JWTToken = "skippinglogin";
 
         // USER
 
@@ -123,10 +123,10 @@ namespace ClientApp.DataService {
         public List<Notification> GetNotifications() {
             return new List<Notification> {
                 new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.DeadlineReminder, SubjectList = GetList(1), NotificationId = 0, IsUnread=true },
-                new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.JoinRequest, SubjectUser = GetUser(""), NotificationId = 1 },
-                new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.ListInvitation, SubjectList = GetList(2), NotificationId = 2 },
+                new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.JoinRequest, SubjectUser = GetUser(""), NotificationId = 1, IsUnread=true },
+                new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.ListInvitation, SubjectList = GetList(2), NotificationId = 2, IsUnread=false },
                 new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.ListInvitation, SubjectList = GetList(1), NotificationId = 3, IsUnread=true },
-                new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.ListInvitation, SubjectList = GetList(0), NotificationId = 4 }
+                new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.ListInvitation, SubjectList = GetList(0), NotificationId = 4, IsUnread=false }
             };
         }
 
