@@ -40,9 +40,16 @@ namespace ClientApp {
             if (args.IsSettingsInvoked) {
                 ContentFrame.Navigate(typeof(SettingsPage));
             } else {
-                // find NavigationViewItem with Content that equals InvokedItem
-                var item = sender.MenuItems.OfType<NavigationViewItem>().First(x => (string)x.Content == (string)args.InvokedItem);
-                NavView_Navigate(item as NavigationViewItem);
+                // find NavigationViewItem with Content that equals InvokedItem or in case content isnt a string, uses tag of parent
+                NavigationViewItem item;
+                if (args.InvokedItem.GetType() != typeof(string)) {
+                    string tag = (string) ((FrameworkElement)((Panel) args.InvokedItem).Parent).Tag;
+                    item = sender.MenuItems.OfType<NavigationViewItem>().First(x => (string)x.Tag == tag);
+                } else {
+                    item = sender.MenuItems.OfType<NavigationViewItem>().First(x => (string)x.Content == (string)args.InvokedItem);
+                }
+
+                NavView_Navigate(item);
             }
         }
 
