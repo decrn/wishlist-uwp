@@ -111,12 +111,17 @@
 
         <!--Left-->
 
-        <TextBlock
-            Text="Created lists"
-            Margin="12 8 8 8"
-            Padding="0 30 0 0"
-            Style="{ThemeResource TitleTextBlockStyle}" 
-            Grid.Column="0" Grid.Row="0" />
+        <StackPanel Orientation="Horizontal" Margin="12 8 8 8"
+            Padding="0 30 0 0" Grid.Column="0" Grid.Row="0">
+            <TextBlock
+                Text="Created lists"
+                Style="{ThemeResource TitleTextBlockStyle}" 
+                VerticalAlignment="Center"/>
+
+            <Button Click="NewList" Background="Transparent" VerticalAlignment="Center">
+                <SymbolIcon>Add</SymbolIcon>
+            </Button>
+        </StackPanel>
 
         <ListView
             x:Name="MasterListView"

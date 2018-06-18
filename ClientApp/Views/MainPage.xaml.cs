@@ -44,9 +44,9 @@ namespace ClientApp {
                 NavigationViewItem item;
                 if (args.InvokedItem.GetType() != typeof(string)) {
                     string tag = (string) ((FrameworkElement)((Panel) args.InvokedItem).Parent).Tag;
-                    item = sender.MenuItems.OfType<NavigationViewItem>().First(x => (string)x.Tag == tag);
+                    item = sender.MenuItems.OfType<NavigationViewItem>().First(x => x.Tag != null && (string)x.Tag == tag);
                 } else {
-                    item = sender.MenuItems.OfType<NavigationViewItem>().First(x => (string)x.Content == (string)args.InvokedItem);
+                    item = sender.MenuItems.OfType<NavigationViewItem>().First(x => x.Content.GetType() == typeof(string) && (string)x.Content == (string)args.InvokedItem);
                 }
 
                 NavView_Navigate(item);

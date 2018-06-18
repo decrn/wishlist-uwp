@@ -23,7 +23,7 @@
                 <!--List of icons: https://docs.microsoft.com/en-us/uwp/api/windows.ui.xaml.controls.symbol-->
                 <NavigationViewItem x:Uid="OwnedNavItem" Icon="AllApps" Content="My Lists" Tag="owned" />
                 <NavigationViewItem x:Uid="SubscriptionNavItem" Icon="List" Content="Subscriptions" Tag="subscription"/>
-                <NavigationViewItem x:Uid="NotificationNavItem" Icon="PostUpdate"  Tag="notification">
+                <NavigationViewItem x:Uid="NotificationNavItem" Icon="PostUpdate" Tag="notification">
                     <NavigationViewItem.Content>
                         <StackPanel Orientation="Horizontal">
 
