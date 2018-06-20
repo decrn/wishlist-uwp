@@ -43,6 +43,8 @@ namespace ServerApp.Controllers {
             _context = context;
         }
 
+        #region Generic account routes
+
         // POST: api/Account/Login
         [HttpPost]
         [AllowAnonymous]
@@ -100,6 +102,10 @@ namespace ServerApp.Controllers {
             return Ok();
         }
 
+        #endregion
+
+        #region Edit account
+
         // POST: api/Account/Edit
         [Authorize]
         [HttpPost]
@@ -156,6 +162,10 @@ namespace ServerApp.Controllers {
             return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => new { message = e.ErrorMessage }) });
         }
 
+        #endregion
+
+        #region Forgot password
+
         [HttpPost]
         [AllowAnonymous]
         public async Task<object> ForgotPassword(ForgotPasswordViewModel model) {
@@ -206,9 +216,9 @@ namespace ServerApp.Controllers {
             return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => new { message = e.ErrorMessage }) });
         }
 
+        #endregion
 
-
-        // Helpers
+        #region Helpers
 
         private async Task<object> GenerateJwtToken(IdentityUser user) {
             var claims = new List<Claim>
@@ -245,6 +255,8 @@ namespace ServerApp.Controllers {
 
             return sBuilder.ToString();
         }
+
+        #endregion
 
     }
 }
