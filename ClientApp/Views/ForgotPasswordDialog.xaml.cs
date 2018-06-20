@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using ClientApp.ViewModels;
+using Newtonsoft.Json.Linq;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -45,7 +46,14 @@ namespace ClientApp.Views {
         private void Reset(object sender, RoutedEventArgs e) {
             ErrorText.Visibility = Visibility.Collapsed;
 
-            JObject result = App.dataService.ResetPassword(EmailBox.Text, PasswordBox.Password, ConfirmPasswordBox.Password, CodeBox.Text);
+            ResetPasswordViewModel vm = new ResetPasswordViewModel() {
+                Email = EmailBox.Text,
+                Password = PasswordBox.Password,
+                ConfirmPassword = ConfirmPasswordBox.Password,
+                Code = CodeBox.Text
+            };
+
+            JObject result = App.dataService.ResetPassword(vm);
 
             if (result["success"].ToString() == "True") {
                 Hide();

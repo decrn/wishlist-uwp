@@ -45,7 +45,7 @@ namespace ClientApp.DataService {
             return JObject.FromObject(new { success = true });
         }
 
-        public dynamic ResetPassword(string email, string password, string confirmpassword, string code) {
+        public dynamic ResetPassword(ResetPasswordViewModel vm) {
             return JObject.FromObject(new { success = true });
         }
 

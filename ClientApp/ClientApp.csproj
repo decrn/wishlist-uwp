@@ -102,6 +102,7 @@
     <Compile Include="Models\Notification.cs" />
     <Compile Include="ViewModels\EditAccountViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
+    <Compile Include="ViewModels\ResetPasswordViewModel.cs" />
     <Compile Include="Views\ForgotPasswordDialog.xaml.cs">
       <DependentUpon>ForgotPasswordDialog.xaml</DependentUpon>
     </Compile>

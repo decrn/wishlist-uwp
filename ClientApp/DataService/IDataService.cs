@@ -19,7 +19,7 @@ namespace ClientApp.DataService {
 
         dynamic ForgotPassword(string email);
 
-        dynamic ResetPassword(string email, string password, string confirmpassword, string code);
+        dynamic ResetPassword(ResetPasswordViewModel vm);
 
         dynamic EditAccount(EditAccountViewModel vm);
 

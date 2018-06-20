@@ -110,11 +110,42 @@ namespace ClientApp.DataService {
         }
 
         public dynamic ForgotPassword(string email) {
-            throw new NotImplementedException();
+            var httpClient = new HttpClient();
+
+            var content = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string, string>("Email", email)
+            });
+
+            var response = "";
+            Task task = Task.Run(async () => {
+                var res = await httpClient.PostAsync(new Uri(BaseUri + "Account/ForgotPassword"), content);
+                response = await res.Content.ReadAsStringAsync();
+            });
+            task.Wait();
+
+            JObject obj = JObject.Parse(response);
+            return obj;
         }
 
-        public dynamic ResetPassword(string email, string password, string confirmpassword, string code) {
-            throw new NotImplementedException();
+        public dynamic ResetPassword(ResetPasswordViewModel vm) {
+            var httpClient = new HttpClient();
+
+            var content = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string, string>("Email", vm.Email),
+                new KeyValuePair<string, string>("Password", vm.Password),
+                new KeyValuePair<string, string>("ConfirmPassword", vm.ConfirmPassword),
+                new KeyValuePair<string, string>("Code", vm.Code),
+            });
+
+            var response = "";
+            Task task = Task.Run(async () => {
+                var res = await httpClient.PostAsync(new Uri(BaseUri + "Account/ResetPassword"), content);
+                response = await res.Content.ReadAsStringAsync();
+            });
+            task.Wait();
+
+            JObject obj = JObject.Parse(response);
+            return obj;
         }
 
         public void Logout() {
