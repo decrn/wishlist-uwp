@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ServerApp.ViewModels {
+namespace ClientApp.ViewModels {
     public class LoginViewModel {
         [Required(ErrorMessage = "Please fill in your email address.")]
         [DataType(DataType.EmailAddress)]

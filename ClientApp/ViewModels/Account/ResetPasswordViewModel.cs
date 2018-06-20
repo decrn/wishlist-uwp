@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ServerApp.ViewModels {
+namespace ClientApp.ViewModels {
     public class ResetPasswordViewModel {
         [Required(ErrorMessage = "Please fill in your email address.")]
         [EmailAddress(ErrorMessage = "Email address is not valid.")]

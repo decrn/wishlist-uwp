@@ -57,7 +57,7 @@ namespace ServerApp.Controllers {
                     return Json(new { success = true, data = new { user = user, token = await GenerateJwtToken(user) } });
                 }
 
-                return Json(new { success = false, errors = new[] { new { message = "Not logged in", data = result } } });
+                return Json(new { success = false, errors = new[] { new { message = "Wrong credentials.", data = result } } });
             }
 
             return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => new { message = e.ErrorMessage }) });
@@ -68,13 +68,6 @@ namespace ServerApp.Controllers {
         [AllowAnonymous]
         public async Task<object> Register(RegisterViewModel model) {
             if (ModelState.IsValid) {
-
-                try {
-                    var addr = new System.Net.Mail.MailAddress(model.Email);
-                    if (addr.Address != model.Email) throw new Exception();
-                } catch {
-                    return Json(new { success = false, errors = new[] { new { message = "Not a valid email address" } } });
-                }
 
                 User user = new User {
                     FirstName = model.FirstName,
@@ -115,7 +108,7 @@ namespace ServerApp.Controllers {
 
                 var user = await _userManager.GetUserAsync(User);
                 if (user == null)
-                    return Json(new { success = false, errors = new[] { new { message = "Account doesn't exist" } } });
+                    return Json(new { success = false, errors = new[] { new { message = "Account doesn't exist." } } });
 
                 if (model.Email != user.UserName) {
                     var setUserNameResult = await _userManager.SetUserNameAsync(user, model.Email);
@@ -149,7 +142,7 @@ namespace ServerApp.Controllers {
             if (ModelState.IsValid) {
                 var user = await _userManager.GetUserAsync(User);
                 if (user == null)
-                    return Json(new { success = false, errors = new[] { new { message = "Account doesn't exist" } } });
+                    return Json(new { success = false, errors = new[] { new { message = "Account doesn't exist." } } });
 
                 var changePasswordResult = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
                 if (!changePasswordResult.Succeeded) {
@@ -172,14 +165,14 @@ namespace ServerApp.Controllers {
             if (ModelState.IsValid) {
                 var user = await _userManager.FindByEmailAsync(model.Email);
                 if (user == null) {
-                    return Json(new { success = false, errors = new[] { new { message = "Account doesn't exist" } } });
+                    return Json(new { success = false, errors = new[] { new { message = "Account doesn't exist." } } });
                 }
 
                 // For more information on how to enable account confirmation and password reset please
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var hash = GenerateMD5(code);
                 await _userManager.AddClaimAsync(user, new Claim(hash, code));
-                await _emailSender.SendEmailAsync(model.Email, "Reset Password", 
+                await _emailSender.SendEmailAsync(model.Email, "Reset password of Wishlist app", 
                    "Please enter this code: <b> "+hash+" </b> into the application along with a new password.");
 
                 return Json(new { success = true });
@@ -195,12 +188,12 @@ namespace ServerApp.Controllers {
                 
                 var user = await _userManager.FindByEmailAsync(model.Email);
                 if (user == null) {
-                    return Json(new { success = false, errors = new[] { new { message = "Account doesn't exist" } } });
+                    return Json(new { success = false, errors = new[] { new { message = "Account doesn't exist." } } });
                 }
 
                 Claim claim = (await _userManager.GetClaimsAsync(user)).SingleOrDefault(c => c.Type == model.Code.Trim());
                 if (claim == null) {
-                    return Json(new { success = false, errors = new[] { new { message = "Wrong code" } } });
+                    return Json(new { success = false, errors = new[] { new { message = "Wrong code." } } });
                 }
 
                 var result = await _userManager.ResetPasswordAsync(user, claim.Value, model.Password);

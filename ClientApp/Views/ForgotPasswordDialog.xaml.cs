@@ -18,7 +18,7 @@ namespace ClientApp.Views {
         private void Request(object sender, RoutedEventArgs e) {
 
             ErrorText.Visibility = Visibility.Collapsed;
-            JObject result = App.dataService.ForgotPassword(EmailBox.Text);
+            JObject result = App.dataService.ForgotPassword(new ForgotPasswordViewModel() { Email = EmailBox.Text });
 
             if (result["success"].ToString() == "True") {
 

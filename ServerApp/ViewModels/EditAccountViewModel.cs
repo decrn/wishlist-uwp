@@ -1,23 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ServerApp.ViewModels {
     public class EditAccountViewModel {
 
-        [Required]
-        [MinLength(2)]
+        [Required(ErrorMessage = "Please fill in your first name.")]
         public string FirstName { get; set; }
 
-        [Required]
-        [MinLength(2)]
+        [Required(ErrorMessage = "Please fill in your last name.")]
         public string LastName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please fill in your email address.")]
         [DataType(DataType.EmailAddress)]
-        [EmailAddress]
+        [EmailAddress(ErrorMessage="Email address is not valid.")]
         public string Email { get; set; }
 
     }

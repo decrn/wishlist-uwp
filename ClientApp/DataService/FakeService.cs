@@ -18,7 +18,7 @@ namespace ClientApp.DataService {
             return JWTToken != "";
         }        
 
-        public dynamic Login(string email, string password) {
+        public dynamic Login(LoginViewModel vm) {
             JWTToken = "temp";
             return JObject.FromObject( new { success = true, data = new {user = GetCurrentUser(), token = JWTToken} });
         }
@@ -33,7 +33,7 @@ namespace ClientApp.DataService {
             JWTToken = "";
         }
 
-        public dynamic ChangePassword(string oldpassword, string newpassword, string confirmpassword) {
+        public dynamic ChangePassword(ChangePasswordViewModel vm) {
             return JObject.FromObject(new { success = true });
         }
 
@@ -41,7 +41,7 @@ namespace ClientApp.DataService {
             return JObject.FromObject(new { success = true });
         }
 
-        public dynamic ForgotPassword(string email) {
+        public dynamic ForgotPassword(ForgotPasswordViewModel vm) {
             return JObject.FromObject(new { success = true });
         }
 

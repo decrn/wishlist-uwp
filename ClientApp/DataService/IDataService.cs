@@ -11,13 +11,13 @@ namespace ClientApp.DataService {
 
         bool IsLoggedIn();
 
-        dynamic Login(string email, string password);
+        dynamic Login(LoginViewModel vm);
 
         dynamic Register(RegisterViewModel vm);
 
-        dynamic ChangePassword(string oldpassword, string newpassword, string confirmpassword);
+        dynamic ChangePassword(ChangePasswordViewModel vm);
 
-        dynamic ForgotPassword(string email);
+        dynamic ForgotPassword(ForgotPasswordViewModel vm);
 
         dynamic ResetPassword(ResetPasswordViewModel vm);
 

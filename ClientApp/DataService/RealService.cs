@@ -40,12 +40,12 @@ namespace ClientApp.DataService {
             return JWTToken != "";
         }
 
-        public dynamic Login(string email, string password) {
+        public dynamic Login(LoginViewModel vm) {
 
             var httpClient = new HttpClient();
             var content = new FormUrlEncodedContent(new[] {
-                new KeyValuePair<string, string>("Email", email),
-                new KeyValuePair<string, string>("Password", password),
+                new KeyValuePair<string, string>("Email", vm.Email),
+                new KeyValuePair<string, string>("Password", vm.Password),
             });
 
             var response = "";
@@ -101,7 +101,7 @@ namespace ClientApp.DataService {
             return obj;
         }
 
-        public dynamic ChangePassword(string oldpassword, string newpassword, string confirmpassword) {
+        public dynamic ChangePassword(ChangePasswordViewModel vm) {
             throw new NotImplementedException();
         }
 
@@ -109,11 +109,11 @@ namespace ClientApp.DataService {
             throw new NotImplementedException();
         }
 
-        public dynamic ForgotPassword(string email) {
+        public dynamic ForgotPassword(ForgotPasswordViewModel vm) {
             var httpClient = new HttpClient();
 
             var content = new FormUrlEncodedContent(new[] {
-                new KeyValuePair<string, string>("Email", email)
+                new KeyValuePair<string, string>("Email", vm.Email)
             });
 
             var response = "";

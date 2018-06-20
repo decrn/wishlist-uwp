@@ -1,6 +1,7 @@
 ﻿using ClientApp.ViewModels;
 using ClientApp.Views;
 using Newtonsoft.Json.Linq;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -23,9 +24,12 @@ namespace ClientApp {
 
                 ErrorText.Visibility = Visibility.Collapsed;
 
-                string email = EmailBox.Text;
-                string password = PasswordBox.Password;
-                JObject result = App.dataService.Login(email, password);
+                LoginViewModel vm = new LoginViewModel() {
+                    Email = EmailBox.Text,
+                    Password = PasswordBox.Password
+                };
+
+                JObject result = App.dataService.Login(vm);
 
                 if (result["success"].ToString() == "True") {
                     this.Frame.Navigate(typeof(MainPage));
@@ -73,12 +77,14 @@ namespace ClientApp {
 
         private void LoginGoogle(object sender, RoutedEventArgs e) {
             // TODO: Implement Google Login
-            Login(sender, e);
+            var messageDialog = new MessageDialog("This functioanlity hasn't been added yet.");
+            messageDialog.ShowAsync();
         }
 
         private void LoginFacebook(object sender, RoutedEventArgs e) {
             // TODO: Implement Facebook Login
-            Login(sender, e);
+            var messageDialog = new MessageDialog("This functioanlity hasn't been added yet.");
+            messageDialog.ShowAsync();
         }
 
         private void OpenForgotPassword(object sender, RoutedEventArgs e) {

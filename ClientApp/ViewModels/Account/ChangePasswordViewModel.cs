@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ServerApp.ViewModels {
+namespace ClientApp.ViewModels {
     public class ChangePasswordViewModel {
 
         [Required(ErrorMessage = "Please fill in your old password.")]

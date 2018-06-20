@@ -3,14 +3,15 @@
 namespace ClientApp.ViewModels {
     public class EditAccountViewModel {
 
-        [Required]
+        [Required(ErrorMessage = "Please fill in your first name.")]
         public string FirstName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please fill in your last name.")]
         public string LastName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please fill in your email address.")]
         [DataType(DataType.EmailAddress)]
+        [EmailAddress(ErrorMessage = "Email address is not valid.")]
         public string Email { get; set; }
 
     }

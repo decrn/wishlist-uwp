@@ -24,8 +24,8 @@ namespace ClientApp {
         public App() {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
-            //dataService = new RealService();
-            dataService = new FakeService();
+            dataService = new RealService();
+            //dataService = new FakeService();
             settingsService = new SettingsService();
 
             if (settingsService.GetThemeSetting() == Theme.Light)
