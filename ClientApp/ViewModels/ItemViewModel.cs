@@ -1,10 +1,5 @@
 ﻿using ClientApp.Models;
 using ClientApp.ViewModels.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ClientApp.ViewModels {
     public class ItemViewModel : NotificationBase<Item> {
