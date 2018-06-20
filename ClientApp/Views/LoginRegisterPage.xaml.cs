@@ -96,11 +96,12 @@ namespace ClientApp {
         }
 
         private void ToggleRegisterMode() {
-            FirstNameBox.Visibility = registerMode ? Visibility.Collapsed : Visibility.Visible;
-            LastNameBox.Visibility = registerMode ? Visibility.Collapsed : Visibility.Visible;
-            ConfirmPasswordBox.Visibility = registerMode ? Visibility.Collapsed : Visibility.Visible;
-            ErrorText.Visibility = Visibility.Collapsed;
             registerMode = !registerMode;
+            FirstNameBox.Visibility = registerMode ? Visibility.Visible : Visibility.Collapsed;
+            LastNameBox.Visibility = registerMode ? Visibility.Visible : Visibility.Collapsed;
+            ConfirmPasswordBox.Visibility = registerMode ? Visibility.Visible : Visibility.Collapsed;
+            LoginBackIcon.Visibility = registerMode ? Visibility.Visible : Visibility.Collapsed;
+            ErrorText.Visibility = Visibility.Collapsed;
         }
 
     }
