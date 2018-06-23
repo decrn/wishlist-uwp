@@ -22,35 +22,43 @@
             <NavigationView.MenuItems>
                 <!--List of icons: https://docs.microsoft.com/en-us/uwp/api/windows.ui.xaml.controls.symbol-->
                 <NavigationViewItem x:Uid="OwnedNavItem" Icon="AllApps" Content="My Lists" Tag="owned" />
-                <NavigationViewItem x:Uid="SubscriptionNavItem" Icon="List" Content="Subscriptions" Tag="subscription"/>
-                <NavigationViewItem x:Uid="NotificationNavItem" Icon="PostUpdate" Tag="notification">
-                    <NavigationViewItem.Content>
-                        <StackPanel Orientation="Horizontal">
-
-                            <TextBlock Text="Notifications" VerticalAlignment="Center" />
-                            
-                            <!-- TODO: Bind badge to actual notification count -->
-                            <RelativePanel Background="{ThemeResource SystemAccentColor}" CornerRadius="10" Margin="10 0 0 0" Padding="7 3">
-                                <TextBlock Text="3" FontSize="12" Foreground="{ThemeResource SystemAltHighColor}" />
-                            </RelativePanel>
-
-                        </StackPanel>
-                    </NavigationViewItem.Content>
-                    <NavigationViewItem.ContextFlyout>
-                        <Flyout>
-                            <Views:NotificationPart></Views:NotificationPart>
-                        </Flyout>
-                    </NavigationViewItem.ContextFlyout>
-                </NavigationViewItem>
-                <NavigationViewItem x:Uid="UserNavItem" Icon="Contact" Content="User" Tag="user">
-                    <NavigationViewItem.ContextFlyout>
-                        <MenuFlyout>
-                            <MenuFlyoutItem Text="Edit details" Icon="Edit" Tag="account" Click="EditAccount" />
-                            <MenuFlyoutItem Text="Logout" Icon="Permissions" Tag="logout" Click="Logout" />
-                        </MenuFlyout>
-                    </NavigationViewItem.ContextFlyout>
-                </NavigationViewItem>
+                <NavigationViewItem x:Uid="SubscriptionNavItem" Icon="Bullets" Content="Subscriptions" Tag="subscription"/>
             </NavigationView.MenuItems>
+
+            <NavigationView.PaneFooter>
+                <StackPanel Orientation="Vertical">
+
+                    <NavigationViewItem x:Uid="NotificationNavItem" Icon="PostUpdate" Tapped="OpenNotificationsFlyout">
+                        <NavigationViewItem.Content>
+                            <StackPanel Orientation="Horizontal">
+
+                                <TextBlock Text="Notifications" VerticalAlignment="Center" />
+
+                                <!-- TODO: Bind badge to actual notification count -->
+                                <RelativePanel Background="{ThemeResource SystemAccentColor}" CornerRadius="10" Margin="10 0 0 0" Padding="7 3">
+                                    <TextBlock Text="3" FontSize="12" Foreground="{ThemeResource SystemAltHighColor}" />
+                                </RelativePanel>
+
+                            </StackPanel>
+                        </NavigationViewItem.Content>
+                        <NavigationViewItem.ContextFlyout>
+                            <Flyout>
+                                <Views:NotificationPart></Views:NotificationPart>
+                            </Flyout>
+                        </NavigationViewItem.ContextFlyout>
+                    </NavigationViewItem>
+
+                    <NavigationViewItem x:Uid="UserNavItem" Icon="Contact" Content="User" Tapped="OpenUserMenu">
+                        <NavigationViewItem.ContextFlyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem Text="Edit details" Icon="Edit" Tag="account" Click="EditAccount" />
+                                <MenuFlyoutItem Text="Logout" Icon="Permissions" Tag="logout" Click="Logout" />
+                            </MenuFlyout>
+                        </NavigationViewItem.ContextFlyout>
+                    </NavigationViewItem>
+                    
+                </StackPanel>
+            </NavigationView.PaneFooter>
 
 
             <!--Right (negative top margin to get rid of navigationview header)-->

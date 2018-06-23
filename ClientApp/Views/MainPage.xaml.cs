@@ -32,7 +32,7 @@ namespace ClientApp {
 
         }
 
-        public void setHeader(object header) {
+        public void SetHeader(object header) {
             NavView.Header = header;
         }
 
@@ -61,16 +61,6 @@ namespace ClientApp {
 
                 case "subscription":
                     ContentFrame.Navigate(typeof(SubscriptionMasterDetail));
-                    break;
-
-                case "user":
-                    item.ContextFlyout.Placement = FlyoutPlacementMode.Right;
-                    item.ContextFlyout.ShowAt(item);
-                    break;
-
-                case "notification":
-                    item.ContextFlyout.Placement = FlyoutPlacementMode.Right;
-                    item.ContextFlyout.ShowAt(item);
                     break;
             }
         }
@@ -102,6 +92,18 @@ namespace ClientApp {
                     }
                 }
             }
+        }
+
+        private void OpenUserMenu(object sender, RoutedEventArgs e) {
+            NavigationViewItem item = sender as NavigationViewItem;
+            item.ContextFlyout.Placement = FlyoutPlacementMode.Right;
+            item.ContextFlyout.ShowAt(item);
+        }
+
+        private void OpenNotificationsFlyout(object sender, RoutedEventArgs e) {
+            NavigationViewItem item = sender as NavigationViewItem;
+            item.ContextFlyout.Placement = FlyoutPlacementMode.Top;
+            item.ContextFlyout.ShowAt(item);
         }
 
         private async void EditAccount(object sender, RoutedEventArgs e) {

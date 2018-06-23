@@ -5,7 +5,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 
 namespace ClientApp.Views {
-    public sealed partial class NotificationPart : RelativePanel {
+    public sealed partial class NotificationPart : StackPanel {
 
         private ObservableCollection<Notification> notifications = new ObservableCollection<Notification>();
 
