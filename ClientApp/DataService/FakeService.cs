@@ -52,6 +52,7 @@ namespace ClientApp.DataService {
         // USER
 
         public User GetCurrentUser() {
+            Debug.WriteLine("GET currentuser");
             return new User() {
                 FirstName = "Peter",
                 LastName = "Petersson",
@@ -61,6 +62,7 @@ namespace ClientApp.DataService {
         }
 
         public User GetUser(string id) {
+            Debug.WriteLine("GET user "+id);
             return new User() {
                 FirstName = "Jan",
                 LastName = "Janssens",
@@ -70,6 +72,7 @@ namespace ClientApp.DataService {
         }
 
         public List<List> GetOwnedLists() {
+            Debug.WriteLine("GET ownedlists");
             return new List<List> {
                 new List { ListId=0, Name="Verjaardag Jan", OwnerUser=GetCurrentUser(), Description="Voor op het feestje af te geven", Deadline=new DateTime(2018,12,31) },
                 new List { ListId=1, Name="Babyborrel Charlotte", OwnerUser=GetCurrentUser(), Description="Een jonge spruit!", Deadline=new DateTime(2019,05,12) },
@@ -78,6 +81,7 @@ namespace ClientApp.DataService {
         }
 
         public List<List> GetSubscribedLists() {
+            Debug.WriteLine("GET subscribedlists");
             return new List<List> {
                 new List { ListId=0, Name="Verjaardag Jan", OwnerUser=GetUser(""), Description="Voor op het feestje af te geven", Deadline=new DateTime(2018,12,31) },
                 new List { ListId=1, Name="Babyborrel Charlotte", OwnerUser=GetUser(""), Description="Een jonge spruit!", Deadline=new DateTime(2019,05,12) },
@@ -86,15 +90,18 @@ namespace ClientApp.DataService {
         }
 
         public List GetList(int id) {
-                List list = new List { ListId = 0, Name = "Verjaardag Jan", OwnerUser = GetUser(""), Description = "Voor op het feestje af te geven", Deadline = new DateTime(2018, 12, 31), SubscribedUsers = new List<User> { GetUser(""), GetCurrentUser() } };
+            Debug.WriteLine("GET list "+id);
+            List list = new List { ListId = 0, Name = "Verjaardag Jan", OwnerUser = GetUser(""), Description = "Voor op het feestje af te geven", Deadline = new DateTime(2018, 12, 31), SubscribedUsers = new List<User> { GetUser(""), GetCurrentUser() } };
             return list;
         }
 
         public dynamic NewList(List list) {
+            Debug.WriteLine("POST newlist");
             return JObject.FromObject(new { success = true });
         }
 
         public List<Item> GetListItems(List list) {
+            Debug.WriteLine("GET listitems");
             return new List<Item> {
                 new Item { ItemId=0, ProductName="Playstation",  CheckedByUser=GetCurrentUser() },
                 new Item { ItemId=1, ProductName="Tent", ItemPriceUsd=19.99, CheckedByUser=GetUser("") },
@@ -104,33 +111,42 @@ namespace ClientApp.DataService {
         }
 
         public dynamic EditList(List list) {
+            Debug.WriteLine("POST editlist");
             return JObject.FromObject(new { success = true });
         }
 
         public void SendInvitations(List list) {
+            Debug.WriteLine("POST sendinvitations");
         }
 
         public void DeleteList(List list) {
+            Debug.WriteLine("DELETE list "+list.ListId);
         }
 
         public void MarkItem(Item item) {
+            Debug.WriteLine("POST markitem "+item.ItemId);
         }
 
         public void UnMarkItem(Item item) {
+            Debug.WriteLine("POST unmarkitem " + item.ItemId);
         }
 
         public dynamic NewItem(Item item) {
+            Debug.WriteLine("POST newitem");
             return JObject.FromObject(new { success = true });
         }
 
         public dynamic EditItem(Item item) {
+            Debug.WriteLine("POST edititem "+item.ItemId);
             return JObject.FromObject(new { success = true });
         }
 
         public void DeleteItem(Item item) {
+            Debug.WriteLine("DELETE item " + item.ItemId);
         }
 
         public List<Notification> GetNotifications() {
+            Debug.WriteLine("GET notifications");
             return new List<Notification> {
                 new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.DeadlineReminder, SubjectList = GetList(1), NotificationId = 0, IsUnread=true },
                 new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.JoinRequest, SubjectUser = GetUser(""), NotificationId = 1, IsUnread=true },
@@ -141,9 +157,11 @@ namespace ClientApp.DataService {
         }
 
         public void MarkAllNotificationsAsRead() {
+            Debug.WriteLine("POST markallnotifs");
         }
 
         public void MarkNotificationAsRead(Notification notification) {
+            Debug.WriteLine("POST marknotif "+notification.NotificationId);
         }
 
     }
