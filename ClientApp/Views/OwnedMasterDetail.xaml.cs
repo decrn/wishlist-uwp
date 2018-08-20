@@ -25,16 +25,23 @@ namespace ClientApp {
             };
         }
 
-        private void NewList(object sender, RoutedEventArgs e) {
+        private async void NewList(object sender, RoutedEventArgs e) {
             // TODO: Implement making new list
-        }
 
-        ContentDialog NewListDialog = new ContentDialog() {
-            Title = "Create a new list",
-            Content = new TextBox() { PlaceholderText = "Enter a list name" },
-            PrimaryButtonText = "Create list",
-            CloseButtonText = "Cancel"
-        };
+            ContentDialog NewListDialog = new ContentDialog() {
+                Title = "Create a new list",
+                Content = new TextBox() { PlaceholderText = "Enter a list name" },
+                PrimaryButtonText = "Create",
+                CloseButtonText = "Cancel"
+            };
+
+            NewListDialog.PrimaryButtonClick += (x,y) => {
+                string newname = ((TextBox)x.Content).Text;
+                MasterDetail.SelectedItem = new List() { Name = newname };
+            };
+
+            NewListDialog.ShowAsync();
+        }
 
         private void Save(object sender, RoutedEventArgs e) {
 
