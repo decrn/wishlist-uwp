@@ -16,6 +16,12 @@ namespace ClientApp {
             // TODO: Use Viewmodels?
             Lists = App.dataService.GetSubscribedLists();
             InitializeComponent();
+
+            // return the full detail list when opening detail panel
+            MasterDetail.MapDetails = (selected) => {
+                List complete = App.dataService.GetList(((List)selected).ListId);
+                return complete;
+            };
         }
 
     }

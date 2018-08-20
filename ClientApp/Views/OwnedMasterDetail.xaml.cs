@@ -1,6 +1,5 @@
 ﻿using ClientApp.Models;
 using System.Collections.Generic;
-using System.ComponentModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -10,7 +9,7 @@ namespace ClientApp {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class OwnedMasterDetail : Page, INotifyPropertyChanged {
+    public sealed partial class OwnedMasterDetail : Page {
 
         public IList<List> Lists{ get; set; }
 
@@ -18,6 +17,12 @@ namespace ClientApp {
             // TODO: Use Viewmodels?
             Lists = App.dataService.GetOwnedLists();
             InitializeComponent();
+
+            // return the full detail list when opening detail panel
+            MasterDetail.MapDetails = (selected) => {
+                List complete = App.dataService.GetList(((List) selected).ListId);
+                return complete;
+            };
         }
 
         private void NewList(object sender, RoutedEventArgs e) {
@@ -49,29 +54,6 @@ namespace ClientApp {
 
         private void AddNewWish(object sender, RoutedEventArgs e) {
 
-        }
-
-        private void LoadDetails(object sender, SelectionChangedEventArgs e) {
-            List selected = ((List) e.AddedItems[0]);
-            List complete = App.dataService.GetList(selected.ListId);
-
-            // TODO: Fix loading details when opening detail panel
-            // find selected listitem and replace it with new one
-            for (int i=0; i< Lists.Count; i++) {
-                if (Lists[i].ListId == selected.ListId) {
-                    Lists[i] = complete;
-                    RaisePropertyChanged(nameof(Lists));
-                }
-            }
-        }
-
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void RaisePropertyChanged(string name) {
-            if (PropertyChanged != null) {
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
-            }
         }
     }
 }

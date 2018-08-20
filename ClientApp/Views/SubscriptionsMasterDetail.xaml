@@ -18,7 +18,8 @@
 
     <!--Start master detail-->
     <Grid>
-        <controls:MasterDetailsView ItemsSource="{x:Bind Lists}"
+        <controls:MasterDetailsView x:Name="MasterDetail"
+            ItemsSource="{x:Bind Lists}"
             CompactModeThresholdWidth="720"
             MasterPaneBackground="{ThemeResource MiddlePaneBackground}"
             Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
