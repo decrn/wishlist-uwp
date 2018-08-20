@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:ClientApp.Models"
+    xmlns:helpers="using:ClientApp.Helpers"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
     NavigationCacheMode="Enabled">
@@ -17,7 +18,8 @@
 
     <!--Start master detail-->
     <Grid>
-        <controls:MasterDetailsView ItemsSource="{x:Bind Lists}"
+        <controls:MasterDetailsView x:Name="MasterDetail" SelectionChanged="LoadDetails"
+            ItemsSource="{x:Bind Lists, Mode=OneWay}"
             CompactModeThresholdWidth="720"
             MasterPaneBackground="{ThemeResource MiddlePaneBackground}"
             Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
@@ -30,8 +32,7 @@
                     Padding="0 20 0 10" Grid.Column="0" Grid.Row="0">
                     <TextBlock
                         Text="Created lists"
-                        Style="{ThemeResource TitleTextBlockStyle}" 
-                        VerticalAlignment="Center"/>    
+                        Style="{ThemeResource TitleTextBlockStyle}"/>
 
                     <Button Click="NewList" Background="Transparent" VerticalAlignment="Center">
                         <SymbolIcon>Add</SymbolIcon>
@@ -73,39 +74,160 @@
                 </DataTemplate>
             </controls:MasterDetailsView.ItemTemplate>
 
-
             <!--Define detail panel-->
             <controls:MasterDetailsView.DetailsTemplate>
                 <DataTemplate x:DataType="models:List">
-                    <StackPanel Padding="20 10 20 10">
-                        <TextBlock
-                            Margin="0,8"
-                            Style="{ThemeResource TitleTextBlockStyle}"
-                            HorizontalAlignment="Left"
-                            Text="{x:Bind Name}"/>
-                        <ListView x:Name="Items" ItemsSource="{x:Bind Items}" SelectionMode="Multiple">
-                            <ListView.ItemTemplate>
-                                <DataTemplate x:DataType="models:Item">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="54"/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <Image Source="Assets/placeholder.png"
-                                            Width="44"
-                                            Height="44"
-                                            HorizontalAlignment="Left"/>
-                                        <TextBlock Text="{x:Bind ProductName}"
-                                            FontSize="15" Grid.Column="1"
-                                            VerticalAlignment="Center"
-                                            Padding="0,0,54,0"/>
-                                    </Grid>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </StackPanel>
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        
+                        <!--Header-->
+                        <Grid Grid.Row="0" Padding="0,0,0,20" BorderThickness="0,0,0,1" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Ellipse Grid.Column="0" 
+                                Width="100"
+                                Height="100"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
+                                <Ellipse.Stroke>
+                                    <SolidColorBrush Color="{ThemeResource SystemBaseMediumHighColor}"></SolidColorBrush>
+                                </Ellipse.Stroke>
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="Assets/placeholder.png" />
+                                </Ellipse.Fill>
+                            </Ellipse>
+                            
+                            <StackPanel Grid.Column="1" HorizontalAlignment="Left">
+                                <TextBox x:Name="Name" PlaceholderText="List Name" Margin="0,15,0,0" MaxLength="100" Width="200" Text="{x:Bind Name}"/>
+                                <TextBox x:Name="Description" PlaceholderText="Description" Margin="0,15,0,0" MaxLength="300" Width="200" Text="{x:Bind Description}"/>
+                                <CalendarDatePicker x:Name="Deadline" PlaceholderText="Deadline" Margin="0,15,0,0" Width="200" Date="{x:Bind Deadline, Mode=TwoWay, Converter={StaticResource DateTimeToDateTimeOffset}}"></CalendarDatePicker>
+                            </StackPanel>
+                        </Grid>
+                        
+                        <!--Content-->
+                        <ScrollViewer Grid.Row="1" VerticalAlignment="Stretch" HorizontalScrollMode="Disabled" VerticalScrollMode="Auto">
+                            <Grid>
+
+                                <!--TODO: Collapse Grid on mobile-->
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.6*" />
+                                    <ColumnDefinition Width="0.4*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"></RowDefinition>
+                                </Grid.RowDefinitions>
+
+                                <!--Wishes-->
+                                <StackPanel Grid.Row="0" Grid.Column="0" Padding="10" BorderThickness="0,0,1,0" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}">
+
+                                    <TextBlock
+                                    Text="Wishes"
+                                    Style="{ThemeResource TitleTextBlockStyle}" />
+
+                                    <ListView x:Name="Items" Margin="0,20" ItemsSource="{x:Bind Items}" SelectionMode="None">
+                                        <!--TODO: Display a header with no items message-->
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate x:DataType="models:Item">
+                                                <Grid Margin="0,5">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="50"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="50"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition></RowDefinition>
+                                                        <RowDefinition></RowDefinition>
+                                                    </Grid.RowDefinitions>
+
+                                                    <Image Grid.Column="0" Grid.RowSpan="2"
+                                                        Source="Assets/placeholder.png"
+                                                        Width="35"
+                                                        Height="35"
+                                                        HorizontalAlignment="Center"/>
+
+                                                    <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+                                                        <TextBox Margin="5" PlaceholderText="Name" Text="{x:Bind ProductName}" MinWidth="200" />
+                                                        <TextBox Margin="5" PlaceholderText="Price" Text="{x:Bind ItemPriceUsd}" MinWidth="80" />
+                                                    </StackPanel>
+
+                                                    <TextBox Grid.Column="1" Grid.Row="1" Margin="5" PlaceholderText="Description" Text="{x:Bind Description}" />
+
+                                                    <Button Grid.Column="2" Grid.RowSpan="2" Margin="10,0,0,0">
+                                                        <SymbolIcon>More</SymbolIcon>
+                                                        <Button.Flyout>
+                                                            <MenuFlyout>
+                                                                <MenuFlyoutItem Text="Up" Icon="Upload" Tag="up"/>
+                                                                <MenuFlyoutItem Text="Down" Icon="Download" Tag="down"/>
+                                                                <MenuFlyoutItem Text="Delete" Icon="Delete" Tag="delete"/>
+                                                            </MenuFlyout>
+                                                        </Button.Flyout>
+                                                    </Button>
+
+
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+
+                                    <Button Content="Add more" Click="AddNewWish"></Button>
+
+                                </StackPanel>
+
+
+                                <!--Invited users-->
+                                <StackPanel Grid.Column="1" Padding="10" BorderThickness="0,0,1,0" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}">
+                                    <TextBlock
+                                    Text="Subscribed users"
+                                    Style="{ThemeResource TitleTextBlockStyle}" />
+
+                                    <ListView x:Name="Users" Margin="0,20" ItemsSource="{x:Bind SubscribedUsers}" SelectionMode="None">
+                                        <!--TODO: Display a header with no items message-->
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate x:DataType="models:User">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition/>
+                                                        <ColumnDefinition Width="50"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBox Text="{x:Bind Email}"
+                                                    Grid.Column="0" />
+                                                    <Button Grid.Column="1" Background="Transparent" VerticalAlignment="Center">
+                                                        <SymbolIcon>Delete</SymbolIcon>
+                                                    </Button>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+
+                                    <Button Content="Add more" Click="AddNewWish"></Button>
+                                </StackPanel>
+
+                            </Grid>
+                        </ScrollViewer>
+                    </Grid>
+                    
                 </DataTemplate>
             </controls:MasterDetailsView.DetailsTemplate>
+
+            <!--Detail actions-->
+            <controls:MasterDetailsView.DetailsCommandBar>
+                <CommandBar>
+                    <AppBarButton Icon="Save" Label="Save" Click="Save"/>
+                    <AppBarButton Icon="Send" Label="Send invitations" Click="Send"/>
+                    <CommandBar.SecondaryCommands>
+                        <AppBarButton Icon="Document" Label="Export to PDF" Click="Export"/>
+                        <AppBarButton Icon="Delete" Label="Delete" Click="Delete"/>
+                    </CommandBar.SecondaryCommands>
+                </CommandBar>
+            </controls:MasterDetailsView.DetailsCommandBar>
+            
 
         </controls:MasterDetailsView>
     </Grid>

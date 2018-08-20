@@ -86,7 +86,7 @@ namespace ClientApp.DataService {
         }
 
         public List GetList(int id) {
-                List list = new List { ListId = 0, Name = "Verjaardag Jan", OwnerUser = GetUser(""), Description = "Voor op het feestje af te geven", Deadline = new DateTime(2018, 12, 31) };
+                List list = new List { ListId = 0, Name = "Verjaardag Jan", OwnerUser = GetUser(""), Description = "Voor op het feestje af te geven", Deadline = new DateTime(2018, 12, 31), SubscribedUsers = new List<User> { GetUser(""), GetCurrentUser() } };
             return list;
         }
 
