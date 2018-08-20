@@ -121,9 +121,6 @@
     <Compile Include="Views\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SubscriptionDetailPage.xaml.cs">
-      <DependentUpon>SubscriptionDetailPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\OwnedMasterDetail.xaml.cs">
       <DependentUpon>OwnedMasterDetail.xaml</DependentUpon>
     </Compile>
@@ -216,10 +213,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\SettingsPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SubscriptionDetailPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
