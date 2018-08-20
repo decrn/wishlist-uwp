@@ -5,7 +5,8 @@
     xmlns:local="using:ClientApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:viewmodels="using:ClientApp.ViewModels"
+    xmlns:models="using:ClientApp.Models"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
     NavigationCacheMode="Enabled">
     <Page.Transitions>
@@ -14,146 +15,98 @@
         </TransitionCollection>
     </Page.Transitions>
 
-    <Page.Resources>
-        <DataTemplate x:Key="MasterListViewItemTemplate" x:DataType="viewmodels:ListViewModel">
-            <Grid Margin="0 12">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-
-                <!-- name of the list-->
-                <TextBlock Text="{x:Bind Name}" Style="{ThemeResource BaseTextBlockStyle}" />
-
-                <!-- creator of the list-->
-                <TextBlock
-                    Text="{x:Bind OwnerUser.GetFullName()}"
-                    Grid.Row="1"
-                    MaxLines="1"
-                    Style="{ThemeResource ListBodyTextBlockStyle}" />
-
-                <!-- item count -->
-                <TextBlock
-                    Text="{x:Bind ItemCount}"
-                    Grid.Column="1"
-                    Margin="12,1,0,0"
-                    Style="{ThemeResource ListCaptionAltTextblockStyle}" />
-            </Grid>
-        </DataTemplate>
-
-        <DataTemplate x:Key="DetailContentTemplate" x:DataType="viewmodels:ListViewModel">
-            <StackPanel>
-                <TextBlock
-                    Margin="0,8"
-                    Style="{ThemeResource TitleTextBlockStyle}"
-                    HorizontalAlignment="Left"
-                    Text="{x:Bind Name}"/>
-                <ListView x:Name="Items" ItemsSource="{x:Bind ItemNames}" SelectionMode="Multiple">
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="x:String">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="54"/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <Image Source="Assets/placeholder.png" Width="44" Height="44"
-                       HorizontalAlignment="Left"/>
-                                <TextBlock Text="{x:Bind}"
-                           FontSize="15" Grid.Column="1"
-                           VerticalAlignment="Center"
-                           Padding="0,0,54,0"/>
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView> 
-        </StackPanel>
-        </DataTemplate>
-    </Page.Resources>
-
-    <Grid x:Name="LayoutRoot" Loaded="LayoutRoot_Loaded" Background="{ThemeResource MiddlePaneBackground}">
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="AdaptiveStates" CurrentStateChanged="AdaptiveStates_CurrentStateChanged">
-                <VisualState x:Name="DefaultState">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="720" />
-                    </VisualState.StateTriggers>
-                </VisualState>
-
-                <VisualState x:Name="NarrowState">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="0" />
-                    </VisualState.StateTriggers>
-
-                    <VisualState.Setters>
-                        <Setter Target="MasterColumn.Width" Value="*" />
-                        <Setter Target="DetailColumn.Width" Value="0" />
-                        <Setter Target="MasterListView.SelectionMode" Value="None" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
-
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition x:Name="MasterColumn" Width="320" />
-            <ColumnDefinition x:Name="DetailColumn" Width="*" />
-        </Grid.ColumnDefinitions>
-
-        <!--Left-->
-
-        <StackPanel Orientation="Horizontal" Margin="12 8 8 8"
-            Padding="0 30 0 0" Grid.Column="0" Grid.Row="0">
-            <TextBlock
-                Text="Created lists"
-                Style="{ThemeResource TitleTextBlockStyle}" 
-                VerticalAlignment="Center"/>
-
-            <Button Click="NewList" Background="Transparent" VerticalAlignment="Center">
-                <SymbolIcon>Add</SymbolIcon>
-            </Button>
-        </StackPanel>
-
-        <ListView
-            x:Name="MasterListView"
-            Grid.Column="0" Grid.Row="1"
-            ItemContainerTransitions="{x:Null}"
-            ItemTemplate="{StaticResource MasterListViewItemTemplate}"
-            IsItemClickEnabled="True"
-            ItemClick="MasterListView_ItemClick">
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                </Style>
-            </ListView.ItemContainerStyle>
-        </ListView>
-
-        <!--Right-->
-
-        <ContentPresenter
-            x:Name="DetailContentPresenter"
-            Grid.Column="1"
-            Grid.RowSpan="2"
-            Padding="24 30 24 0"
-            BorderThickness="1,0,0,0"
+    <!--Start master detail-->
+    <Grid>
+        <controls:MasterDetailsView ItemsSource="{x:Bind Lists}"
+            CompactModeThresholdWidth="720"
+            MasterPaneBackground="{ThemeResource MiddlePaneBackground}"
+            Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
             BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}"
-            Content="{x:Bind MasterListView.SelectedItem, Mode=OneWay}"
-            ContentTemplate="{StaticResource DetailContentTemplate}"
-            Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-            <ContentPresenter.ContentTransitions>
-                <!-- Empty by default. See MasterListView_ItemClick -->
-                <TransitionCollection />
-            </ContentPresenter.ContentTransitions>
-        </ContentPresenter>
+            BorderThickness="0">
 
+            <!--Define master header-->
+            <controls:MasterDetailsView.MasterHeader>
+                <StackPanel Orientation="Horizontal"
+                    Padding="0 20 0 10" Grid.Column="0" Grid.Row="0">
+                    <TextBlock
+                        Text="Created lists"
+                        Style="{ThemeResource TitleTextBlockStyle}" 
+                        VerticalAlignment="Center"/>    
+
+                    <Button Click="NewList" Background="Transparent" VerticalAlignment="Center">
+                        <SymbolIcon>Add</SymbolIcon>
+                    </Button>
+                </StackPanel>
+            </controls:MasterDetailsView.MasterHeader>
+
+            <!--Define items in master list-->
+            <controls:MasterDetailsView.ItemTemplate>
+                <DataTemplate x:DataType="models:List">
+                    <Grid Margin="0 12">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- name of the list-->
+                        <TextBlock Text="{x:Bind Name}" Style="{ThemeResource BaseTextBlockStyle}" />
+
+                        <!-- creator of the list-->
+                        <TextBlock
+                            Text="{x:Bind OwnerUser.GetFullName()}"
+                            Grid.Row="1"
+                            MaxLines="1"
+                            Style="{ThemeResource ListBodyTextBlockStyle}" />
+
+                        <!-- item count -->
+                        <TextBlock
+                            Text="{x:Bind Items.Count}"
+                            Grid.Column="1"
+                            Margin="12,1,0,0"
+                            Style="{ThemeResource ListCaptionAltTextblockStyle}" />
+                    </Grid>
+                </DataTemplate>
+            </controls:MasterDetailsView.ItemTemplate>
+
+
+            <!--Define detail panel-->
+            <controls:MasterDetailsView.DetailsTemplate>
+                <DataTemplate x:DataType="models:List">
+                    <StackPanel Padding="20 10 20 10">
+                        <TextBlock
+                            Margin="0,8"
+                            Style="{ThemeResource TitleTextBlockStyle}"
+                            HorizontalAlignment="Left"
+                            Text="{x:Bind Name}"/>
+                        <ListView x:Name="Items" ItemsSource="{x:Bind Items}" SelectionMode="Multiple">
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="models:Item">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="54"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Image Source="Assets/placeholder.png"
+                                            Width="44"
+                                            Height="44"
+                                            HorizontalAlignment="Left"/>
+                                        <TextBlock Text="{x:Bind ProductName}"
+                                            FontSize="15" Grid.Column="1"
+                                            VerticalAlignment="Center"
+                                            Padding="0,0,54,0"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackPanel>
+                </DataTemplate>
+            </controls:MasterDetailsView.DetailsTemplate>
+
+        </controls:MasterDetailsView>
     </Grid>
 </Page>
