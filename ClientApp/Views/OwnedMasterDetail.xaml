@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:ClientApp.Models"
-    xmlns:helpers="using:ClientApp.Helpers"
+    xmlns:viewmodels="using:ClientApp.ViewModels"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
     NavigationCacheMode="Enabled">
@@ -50,7 +50,7 @@
                         </Grid.RowDefinitions>
 
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" MinWidth="275" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
@@ -68,7 +68,9 @@
                         <TextBlock
                             Text="{x:Bind Items.Count}"
                             Grid.Column="1"
+                            Grid.Row="1"
                             Margin="12,1,0,0"
+                            HorizontalAlignment="Right"
                             Style="{ThemeResource ListCaptionAltTextblockStyle}" />
                     </Grid>
                 </DataTemplate>
@@ -85,7 +87,7 @@
                         </Grid.RowDefinitions>
                         
                         <!--Header-->
-                        <Grid Grid.Row="0" Padding="0,0,0,20" BorderThickness="0,0,0,1" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}">
+                        <Grid Grid.Row="0" Padding="0,5,0,20" BorderThickness="0,0,0,1" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="150" />
                                 <ColumnDefinition Width="*" />
@@ -128,8 +130,8 @@
                                 <StackPanel Grid.Row="0" Grid.Column="0" Padding="10" BorderThickness="0,0,1,0" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}">
 
                                     <TextBlock
-                                    Text="Wishes"
-                                    Style="{ThemeResource TitleTextBlockStyle}" />
+                                        Text="Wishes"
+                                        Style="{ThemeResource TitleTextBlockStyle}" />
 
                                     <ListView x:Name="Items" Margin="0,20" ItemsSource="{x:Bind Items}" SelectionMode="None">
                                         <!--TODO: Display a header with no items message-->

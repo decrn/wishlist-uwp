@@ -5,9 +5,9 @@
     xmlns:local="using:ClientApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:ClientApp.Models"
     xmlns:viewmodels="using:ClientApp.ViewModels"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:models="using:ClientApp.Models"
     mc:Ignorable="d"
     NavigationCacheMode="Enabled">
     <Page.Transitions>
@@ -19,7 +19,7 @@
     <!--Start master detail-->
     <Grid>
         <controls:MasterDetailsView x:Name="MasterDetail"
-            ItemsSource="{x:Bind Lists}"
+            ItemsSource="{x:Bind Lists, Mode=OneWay}"
             CompactModeThresholdWidth="720"
             MasterPaneBackground="{ThemeResource MiddlePaneBackground}"
             Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
@@ -32,7 +32,7 @@
                     Padding="0 20 0 10" Grid.Column="0" Grid.Row="0">
                     <TextBlock
                         Text="Subscribed lists"
-                        Style="{ThemeResource TitleTextBlockStyle}" 
+                        Style="{ThemeResource TitleTextBlockStyle}"
                         VerticalAlignment="Center"/>
                 </StackPanel>
             </controls:MasterDetailsView.MasterHeader>
@@ -47,7 +47,7 @@
                         </Grid.RowDefinitions>
 
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" MinWidth="275" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
@@ -65,7 +65,9 @@
                         <TextBlock
                             Text="{x:Bind Items.Count}"
                             Grid.Column="1"
+                            Grid.Row="1"
                             Margin="12,1,0,0"
+                            HorizontalAlignment="Right"
                             Style="{ThemeResource ListCaptionAltTextblockStyle}" />
                     </Grid>
                 </DataTemplate>
@@ -75,33 +77,108 @@
             <!--Define detail panel-->
             <controls:MasterDetailsView.DetailsTemplate>
                 <DataTemplate x:DataType="models:List">
-                    <StackPanel Padding="20 10 20 10">
-                        <TextBlock
-                            Margin="0,8"
-                            Style="{ThemeResource TitleTextBlockStyle}"
-                            HorizontalAlignment="Left"
-                            Text="{x:Bind Name}"/>
-                        <ListView x:Name="Items" ItemsSource="{x:Bind Items}" SelectionMode="Multiple">
-                            <ListView.ItemTemplate>
-                                <DataTemplate x:DataType="models:Item">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="54"/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <Image Source="Assets/placeholder.png"
-                                            Width="44"
-                                            Height="44"
-                                            HorizontalAlignment="Left"/>
-                                        <TextBlock Text="{x:Bind ProductName}"
-                                            FontSize="15" Grid.Column="1"
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!--Header-->
+                        <Grid Grid.Row="0" Padding="0,20,0,20" BorderThickness="0,0,0,1" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Ellipse Grid.Column="0" 
+                                Width="100"
+                                Height="100"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
+                                <Ellipse.Stroke>
+                                    <SolidColorBrush Color="{ThemeResource SystemBaseMediumHighColor}"></SolidColorBrush>
+                                </Ellipse.Stroke>
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="Assets/placeholder.png" />
+                                </Ellipse.Fill>
+                            </Ellipse>
+
+                            <StackPanel Grid.Column="1" HorizontalAlignment="Left">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{x:Bind Name}" Style="{ThemeResource TitleTextBlockStyle}"/>
+                                    <!--TODO: improve time format with viewmodel-->
+                                    <TextBlock Margin="10,5,0,0" VerticalAlignment="Center" Text="{x:Bind Deadline}"></TextBlock>
+                                </StackPanel>
+                                <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
+                                    <TextBlock Text="By "/>
+                                    <TextBlock Margin="5,0,0,0" Text="{x:Bind OwnerUser.GetFullName()}"/>
+                                    <TextBlock Margin="5,0,0,0" Text="{x:Bind OwnerUser.Email}"/>
+                                </StackPanel>
+                                <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
+                                    <TextBlock Text="Subscribers: "></TextBlock>
+                                    <!--TODO: show abbreviated list of subscribed users + open popup with full list-->
+                                </StackPanel>
+
+                                <TextBlock Margin="0,10,0,0" Text="{x:Bind Description}"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <!--Content-->
+                        <ScrollViewer Grid.Row="1" VerticalAlignment="Stretch" HorizontalScrollMode="Disabled" VerticalScrollMode="Auto">
+                            <Grid>
+
+                                <!--TODO: Collapse Grid on mobile-->
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"></RowDefinition>
+                                </Grid.RowDefinitions>
+
+                                <!--Wishes-->
+                                <StackPanel Grid.Row="0" Grid.Column="0" Padding="10" BorderThickness="0,0,1,0" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}">
+
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock
+                                            Text="Wishes"
+                                            Style="{ThemeResource TitleTextBlockStyle}" />
+
+                                        <!--TODO: add a n out of total wishes have been claimed with viewmodel-->
+                                        <TextBlock
+                                            Text="{x:Bind Items.Count}"
                                             VerticalAlignment="Center"
-                                            Padding="0,0,54,0"/>
-                                    </Grid>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </StackPanel>
+                                            Margin="10,0,0,0"/>
+
+                                    </StackPanel>
+
+                                    <ListView x:Name="Items" Margin="0,20" ItemsSource="{x:Bind Items}" SelectionMode="Multiple">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate x:DataType="models:Item">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="54"/>
+                                                        <ColumnDefinition/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Image Source="Assets/placeholder.png"
+                                                        Width="44"
+                                                        Height="44"
+                                                        HorizontalAlignment="Left"/>
+                                                    <TextBlock Text="{x:Bind ProductName}"
+                                                        FontSize="15" Grid.Column="1"
+                                                        Style="{ThemeResource TitleTextBlockStyle}" 
+                                                        VerticalAlignment="Center"
+                                                        Padding="0,0,54,0"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                </StackPanel>
+
+                            </Grid>
+                        </ScrollViewer>
+                    </Grid>
+
                 </DataTemplate>
             </controls:MasterDetailsView.DetailsTemplate>
 

@@ -26,7 +26,6 @@ namespace ClientApp {
         }
 
         private async void NewList(object sender, RoutedEventArgs e) {
-            // TODO: Implement making new list
 
             ContentDialog NewListDialog = new ContentDialog() {
                 Title = "Create a new list",
@@ -44,7 +43,7 @@ namespace ClientApp {
         }
 
         private void Save(object sender, RoutedEventArgs e) {
-
+            // check if list is new (no id) and use save or create new route
         }
 
         private void Send(object sender, RoutedEventArgs e) {
