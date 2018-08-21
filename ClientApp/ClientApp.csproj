@@ -95,6 +95,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataService\HttpService.cs" />
     <Compile Include="DataService\IDataService.cs" />
     <Compile Include="DataService\RealService.cs" />
     <Compile Include="DataService\FakeService.cs" />

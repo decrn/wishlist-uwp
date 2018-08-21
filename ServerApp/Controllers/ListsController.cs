@@ -88,12 +88,11 @@ namespace ServerApp.Controllers {
 
         // POST: api/Lists/5
         [HttpPost("{id}")]
-        public async Task<IActionResult> SendListInvitations([FromRoute] int id, [FromBody] List list) {
+        public async Task<IActionResult> SendListInvitations([FromRoute] int id) {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (id != list.ListId)
-                return BadRequest();
+            List list = await _context.List.SingleOrDefaultAsync(l => l.ListId == id);
 
             User user = await _userManager.GetUserAsync(HttpContext.User);
             if (list.OwnerUser.Id != user.Id)
