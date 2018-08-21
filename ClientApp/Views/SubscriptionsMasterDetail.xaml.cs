@@ -1,6 +1,7 @@
 ﻿using ClientApp.Models;
 using ClientApp.Views;
 using System.Collections.Generic;
+using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -36,6 +37,10 @@ namespace ClientApp {
         private void ViewSubscribers(object sender, TappedRoutedEventArgs e) {
             SubscribersList dialog = new SubscribersList(CurrentList.SubscribedUsers);
             dialog.ShowAsync();
+        }
+
+        public void SelectList(List list) {
+            MasterDetail.SelectedItem = Lists.First((l) => l.ListId == list.ListId);
         }
     }
 }

@@ -9,6 +9,8 @@ namespace ClientApp.Views {
 
         private ObservableCollection<Notification> Notifications = new ObservableCollection<Notification>();
 
+        public MainPage MainPage { get; set; }
+
         public NotificationPart() {
             this.InitializeComponent();
             this.Refresh(null, null);
@@ -22,14 +24,13 @@ namespace ClientApp.Views {
 
         public void MarkAll(object sender, RoutedEventArgs e) {
             App.dataService.MarkAllNotificationsAsRead();
-            foreach (Notification n in Notifications) {
-                n.IsUnread = false;
-            }
+            this.Refresh(null,null);
         }
 
         public void Mark(object sender, RoutedEventArgs e) {
             Notification notif = (Notification) ((Button)sender).Tag;
-            App.dataService.ExecuteOrMarkNotification(notif);
+            App.dataService.MarkNotification(notif);
+            this.Refresh(null,null);
         }
 
         public void Refresh(object sender, RoutedEventArgs e) {
@@ -41,8 +42,19 @@ namespace ClientApp.Views {
         }
 
         public void Act(object sender, TappedRoutedEventArgs e) {
-            // TODO: Implement act on notification (open list or user? in popup)
+
             Notification notif = (Notification)((StackPanel)sender).Tag;
+
+            if (notif.Type == NotificationType.ListJoinSuccess) {
+                return;
+            } else if (notif.Type == NotificationType.JoinRequest) {
+                MainPage.GoToOwnedLists();
+                return;
+            } else if (notif.Type == NotificationType.ListInvitation) {
+                App.dataService.ActOnNotification(notif);
+            }
+
+            MainPage.GoToSubscribedList(notif.SubjectList);
         }
     }
 }

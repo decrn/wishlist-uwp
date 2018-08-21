@@ -75,7 +75,9 @@ namespace ClientApp.DataService {
 
         void MarkAllNotificationsAsRead();
 
-        void ExecuteOrMarkNotification(Notification notification);
+        void MarkNotification(Notification notification);
+
+        void ActOnNotification(Notification notification);
 
     }
 }

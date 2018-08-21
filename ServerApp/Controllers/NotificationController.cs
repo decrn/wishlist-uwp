@@ -63,9 +63,27 @@ namespace ServerApp.Controllers {
             return Ok();
         }
 
+        // Put: api/Notifications/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> MarkNotificationAsRead([FromRoute] int id) {
+            User user = await _userManager.GetUserAsync(HttpContext.User);
+            Notification notification = _context.Notification
+                                                .Include(n => n.SubjectList)
+                                                .Include(n => n.SubjectUser)
+                                                .SingleOrDefault(n => n.OwnerUser.Id == user.Id && n.NotificationId == id);
+
+            if (notification == null)
+                return NotFound();
+
+            notification.MarkAsRead();
+
+            await _context.SaveChangesAsync();
+            return Ok(notification);
+        }
+
         // POST: api/Notifications/5
         [HttpPost("{id}")]
-        public async Task<IActionResult> ExecuteNotificationAction([FromRoute] int id) {
+        public async Task<IActionResult> ActOnNotification([FromRoute] int id) {
             User user = await _userManager.GetUserAsync(HttpContext.User);
             Notification notification = _context.Notification
                                                 .Include(n => n.SubjectList)
@@ -77,8 +95,8 @@ namespace ServerApp.Controllers {
 
             if (notification.Type == NotificationType.ListInvitation) {
                 // TODO: better way to add UserListSubscription and remove UserListInvite?
-                _context.Database.ExecuteSqlCommand("DELETE FROM [UserListInvite] WHERE ListId=" + notification.SubjectList.ListId+ " AND UserId='"+user.Id+"';");
-                _context.Database.ExecuteSqlCommand("INSERT INTO [UserListSubscription] VALUES (" + notification.SubjectList.ListId+",'"+user.Id+"');");
+                _context.Database.ExecuteSqlCommand("DELETE FROM [UserListInvite] WHERE ListId=" + notification.SubjectList.ListId + " AND UserId='" + user.Id + "';");
+                _context.Database.ExecuteSqlCommand("INSERT INTO [UserListSubscription] VALUES (" + notification.SubjectList.ListId + ",'" + user.Id + "');");
                 Notification notif = new Notification(notification.SubjectList.OwnerUser, NotificationType.ListJoinSuccess, notification.SubjectList, user);
                 _context.Notification.Add(notif);
 

@@ -358,7 +358,17 @@ namespace ClientApp.DataService {
             task.Wait();
         }
 
-        public void ExecuteOrMarkNotification(Notification notification) {
+        public void MarkNotification(Notification notification) {
+
+            var httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWTToken);
+            Task task = Task.Run(async () => {
+                var res = await httpClient.PutAsync(new Uri(BaseUri + "Notifications/" + notification.NotificationId), null);
+            });
+            task.Wait();
+        }
+
+        public void ActOnNotification(Notification notification) {
 
             var httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWTToken);

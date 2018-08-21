@@ -38,7 +38,7 @@
                     </StackPanel>
 
                     <Button Click="Mark" Grid.Column="1" Visibility="{x:Bind IsUnread}" Background="Transparent" Tag="{x:Bind}">
-                        <SymbolIcon Symbol="{x:Bind GetActionIcon()}"></SymbolIcon>
+                        <SymbolIcon>Accept</SymbolIcon>
                     </Button>
 
                 </Grid>

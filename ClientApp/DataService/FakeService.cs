@@ -173,8 +173,12 @@ namespace ClientApp.DataService {
             Debug.WriteLine("POST markallnotifs");
         }
 
-        public void ExecuteOrMarkNotification(Notification notification) {
+        public void MarkNotification(Notification notification) {
             Debug.WriteLine("POST execmarknotif "+notification.NotificationId);
+        }
+
+        public void ActOnNotification(Notification notification) {
+            Debug.WriteLine("POST execmarknotif " + notification.NotificationId);
         }
 
     }

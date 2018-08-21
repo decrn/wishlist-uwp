@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ClientApp.Models;
+using ClientApp.Views;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Windows.UI.Xaml;
@@ -11,12 +13,9 @@ namespace ClientApp {
 
     public sealed partial class MainPage : Page {
 
-        public static MainPage Current;
-
         public MainPage() {
             this.InitializeComponent();
             App.dataService.LoadingIndicator = LoadingControl;
-            Current = this;
         }
 
         private void NavView_Loaded(object sender, RoutedEventArgs e) {
@@ -105,6 +104,10 @@ namespace ClientApp {
             NavigationViewItem item = sender as NavigationViewItem;
             item.ContextFlyout.Placement = FlyoutPlacementMode.Top;
             item.ContextFlyout.ShowAt(item);
+
+            // register for callbacks
+            NotificationPart notificationPart = (NotificationPart) ( (Flyout) item.ContextFlyout).Content;
+            notificationPart.MainPage = this;
         }
 
         private async void EditAccount(object sender, RoutedEventArgs e) {
@@ -114,6 +117,17 @@ namespace ClientApp {
         private async void Logout(object sender, RoutedEventArgs e) {
             App.dataService.Logout();
             App.GoToLogin();
+        }
+
+        public void GoToOwnedLists() {
+            ContentFrame.Navigate(typeof(OwnedMasterDetail));
+        }
+
+        public void GoToSubscribedList(List list) {
+            ContentFrame.Navigate(typeof(SubscriptionMasterDetail));
+            
+            SubscriptionMasterDetail page = (SubscriptionMasterDetail) ContentFrame.Content;
+            page.SelectList(list);
         }
 
     }
