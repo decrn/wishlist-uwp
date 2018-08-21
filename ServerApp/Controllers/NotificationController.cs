@@ -44,12 +44,11 @@ namespace ServerApp.Controllers {
                 if (l.List.IsSoon() && !user.Notifications.Any(n => n.Type == NotificationType.DeadlineReminder && n.SubjectList.ListId == l.ListId)) {
                     Notification notif = new Notification(user, NotificationType.DeadlineReminder, l.List);
                     _context.Notification.Add(notif);
-                    //user.Notifications.Add(notif);
                 }
             });
 
             await _context.SaveChangesAsync();
-            return user.Notifications;
+            return user.Notifications.OrderByDescending(n => n.Timestamp);
         }
 
         // PUT: api/Notifications
@@ -80,7 +79,7 @@ namespace ServerApp.Controllers {
                 // TODO: better way to add UserListSubscription and remove UserListInvite?
                 _context.Database.ExecuteSqlCommand("DELETE FROM [UserListInvite] WHERE ListId=" + notification.SubjectList.ListId+ " AND UserId='"+user.Id+"';");
                 _context.Database.ExecuteSqlCommand("INSERT INTO [UserListSubscription] VALUES (" + notification.SubjectList.ListId+",'"+user.Id+"');");
-                Notification notif = new Notification(user, NotificationType.ListJoinSuccess, notification.SubjectList);
+                Notification notif = new Notification(notification.SubjectList.OwnerUser, NotificationType.ListJoinSuccess, notification.SubjectList, user);
                 _context.Notification.Add(notif);
 
             }

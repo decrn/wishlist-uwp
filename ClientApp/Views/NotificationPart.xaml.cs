@@ -7,14 +7,11 @@ using Windows.UI.Xaml.Input;
 namespace ClientApp.Views {
     public sealed partial class NotificationPart : StackPanel {
 
-        private ObservableCollection<Notification> notifications = new ObservableCollection<Notification>();
+        private ObservableCollection<Notification> Notifications = new ObservableCollection<Notification>();
 
         public NotificationPart() {
             this.InitializeComponent();
-            foreach (Notification n in App.dataService.GetNotifications()) {
-                // TODO: probably needed to use a ViewModel for this
-                notifications.Add(n);
-            } 
+            this.Refresh(null, null);
         }
 
         public bool CannotActOnNotif(Notification notif) {
@@ -25,7 +22,7 @@ namespace ClientApp.Views {
 
         public void MarkAll(object sender, RoutedEventArgs e) {
             App.dataService.MarkAllNotificationsAsRead();
-            foreach (Notification n in notifications) {
+            foreach (Notification n in Notifications) {
                 n.IsUnread = false;
             }
         }
@@ -35,6 +32,13 @@ namespace ClientApp.Views {
             App.dataService.ExecuteOrMarkNotification(notif);
         }
 
+        public void Refresh(object sender, RoutedEventArgs e) {
+            Notifications.Clear();
+            foreach (Notification n in App.dataService.GetNotifications()) {
+                // TODO: probably needed to use a ViewModel for this
+                Notifications.Add(n);
+            }
+        }
 
         public void Act(object sender, TappedRoutedEventArgs e) {
             // TODO: Implement act on notification (open list or user? in popup)

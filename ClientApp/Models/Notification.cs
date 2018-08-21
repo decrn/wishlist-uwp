@@ -1,4 +1,5 @@
 ﻿using System;
+using Windows.UI.Xaml.Controls;
 
 namespace ClientApp.Models {
     public class Notification {
@@ -18,6 +19,12 @@ namespace ClientApp.Models {
 
         // null in case of JoinRequest
         public List SubjectList { get; set; }
+
+
+        // TODO: move these methods to viewmodel
+        public Symbol GetActionIcon() {
+            return Type == NotificationType.ListInvitation ? Symbol.Next : Symbol.Accept;
+        }
 
         public string Message {
             get {

@@ -351,6 +351,7 @@ namespace ClientApp.DataService {
         public void MarkAllNotificationsAsRead() {
 
             var httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWTToken);
             Task task = Task.Run(async () => {
                 var res = await httpClient.PutAsync(new Uri(BaseUri + "Notifications"), null);
             });
@@ -360,6 +361,7 @@ namespace ClientApp.DataService {
         public void ExecuteOrMarkNotification(Notification notification) {
 
             var httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWTToken);
             Task task = Task.Run(async () => {
                 var res = await httpClient.PostAsync(new Uri(BaseUri + "Notifications/"+notification.NotificationId), null);
             });
