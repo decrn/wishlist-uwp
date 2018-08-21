@@ -1,11 +1,13 @@
 ﻿using ClientApp.Models;
 using ClientApp.ViewModels;
+using Microsoft.Toolkit.Uwp.UI.Controls;
 using System.Collections.Generic;
 
 namespace ClientApp.DataService {
 
     public interface IDataService {
 
+        Loading LoadingIndicator { get; set; }
 
         // ACCOUNT
 
@@ -16,7 +18,7 @@ namespace ClientApp.DataService {
         dynamic Register(RegisterViewModel vm);
 
         dynamic ChangePassword(ChangePasswordViewModel vm);
-
+        
         dynamic ForgotPassword(ForgotPasswordViewModel vm);
 
         dynamic ResetPassword(ResetPasswordViewModel vm);

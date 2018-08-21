@@ -1,5 +1,6 @@
 ﻿using ClientApp.Models;
 using ClientApp.ViewModels;
+using Microsoft.Toolkit.Uwp.UI.Controls;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -23,6 +24,9 @@ namespace ClientApp.DataService {
         private string JWTToken = localSettings.Values.ContainsKey("JWTToken") ? localSettings.Values["JWTToken"].ToString() : "";
         private User LoggedInUser;
 
+        // Toggle indicator with LoadingIndicator.IsLoading
+        public Loading LoadingIndicator { get; set; }
+
 
         #region ACCOUNT
 
@@ -41,7 +45,7 @@ namespace ClientApp.DataService {
         }
 
         public dynamic Login(LoginViewModel vm) {
-
+            if (LoadingIndicator != null) LoadingIndicator.IsLoading = true;
             var httpClient = new HttpClient();
             var content = new FormUrlEncodedContent(new[] {
                 new KeyValuePair<string, string>("Email", vm.Email),
@@ -66,12 +70,13 @@ namespace ClientApp.DataService {
                 }
             }
 
+            if (LoadingIndicator != null) LoadingIndicator.IsLoading = false;
             return obj;
             
         }
 
         public dynamic Register(RegisterViewModel vm) {
-
+            if (LoadingIndicator != null) LoadingIndicator.IsLoading = true;
             var httpClient = new HttpClient();
             
             var content = new FormUrlEncodedContent(new[] {
@@ -98,6 +103,8 @@ namespace ClientApp.DataService {
                     LoggedInUser = obj["data"]["user"].ToObject<User>();
                 }
             }
+
+            if (LoadingIndicator != null) LoadingIndicator.IsLoading = false;
             return obj;
         }
 
@@ -110,6 +117,7 @@ namespace ClientApp.DataService {
         }
 
         public dynamic ForgotPassword(ForgotPasswordViewModel vm) {
+            if (LoadingIndicator != null) LoadingIndicator.IsLoading = true;
             var httpClient = new HttpClient();
 
             var content = new FormUrlEncodedContent(new[] {
@@ -124,10 +132,13 @@ namespace ClientApp.DataService {
             task.Wait();
 
             JObject obj = JObject.Parse(response);
+
+            if (LoadingIndicator != null) LoadingIndicator.IsLoading = false;
             return obj;
         }
 
         public dynamic ResetPassword(ResetPasswordViewModel vm) {
+            if (LoadingIndicator != null) LoadingIndicator.IsLoading = true;
             var httpClient = new HttpClient();
 
             var content = new FormUrlEncodedContent(new[] {
@@ -145,6 +156,8 @@ namespace ClientApp.DataService {
             task.Wait();
 
             JObject obj = JObject.Parse(response);
+
+            if (LoadingIndicator != null) LoadingIndicator.IsLoading = false;
             return obj;
         }
 
@@ -170,6 +183,7 @@ namespace ClientApp.DataService {
         }
 
         public User GetUser(string id) {
+            if (LoadingIndicator != null) LoadingIndicator.IsLoading = true;
             var httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWTToken);
             var response = "";
@@ -182,10 +196,12 @@ namespace ClientApp.DataService {
             JObject obj = JObject.Parse(response);
             User user = obj.ToObject<User>();
 
+            if (LoadingIndicator != null) LoadingIndicator.IsLoading = false;
             return user;
         }
 
         public List<List> GetOwnedLists() {
+            if (LoadingIndicator != null) LoadingIndicator.IsLoading = true;
 
             var httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWTToken);
@@ -199,11 +215,12 @@ namespace ClientApp.DataService {
             JArray obj = JArray.Parse(response);
             List<List> lists = obj.ToObject<List<List>>();
 
+            if (LoadingIndicator != null) LoadingIndicator.IsLoading = false;
             return lists;
-
         }
 
         public List<List> GetSubscribedLists() {
+            if (LoadingIndicator != null) LoadingIndicator.IsLoading = true;
 
             var httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWTToken);
@@ -217,6 +234,7 @@ namespace ClientApp.DataService {
             JArray obj = JArray.Parse(response);
             List<List> lists = obj.ToObject<List<List>>();
 
+            if (LoadingIndicator != null) LoadingIndicator.IsLoading = false;
             return lists;
         }
 
@@ -225,6 +243,7 @@ namespace ClientApp.DataService {
         #region LISTS
 
         public List GetList(int id) {
+            if (LoadingIndicator != null) LoadingIndicator.IsLoading = true;
 
             var httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWTToken);
@@ -238,6 +257,7 @@ namespace ClientApp.DataService {
             JObject obj = JObject.Parse(response);
             List list = obj.ToObject<List>();
 
+            if (LoadingIndicator != null) LoadingIndicator.IsLoading = false;
             return list;
         }
 
@@ -299,6 +319,7 @@ namespace ClientApp.DataService {
         #region NOTIFICATIONS
 
         public List<Notification> GetNotifications() {
+            if (LoadingIndicator != null) LoadingIndicator.IsLoading = true;
 
             var httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWTToken);
@@ -312,6 +333,7 @@ namespace ClientApp.DataService {
             JArray obj = JArray.Parse(response);
             List<Notification> notifs = obj.ToObject<List<Notification>>();
 
+            if (LoadingIndicator != null) LoadingIndicator.IsLoading = false;
             return notifs;
         }
 

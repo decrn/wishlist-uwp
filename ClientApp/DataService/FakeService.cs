@@ -1,5 +1,6 @@
 ﻿using ClientApp.Models;
 using ClientApp.ViewModels;
+using Microsoft.Toolkit.Uwp.UI.Controls;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,8 @@ namespace ClientApp.DataService {
 
         public static readonly string Name = "Fake Data Service";
         private string JWTToken = "skippinglogin";
+
+        public Loading LoadingIndicator { get; set; }
 
         // ACCOUNT
 
@@ -100,6 +103,7 @@ namespace ClientApp.DataService {
                     new Item { ItemId=3, ProductName="Barbies" }
                 }
             };
+
             return list;
         }
 

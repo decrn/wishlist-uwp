@@ -15,6 +15,7 @@ namespace ClientApp {
 
         public MainPage() {
             this.InitializeComponent();
+            App.dataService.LoadingIndicator = LoadingControl;
             Current = this;
         }
 
@@ -114,5 +115,6 @@ namespace ClientApp {
             App.dataService.Logout();
             App.GoToLogin();
         }
+
     }
 }

@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:Views="using:ClientApp.Views"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d">
 
     <Grid>
@@ -35,8 +36,8 @@
                                 <TextBlock Text="Notifications" VerticalAlignment="Center" />
 
                                 <!-- TODO: Bind badge to actual notification count -->
-                                <RelativePanel Background="{ThemeResource SystemAccentColor}" CornerRadius="10" Margin="10 0 0 0" Padding="7 3">
-                                    <TextBlock Text="3" FontSize="12" Foreground="{ThemeResource SystemAltHighColor}" />
+                                <RelativePanel  CornerRadius="10" Margin="10 0 0 0" Padding="7 3">
+                                    <TextBlock Text="3" FontSize="12" />
                                 </RelativePanel>
 
                             </StackPanel>
@@ -72,6 +73,16 @@
             </Frame>
 
         </NavigationView>
+
+        <!--Loading spinner-->
+        <controls:Loading x:Name="LoadingControl" IsLoading="False"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center">
+            <controls:Loading.Background>
+                <AcrylicBrush BackgroundSource="Backdrop" Opacity="0.65" TintColor="{ThemeResource SystemChromeMediumLowColor}" />
+            </controls:Loading.Background>
+            <ProgressRing IsActive="True" Width="75" Height="75" Foreground="{ThemeResource SystemAccentColor}" />
+        </controls:Loading>
 
     </Grid>
 </Page>
