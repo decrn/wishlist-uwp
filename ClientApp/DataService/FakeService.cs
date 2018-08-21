@@ -91,23 +91,21 @@ namespace ClientApp.DataService {
 
         public List GetList(int id) {
             Debug.WriteLine("GET list "+id);
-            List list = new List { ListId = 0, Name = "Verjaardag Jan", OwnerUser = GetUser(""), Description = "Voor op het feestje af te geven", Deadline = new DateTime(2018, 12, 31), SubscribedUsers = new List<User> { GetUser(""), GetCurrentUser() } };
+            List list = new List {
+                ListId = 0, Name = "Verjaardag Jan", OwnerUser = GetUser(""), Description = "Voor op het feestje af te geven", Deadline = new DateTime(2018, 12, 31), SubscribedUsers = new List<User> { GetUser(""), GetCurrentUser() },
+                Items = new List<Item> {
+                    new Item { ItemId=0, ProductName="Playstation",  CheckedByUser=GetCurrentUser() },
+                    new Item { ItemId=1, ProductName="Tent", ItemPriceUsd=19.99, CheckedByUser=GetUser("") },
+                    new Item { ItemId=2, ProductName="Ovenschotel", ItemPriceUsd=9.99 },
+                    new Item { ItemId=3, ProductName="Barbies" }
+                }
+            };
             return list;
         }
 
         public dynamic NewList(List list) {
             Debug.WriteLine("POST newlist");
             return JObject.FromObject(new { success = true });
-        }
-
-        public List<Item> GetListItems(List list) {
-            Debug.WriteLine("GET listitems");
-            return new List<Item> {
-                new Item { ItemId=0, ProductName="Playstation",  CheckedByUser=GetCurrentUser() },
-                new Item { ItemId=1, ProductName="Tent", ItemPriceUsd=19.99, CheckedByUser=GetUser("") },
-                new Item { ItemId=2, ProductName="Ovenschotel", ItemPriceUsd=9.99 },
-                new Item { ItemId=3, ProductName="Barbies" }
-            };
         }
 
         public dynamic EditList(List list) {

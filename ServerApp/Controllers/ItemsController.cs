@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ServerApp.Data;
 using ServerApp.Models;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ServerApp.Controllers {
 
@@ -35,7 +32,7 @@ namespace ServerApp.Controllers {
             if (!item.List.SubscribedUsers.Any(s => s.UserId == user.Id))
                 return Forbid();
 
-            if (item.CheckedByUser == user)
+            if (item.CheckedByUser == null && item.CheckedByUser == user)
                 item.CheckedByUser = null;
             else
                 item.CheckedByUser = user;

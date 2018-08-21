@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.JsonPatch;
@@ -11,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ServerApp.Data;
 using ServerApp.Models;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ServerApp.Controllers {
 
@@ -45,25 +42,6 @@ namespace ServerApp.Controllers {
 
             if (list.OwnerUser.Id == user.Id || list.SubscribedUsers.Any(s => s.UserId == user.Id))
                 return Ok(list);
-
-            return Forbid();
-        }
-
-        // GET: api/Lists/5/Items
-        [HttpGet("{id}/Items")]
-        public async Task<IActionResult> GetListItems([FromRoute] int id) {
-            var list = _context.List.Include(l => l.Items).Include(l => l.SubscribedUsers).SingleOrDefault(m => m.ListId == id);
-
-            if (list == null)
-                return NotFound();
-
-            User user = await _userManager.GetUserAsync(HttpContext.User);
-
-            if (!list.IsHidden)
-                return Ok(list.Items);
-
-            if (list.OwnerUser.Id == user.Id || list.SubscribedUsers.Any(s => s.UserId == user.Id))
-                return Ok(list.Items);
 
             return Forbid();
         }

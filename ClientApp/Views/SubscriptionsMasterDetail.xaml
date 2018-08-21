@@ -47,8 +47,8 @@
                         </Grid.RowDefinitions>
 
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" MinWidth="275" />
-                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" MinWidth="215" />
+                            <ColumnDefinition Width="75" />
                         </Grid.ColumnDefinitions>
 
                         <!-- name of the list-->
@@ -61,13 +61,16 @@
                             MaxLines="1"
                             Style="{ThemeResource ListBodyTextBlockStyle}" />
 
-                        <!-- item count -->
+                        <!-- deadline -->
+                        <!--TODO: Improve date format & decently float right-->
                         <TextBlock
-                            Text="{x:Bind Items.Count}"
+                            Text="{x:Bind Deadline}"
                             Grid.Column="1"
                             Grid.Row="1"
                             Margin="12,1,0,0"
                             HorizontalAlignment="Right"
+                            TextTrimming="Clip"
+                            TextWrapping="NoWrap"
                             Style="{ThemeResource ListCaptionAltTextblockStyle}" />
                     </Grid>
                 </DataTemplate>

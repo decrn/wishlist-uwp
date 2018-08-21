@@ -235,27 +235,10 @@ namespace ClientApp.DataService {
             });
             task.Wait();
 
-            JArray obj = JArray.Parse(response);
+            JObject obj = JObject.Parse(response);
             List list = obj.ToObject<List>();
 
             return list;
-        }
-
-        public List<Item> GetListItems(List list) {
-
-            var httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWTToken);
-
-            string response = "";
-            Task task = Task.Run(async () => {
-                response = await httpClient.GetStringAsync(new Uri(BaseUri + "Lists/" + list.ListId + "/Items")); // sends GET request
-            });
-            task.Wait();
-
-            JArray obj = JArray.Parse(response);
-            List<Item> items = obj.ToObject<List<Item>>();
-
-            return items;
         }
 
         public dynamic NewList(List list) {

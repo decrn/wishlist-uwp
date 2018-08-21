@@ -7,7 +7,7 @@ namespace ClientApp.Models {
         private int _listId;
         public int ListId {
             get { return _listId; }
-            set { _listId = value; UpdateItems(); }
+            set { _listId = value; }
         }
 
         public string Name { get; set; }
@@ -31,11 +31,6 @@ namespace ClientApp.Models {
 
         public List() {
             Items = new List<Item>();
-        }
-
-        private void UpdateItems() {
-            if (Items.Count < 1)
-                Items = App.dataService.GetListItems(this);
         }
 
         public void AddItem(Item item) {

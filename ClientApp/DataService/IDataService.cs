@@ -41,8 +41,6 @@ namespace ClientApp.DataService {
 
         List GetList(int id);
 
-        List<Item> GetListItems(List list);
-
         dynamic NewList(List list);
 
         dynamic EditList(List list);
