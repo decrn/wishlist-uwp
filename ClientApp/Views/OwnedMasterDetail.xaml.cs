@@ -12,6 +12,7 @@ namespace ClientApp {
     public sealed partial class OwnedMasterDetail : Page {
 
         public IList<List> Lists{ get; set; }
+        private List CurrentList;
 
         public OwnedMasterDetail() {
             // TODO: Use Viewmodels?
@@ -20,8 +21,8 @@ namespace ClientApp {
 
             // return the full detail list when opening detail panel
             MasterDetail.MapDetails = (selected) => {
-                List complete = App.dataService.GetList(((List) selected).ListId);
-                return complete;
+                CurrentList = App.dataService.GetList(((List) selected).ListId);
+                return CurrentList;
             };
         }
 

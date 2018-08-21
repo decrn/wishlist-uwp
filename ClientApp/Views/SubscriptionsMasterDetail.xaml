@@ -118,7 +118,7 @@
                                     <TextBlock Margin="5,0,0,0" Text="{x:Bind OwnerUser.GetFullName()}"/>
                                     <TextBlock Margin="5,0,0,0" Text="{x:Bind OwnerUser.Email}"/>
                                 </StackPanel>
-                                <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
+                                <StackPanel Margin="0,10,0,0" Orientation="Horizontal" Tapped="ViewSubscribers">
                                     <TextBlock Text="Subscribers: "></TextBlock>
                                     <!--TODO: show abbreviated list of subscribed users + open popup with full list-->
                                 </StackPanel>

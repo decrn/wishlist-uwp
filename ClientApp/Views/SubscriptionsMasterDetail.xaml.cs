@@ -1,6 +1,8 @@
 ﻿using ClientApp.Models;
+using ClientApp.Views;
 using System.Collections.Generic;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -11,6 +13,7 @@ namespace ClientApp {
     public sealed partial class SubscriptionMasterDetail : Page
     {
         public ICollection<List> Lists { get; set; }
+        private List CurrentList;
 
         public SubscriptionMasterDetail() {
             // TODO: Use Viewmodels?
@@ -19,10 +22,14 @@ namespace ClientApp {
 
             // return the full detail list when opening detail panel
             MasterDetail.MapDetails = (selected) => {
-                List complete = App.dataService.GetList(((List)selected).ListId);
-                return complete;
+                CurrentList = App.dataService.GetList(((List)selected).ListId);
+                return CurrentList;
             };
         }
 
+        private void ViewSubscribers(object sender, TappedRoutedEventArgs e) {
+            SubscribersList dialog = new SubscribersList(CurrentList.SubscribedUsers);
+            dialog.ShowAsync();
+        }
     }
 }
