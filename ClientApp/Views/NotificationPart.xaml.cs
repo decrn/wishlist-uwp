@@ -32,7 +32,7 @@ namespace ClientApp.Views {
 
         public void Mark(object sender, RoutedEventArgs e) {
             Notification notif = (Notification) ((Button)sender).Tag;
-            App.dataService.MarkNotificationAsRead(notif);
+            App.dataService.ExecuteOrMarkNotification(notif);
         }
 
 

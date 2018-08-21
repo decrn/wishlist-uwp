@@ -64,14 +64,26 @@ namespace ServerApp.Controllers {
             return Ok();
         }
 
-        // PUT: api/Notifications/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> MarkNotificationAsRead([FromRoute] int id) {
+        // POST: api/Notifications/5
+        [HttpPost("{id}")]
+        public async Task<IActionResult> ExecuteNotificationAction([FromRoute] int id) {
             User user = await _userManager.GetUserAsync(HttpContext.User);
-            Notification notification = _context.Notification.SingleOrDefault(n => n.OwnerUser.Id == user.Id && n.NotificationId == id);
+            Notification notification = _context.Notification
+                                                .Include(n => n.SubjectList)
+                                                .Include(n => n.SubjectUser)
+                                                .SingleOrDefault(n => n.OwnerUser.Id == user.Id && n.NotificationId == id);
 
             if (notification == null)
                 return NotFound();
+
+            if (notification.Type == NotificationType.ListInvitation) {
+                // TODO: better way to add UserListSubscription and remove UserListInvite?
+                _context.Database.ExecuteSqlCommand("DELETE FROM [UserListInvite] WHERE ListId=" + notification.SubjectList.ListId+ " AND UserId='"+user.Id+"';");
+                _context.Database.ExecuteSqlCommand("INSERT INTO [UserListSubscription] VALUES (" + notification.SubjectList.ListId+",'"+user.Id+"');");
+                Notification notif = new Notification(user, NotificationType.ListJoinSuccess, notification.SubjectList);
+                _context.Notification.Add(notif);
+
+            }
 
             notification.MarkAsRead();
 

@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ServerApp.Data;
 using ServerApp.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ServerApp.Controllers {
 
@@ -33,7 +32,7 @@ namespace ServerApp.Controllers {
         [HttpGet("Subscriptions")]
         public async Task<IEnumerable<List>> GetSubscribedLists() {
             User user = await _userManager.GetUserAsync(HttpContext.User);
-            return _context.List.Where(l => 
+            return _context.List.Include(l => l.OwnerUser).Where(l => 
                 l.SubscribedUsers.Any(s=>
                     s.UserId == user.Id));
         }

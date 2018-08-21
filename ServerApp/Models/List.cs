@@ -38,6 +38,12 @@ namespace ServerApp.Models {
 
         public virtual ICollection<UserListSubscription> SubscribedUsers { get; set; }
 
+        public virtual ICollection<UserListInvite> InvitedUsers { get; set; }
+
+        [JsonIgnore]
+        [InverseProperty("SubjectList")]
+        public IEnumerable<Notification> Notifications { get; internal set; }
+
         public bool IsSoon() {
             TimeSpan diff = Deadline - DateTime.Now;
 

@@ -127,6 +127,10 @@ namespace ClientApp.DataService {
             Debug.WriteLine("POST sendinvitations");
         }
 
+        public void UnsubscribeFromList(List list) {
+            this.DeleteList(list);
+        }
+
         public void DeleteList(List list) {
             Debug.WriteLine("DELETE list "+list.ListId);
         }
@@ -160,7 +164,8 @@ namespace ClientApp.DataService {
                 new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.JoinRequest, SubjectUser = GetUser(""), NotificationId = 1, IsUnread=true },
                 new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.ListInvitation, SubjectList = GetList(2), NotificationId = 2, IsUnread=false },
                 new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.ListInvitation, SubjectList = GetList(1), NotificationId = 3, IsUnread=true },
-                new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.ListInvitation, SubjectList = GetList(0), NotificationId = 4, IsUnread=false }
+                new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.ListInvitation, SubjectList = GetList(0), NotificationId = 4, IsUnread=false },
+                new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.ListJoinSuccess, SubjectList = GetList(2), SubjectUser=GetUser(""), NotificationId = 5, IsUnread=false }
             };
         }
 
@@ -168,8 +173,8 @@ namespace ClientApp.DataService {
             Debug.WriteLine("POST markallnotifs");
         }
 
-        public void MarkNotificationAsRead(Notification notification) {
-            Debug.WriteLine("POST marknotif "+notification.NotificationId);
+        public void ExecuteOrMarkNotification(Notification notification) {
+            Debug.WriteLine("POST execmarknotif "+notification.NotificationId);
         }
 
     }

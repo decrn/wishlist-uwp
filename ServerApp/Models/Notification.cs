@@ -47,4 +47,4 @@ namespace ServerApp.Models {
     }
 }
 
-public enum NotificationType { JoinRequest, ListInvitation, DeadlineReminder }
+public enum NotificationType { JoinRequest, ListInvitation, DeadlineReminder, ListJoinSuccess }

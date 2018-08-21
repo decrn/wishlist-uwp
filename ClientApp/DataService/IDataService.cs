@@ -51,6 +51,8 @@ namespace ClientApp.DataService {
 
         void SendInvitations(List list);
 
+        void UnsubscribeFromList(List list);
+        
         void DeleteList(List list);
 
 
@@ -73,7 +75,7 @@ namespace ClientApp.DataService {
 
         void MarkAllNotificationsAsRead();
 
-        void MarkNotificationAsRead(Notification notification);
+        void ExecuteOrMarkNotification(Notification notification);
 
     }
 }

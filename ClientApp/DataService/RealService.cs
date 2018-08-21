@@ -259,6 +259,8 @@ namespace ClientApp.DataService {
             task.Wait();
 
             JObject obj = JObject.Parse(response);
+
+            // TODO: Subscribed and Invited User details don't get translated
             List list = obj.ToObject<List>();
 
             if (LoadingIndicator != null) LoadingIndicator.IsLoading = false;
@@ -286,7 +288,12 @@ namespace ClientApp.DataService {
         public void SendInvitations(List list) {
             throw new NotImplementedException();
         }
-        
+
+        // The same route is reused, owners cant unsub from list & subscriber cant remove list so it's fine really...
+        public void UnsubscribeFromList(List list) {
+            this.DeleteList(list);
+        }
+
         public void DeleteList(List list) {
 
             var httpClient = new HttpClient();
@@ -350,11 +357,11 @@ namespace ClientApp.DataService {
             task.Wait();
         }
 
-        public void MarkNotificationAsRead(Notification notification) {
+        public void ExecuteOrMarkNotification(Notification notification) {
 
             var httpClient = new HttpClient();
             Task task = Task.Run(async () => {
-                var res = await httpClient.PutAsync(new Uri(BaseUri + "Notifications/"+notification.NotificationId), null);
+                var res = await httpClient.PostAsync(new Uri(BaseUri + "Notifications/"+notification.NotificationId), null);
             });
             task.Wait();
         }

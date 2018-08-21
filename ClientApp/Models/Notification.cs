@@ -31,6 +31,9 @@ namespace ClientApp.Models {
                     case NotificationType.DeadlineReminder:
                         return "The deadline for the list '" + SubjectList.Name + "' is coming up soon!";
                         break;
+                    case NotificationType.ListJoinSuccess:
+                        return "" + SubjectUser.GetFullName() + " has joined your list '"+ SubjectList.Name +"'.";
+                        break;
                 }
                 return "";
             }
@@ -47,4 +50,4 @@ namespace ClientApp.Models {
     }
 }
 
-public enum NotificationType { JoinRequest, ListInvitation, DeadlineReminder }
+public enum NotificationType { JoinRequest, ListInvitation, DeadlineReminder, ListJoinSuccess }

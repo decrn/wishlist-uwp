@@ -23,6 +23,28 @@ namespace ServerApp.Data {
             modelBuilder.Entity<Notification>().HasOne(n => n.SubjectUser);
             modelBuilder.Entity<Notification>().HasOne(n => n.SubjectList);
 
+            modelBuilder.Entity<UserListInvite>()
+                .HasOne(l => l.List)
+                .WithMany(l => l.InvitedUsers)
+                .HasForeignKey(i => i.ListId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<UserListSubscription>()
+                .HasOne(l => l.List)
+                .WithMany(l => l.SubscribedUsers)
+                .HasForeignKey(i => i.ListId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Item>()
+                .HasOne(l => l.List)
+                .WithMany(l => l.Items)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Notification>()
+                .HasOne(l => l.SubjectList)
+                .WithMany(l => l.Notifications)
+                .OnDelete(DeleteBehavior.Cascade);
+
             //modelBuilder.Entity<User>().HasMany(n => n.Notifications);
         }
     }

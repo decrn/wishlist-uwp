@@ -27,8 +27,11 @@ namespace ServerApp.Controllers {
         [HttpGet("{id}")]
         public async Task<IActionResult> GetList([FromRoute] int id) {
             var list = _context.List
+                .Include(l => l.OwnerUser)
                 .Include(l => l.Items)
                 .Include(l => l.SubscribedUsers)
+                    .ThenInclude(s => s.User)
+                .Include(l => l.InvitedUsers)
                     .ThenInclude(s => s.User)
                 .SingleOrDefault(m => m.ListId == id);
 
@@ -96,7 +99,7 @@ namespace ServerApp.Controllers {
             if (list.OwnerUser.Id != user.Id)
                 return Forbid();
 
-            list.SubscribedUsers.ToList().ForEach(u => u.User.InviteToList(list));
+            list.InvitedUsers.ToList().ForEach(u => u.User.InviteToList(list));
             await _context.SaveChangesAsync();
 
             return Ok();
@@ -123,19 +126,29 @@ namespace ServerApp.Controllers {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             
-            List list = await _context.List.SingleOrDefaultAsync(m => m.ListId == id);
+            List list = await _context.List.Include(l => l.OwnerUser).Include(l => l.SubscribedUsers).SingleOrDefaultAsync(m => m.ListId == id);
 
             if (list == null)
                 return NotFound();
 
             User user = await _userManager.GetUserAsync(HttpContext.User);
-            if (list.OwnerUser.Id != user.Id)
-                return Forbid();
+            if (list.OwnerUser.Id != user.Id) {
+                if (list.SubscribedUsers.Any(u => u.UserId == user.Id)) {
 
-            _context.List.Remove(list);
+                    // remove subscription
+                    list.SubscribedUsers.Remove(list.SubscribedUsers.First(u => u.UserId == user.Id));
+
+                } else {
+                    return Forbid();
+                }
+            } else {
+                 // remove list itself
+                _context.List.Remove(list);
+            }
+
             await _context.SaveChangesAsync();
 
-            return Ok(list);
+            return Ok();
         }
     }
 }

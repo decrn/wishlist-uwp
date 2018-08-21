@@ -29,6 +29,8 @@ namespace ClientApp.Models {
 
         public virtual List<User> SubscribedUsers { get; set; }
 
+        public virtual List<User> InvitedUsers { get; set; }
+
         public List() {
             Items = new List<Item>();
         }

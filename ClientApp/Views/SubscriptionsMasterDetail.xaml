@@ -187,6 +187,8 @@
 
                 </DataTemplate>
             </controls:MasterDetailsView.DetailsTemplate>
+            
+            <!--TODO: Add extra options like unsubscribe from list...-->
 
         </controls:MasterDetailsView>
     </Grid>

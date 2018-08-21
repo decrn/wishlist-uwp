@@ -37,10 +37,11 @@ namespace ServerApp.Data {
                 // seed list
                 var lists = new List[]
                 {
-                    new List { Name="Verjaardag Jan", OwnerUser=users[0], Description="Voor op het feestje af te geven", Deadline=new DateTime(2018,12,31) },
-                    new List { Name="Babyborrel Charlotte", OwnerUser=users[0], Description="Een jonge spruit!", Deadline=new DateTime(2019,05,12) },
-                    new List { Name="Trouw", OwnerUser=users[1], Description="Al gepasseerd eigenlijk", Deadline=new DateTime(2018,01,01) },
-                    new List { Name="Very soon event", OwnerUser=users[2], Description="Very close by", Deadline=DateTime.Today.AddDays(2) }
+                    new List { Name="Birthday Jan", OwnerUser=users[0], Description="Just some ideas for when you come visit", Deadline=DateTime.Now.AddDays(25).AddMinutes(555) },
+                    new List { Name="Baby shower Charlotte", IsHidden = true, OwnerUser=users[0], Description="Let's welcome Charlotte with a bunch of gifts or a green shower!", Deadline=DateTime.Now.AddDays(200) },
+                    new List { Name="Wedding A&M", OwnerUser=users[1], Deadline=DateTime.Now.AddDays(-5).AddHours(3) },
+                    new List { Name="Last minute B-Day", OwnerUser=users[2], Description="Sorry, I didn't have time to make my list.", Deadline=DateTime.Now.AddDays(2) },
+                    new List { Name="Retirement Grandpa Charles", IsHidden=true, OwnerUser=users[2], Description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quantum Aristoxeni ingenium consumptum videmus in musicis? Videsne, ut haec concinant? Quae cum magnifice primo dici viderentur, considerata minus probabantur.", Deadline=DateTime.Now.AddDays(50).AddHours(-60) },
                 };
                 foreach (List l in lists)
                     _context.List.Add(l);
@@ -50,10 +51,19 @@ namespace ServerApp.Data {
                 // seed items
                 var items = new Item[]
                 {
-                    new Item { ProductName="Playstation", List=lists[0], CheckedByUser=users[1] },
-                    new Item { ProductName="Tent", List=lists[0], ItemPriceUsd=19.99, CheckedByUser=users[2] },
-                    new Item { ProductName="Ovenschotel", List=lists[1], ItemPriceUsd=9.99 },
-                    new Item { ProductName="Barbies", List=lists[2] }
+                    new Item { ProductName="Playstation 4",         List=lists[0], ItemPriceUsd=379.99, CheckedByUser=users[1] },
+                    new Item { ProductName="Headset",               List=lists[0], ItemPriceUsd=030.00, CheckedByUser=users[1] },
+                    new Item { ProductName="Lego train",            List=lists[0], ItemPriceUsd=120.00 },
+                    new Item { ProductName="Batman costume",        List=lists[0] },
+                    new Item { ProductName="Extra PS4 game",        List=lists[0], ItemPriceUsd=059.99 },
+                    new Item { ProductName="Barbie dolls",          List=lists[1], ItemPriceUsd=025.00, CheckedByUser=users[2] },
+                    new Item { ProductName="Duplo blocks",          List=lists[1], ItemPriceUsd=050.00 },
+                    new Item { ProductName="Nice cutlery",          List=lists[2], ItemPriceUsd=249.98, CheckedByUser=users[0] },
+                    new Item { ProductName="Traditional adult toy", List=lists[2], ItemPriceUsd=050.00, CheckedByUser=users[2] },
+                    new Item { ProductName="Yoga set",              List=lists[2] },
+                    new Item { ProductName="Tent",                  List=lists[3], ItemPriceUsd=149.99, CheckedByUser=users[0] },
+                    new Item { ProductName="Cooking pot",           List=lists[3], ItemPriceUsd=075.00 },
+                    new Item { ProductName="Pepper & saltmill",     List=lists[4], ItemPriceUsd=075.00, CheckedByUser=users[1] }
                 };
                 foreach (Item i in items)
                     _context.Item.Add(i);
@@ -62,10 +72,13 @@ namespace ServerApp.Data {
 
                 var notifications = new Notification[]
                 {
-                    new Notification(users[0], NotificationType.DeadlineReminder, lists[0]),
-                    new Notification(users[0], NotificationType.JoinRequest, null, users[1]),
-                    new Notification(users[0], NotificationType.ListInvitation, lists[1]),
-                    new Notification(users[1], NotificationType.ListInvitation, lists[2])
+                    //new Notification(users[0], NotificationType.DeadlineReminder, lists[3]),
+                    new Notification(users[0], NotificationType.JoinRequest, null, users[2]),
+                    new Notification(users[0], NotificationType.ListJoinSuccess, lists[1], users[2]) { IsUnread = false },
+
+                    new Notification(users[2], NotificationType.ListInvitation, lists[0]),
+                    new Notification(users[1], NotificationType.ListInvitation, lists[1]),
+                    new Notification(users[0], NotificationType.ListInvitation, lists[4]),
                 };
                 foreach (Notification n in notifications)
                     _context.Notification.Add(n);
@@ -77,15 +90,31 @@ namespace ServerApp.Data {
                 var subs = new UserListSubscription[]
                 {
                     new UserListSubscription { ListId=lists[0].ListId, UserId=users[1].Id },
-                    new UserListSubscription { ListId=lists[0].ListId, UserId=users[2].Id },
-                    new UserListSubscription { ListId=lists[1].ListId, UserId=users[0].Id },
-                    new UserListSubscription { ListId=lists[3].ListId, UserId=users[0].Id }
+                    new UserListSubscription { ListId=lists[1].ListId, UserId=users[2].Id },
+                    new UserListSubscription { ListId=lists[2].ListId, UserId=users[0].Id },
+                    new UserListSubscription { ListId=lists[2].ListId, UserId=users[2].Id },
+                    new UserListSubscription { ListId=lists[3].ListId, UserId=users[0].Id },
+                    new UserListSubscription { ListId=lists[4].ListId, UserId=users[1].Id },
                 };
                 foreach (UserListSubscription s in subs)
                     sqlStatement += "( " + s.ListId + ", '" + s.UserId + "' ),";
 
                 sqlStatement = sqlStatement.Remove(sqlStatement.Length - 1) + ";";
                 _context.Database.ExecuteSqlCommand(sqlStatement);
+
+                // seed list invites
+                var sqlStatement2 = "INSERT INTO [UserListInvite] VALUES ";
+                var invs = new UserListInvite[]
+                {
+                    new UserListInvite { ListId=lists[0].ListId, UserId=users[2].Id },
+                    new UserListInvite { ListId=lists[1].ListId, UserId=users[1].Id },
+                    new UserListInvite { ListId=lists[4].ListId, UserId=users[0].Id },
+                };
+                foreach (UserListInvite s in invs)
+                    sqlStatement2 += "( " + s.ListId + ", '" + s.UserId + "' ),";
+
+                sqlStatement2 = sqlStatement2.Remove(sqlStatement2.Length - 1) + ";";
+                _context.Database.ExecuteSqlCommand(sqlStatement2);
             }
         }
     }
