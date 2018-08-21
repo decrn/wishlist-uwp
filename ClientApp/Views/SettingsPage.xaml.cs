@@ -7,6 +7,8 @@ namespace ClientApp {
 
     public sealed partial class SettingsPage : Page {
 
+        private bool Initialized = false;
+
         public SettingsPage() {
             this.InitializeComponent();
         }
@@ -16,14 +18,23 @@ namespace ClientApp {
             ThemeComboBox.SelectedItem = ThemeComboBox.Items.Cast<ComboBoxItem>().Where(i => currentThemeSetting.ToString().Contains(i.Tag.ToString())).First();
 
             BackgroundTaskToggleSwitch.IsOn = App.settingsService.GetBackgroundTaskEnabledSetting();
+            UseFakeDateServiceToggleSwitch.IsOn = App.settingsService.UseFakeDataService;
+            Initialized = true;
         }
 
         private void SelectTheme(object sender, SelectionChangedEventArgs e) {
-            App.settingsService.SetThemeSetting( ((ComboBoxItem)ThemeComboBox.SelectedItem).Tag );
+            if (Initialized)
+                App.settingsService.SetThemeSetting( ((ComboBoxItem)ThemeComboBox.SelectedItem).Tag );
         }
 
         private void ToggleBackgroundTask(object sender, RoutedEventArgs e) {
-            App.settingsService.SetBackgroundTaskEnabledSetting(BackgroundTaskToggleSwitch.IsOn);
+            if (Initialized)
+                App.settingsService.SetBackgroundTaskEnabledSetting(BackgroundTaskToggleSwitch.IsOn);
+        }
+
+        private void ToggleUseFakeDateService(object sender, RoutedEventArgs e) {
+            if (Initialized)
+                App.settingsService.UseFakeDataService = UseFakeDateServiceToggleSwitch.IsOn;
         }
     }
 

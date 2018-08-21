@@ -23,6 +23,11 @@ namespace ClientApp.DataService {
                     break;
                 }
             }
+
+            var fake = localSettings.Values["UseFakeDataService"];
+            if (fake != null) {
+                UseFakeDataService = (bool) fake;
+            }
         }
 
 
@@ -72,6 +77,14 @@ namespace ClientApp.DataService {
             }
         }
 
+        // Use fake data service
+
+        private bool _UseFakeDataService = true; // TODO: Edit this to true once everyone has set setting manually
+
+        public bool UseFakeDataService {
+            get { return _UseFakeDataService; }
+            set { _UseFakeDataService = value; localSettings.Values["UseFakeDataService"] = value; }
+        }
 
         // Helpers
 
@@ -90,7 +103,7 @@ namespace ClientApp.DataService {
             // return first enum value if value is null
             if (value == null) return ParseEnum<T>(0);
 
-            return (T) Enum.Parse(typeof(T), value.ToString());
+            return (T)Enum.Parse(typeof(T), value.ToString());
         }
     }
 
