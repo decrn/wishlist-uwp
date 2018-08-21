@@ -1,0 +1,648 @@
+{
+	"info": {
+		"name": "Wishlist",
+		"_postman_id": "7fd599a5-7d37-4b3b-f719-afe0fc707b26",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Email",
+							"value": "a@domain.com",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Password",
+							"value": "qwerty12345",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:{{port}}/api/Account/Login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"Account",
+						"Login"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Register",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "FirstName",
+							"value": "Jan",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "LastName",
+							"value": "Janssens",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Email",
+							"value": "g@domain.com",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Password",
+							"value": "qwerty12345",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "ConfirmPassword",
+							"value": "qwerty12345",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:{{port}}/api/Account/Register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"Account",
+						"Register"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Change Password",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "OldPassword",
+							"value": "qwerty12345",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "NewPassword",
+							"value": "qwerty1234",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "ConfirmPassword",
+							"value": "qwerty1234",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:{{port}}/api/Account/Password",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"Account",
+						"Password"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Forgot Password",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Email",
+							"value": "a@domain.com",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:{{port}}/api/Account/ForgotPassword",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"Account",
+						"ForgotPassword"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Reset Password",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Email",
+							"value": "a@domain.com",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Password",
+							"value": "qwerty12345",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "ConfirmPassword",
+							"value": "qwerty12345",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Code",
+							"value": "68c63197c7e736526dc022602eb45e9f",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:{{port}}/api/Account/ResetPassword",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"Account",
+						"ResetPassword"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Account",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Email",
+							"value": "q@domain.com",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "FirstName",
+							"value": "Abc",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "LastName",
+							"value": "Def",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:{{port}}/api/Account/Edit",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"Account",
+						"Edit"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Email",
+							"value": "a@domain.com",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Password",
+							"value": "qwerty12345",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:{{port}}/api/Account/Logout",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"Account",
+						"Logout"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get User",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Email",
+							"value": "a@domain.com",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Password",
+							"value": "qwerty12345",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:{{port}}/api/Users/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"Users",
+						""
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get a List",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Email",
+							"value": "a@domain.com",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Password",
+							"value": "qwerty12345",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:{{port}}/api/Lists/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"Lists",
+						"4"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a List/Subscription",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Email",
+							"value": "a@domain.com",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Password",
+							"value": "qwerty12345",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:{{port}}/api/Lists/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"Lists",
+						"3"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get My Lists",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Email",
+							"value": "a@domain.com",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Password",
+							"value": "qwerty12345",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:{{port}}/api/Users/Lists",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"Users",
+						"Lists"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get My Subscriptions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Email",
+							"value": "a@domain.com",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Password",
+							"value": "qwerty12345",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:{{port}}/api/Users/Subscriptions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"Users",
+						"Subscriptions"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Notifications",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Email",
+							"value": "a@domain.com",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Password",
+							"value": "qwerty12345",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:{{port}}/api/Notifications",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"Notifications"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Execute / Mark Notification",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:{{port}}/api/Notifications/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"Notifications",
+						"5"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhQGRvbWFpbi5jb20iLCJqdGkiOiJjNTU3ZDE1Zi02Yjc0LTRiZmYtYjhhOC1kYTJmNTBjYjM2MjYiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjExZjY3YmUzLWNhMDktNDRkYS1iNGRhLWZjYzYxOTVmZGQ3NSIsImV4cCI6MTUzNzQzNzE0MywiaXNzIjoibG9jYWxob3N0IiwiYXVkIjoibG9jYWxob3N0In0.pl8-5DrW5n80o5iONLby6Vf1nnfRWQ-jqsTubGYnbtU",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "ce2b9e68-816f-412f-b8fe-0e59a418d3dd",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "0fb2b58e-a32f-48b0-a290-0f80ca796abd",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "20f85a75-41c1-4d75-8c9e-7e17c81bb749",
+			"key": "port",
+			"value": "64042",
+			"type": "text"
+		},
+		{
+			"id": "6d2f3ba1-08c5-4011-88ce-490007cad9ae",
+			"key": "fb-app-id",
+			"value": "412991669179593",
+			"type": "text"
+		},
+		{
+			"id": "c8b1b530-b793-40a9-9fa2-3d08d7623a1b",
+			"key": "fb-redirect-uri",
+			"value": "https://www.facebook.com/connect/login_success.html",
+			"type": "text"
+		},
+		{
+			"id": "c79ad528-a70f-4f30-9ea6-007fe1eb65fc",
+			"key": "fb-state-param",
+			"value": "test",
+			"type": "text"
+		}
+	]
+}
