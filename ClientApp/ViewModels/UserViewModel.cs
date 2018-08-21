@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace ClientApp.ViewModels {
-    public class UserViewModel : NotificationBase {
+    public class UserViewModel : NotificationBase<User> {
 
         User user;
 

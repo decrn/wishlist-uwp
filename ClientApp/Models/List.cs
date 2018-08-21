@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ClientApp.ViewModels;
 
 namespace ClientApp.Models {
     public class List {
@@ -45,10 +46,12 @@ namespace ClientApp.Models {
         public void RemoveItem(Item item) {
             if (Items.Contains(item)) {
                 Items.Remove(item);
-                App.dataService.DeleteList(this);
+                App.dataService.EditList(this);
             }
         }
 
-        // add methods to check item off, ...
+        public void Update(Item item) {
+            App.dataService.EditList(this);
+        }
     }
 }

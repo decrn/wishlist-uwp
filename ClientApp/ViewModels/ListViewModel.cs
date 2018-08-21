@@ -1,69 +1,77 @@
 ﻿using ClientApp.Models;
 using ClientApp.ViewModels.ViewModels;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 
 namespace ClientApp.ViewModels {
     public class ListViewModel : NotificationBase<List> {
-        public ListViewModel(List list = null) : base(list) { }
+        private readonly List _list;
+
+        public ListViewModel(List list = null) : base(list) {
+            _list = list;
+        }
 
         public int ListId {
-            get { return This.ListId; }
+            get => This.ListId;
             set { SetProperty(This.ListId, value, () => This.ListId = value); }
         }
 
         public string Name {
-            get { return This.Name; }
+            get => This.Name;
             set { SetProperty(This.Name, value, () => This.Name = value); }
         }
 
         public User OwnerUser {
-            get { return This.OwnerUser; }
+            get => This.OwnerUser;
             set { SetProperty(This.OwnerUser, value, () => This.OwnerUser = value); }
         }
 
         public string Color {
-            get { return This.Color; }
+            get => This.Color;
             set { SetProperty(This.Color, value, () => This.Color = value); }
         }
 
-        public string ItemCount {
-            get { return This.Items==null ? "" : This.Items.Count + " items"; }
+        public string ItemCount => This.Items == null ? "" : This.Items.Count + " items";
+
+        private ObservableCollection<ItemViewModel> _items = new ObservableCollection<ItemViewModel>();
+
+        public ObservableCollection<ItemViewModel> Items {
+            get => _items;
+            set => SetProperty(ref _items, value);
         }
 
-        List<ItemViewModel> _Items = new List<ItemViewModel>();
-        public List<ItemViewModel> Items {
-            get { return _Items; }
-            set { SetProperty(ref _Items, value); }
-        }
+        private int _selectedItemIndex;
 
-        public List<string> ItemNames {
-            get
-            {
-                return Items.Select(i => i.ProductName).ToList();
-                //List<string> itemnames = new List<string>();
-                //foreach (var item in Items) {
-                //    itemnames.Add(item.ProductName);
-                //}
-
-                //return itemnames;
+        public int SelectedItemIndex {
+            get => _selectedItemIndex;
+            set {
+                if (SetProperty(ref _selectedItemIndex, value)) RaisePropertyChanged(nameof(SelectedItem));
             }
-        }        
-
-        public static ListViewModel FromList(List list) {
-            var viewModel = new ListViewModel();
-
-            viewModel.ListId = list.ListId;
-            viewModel.Name = list.Name;
-            viewModel.OwnerUser = list.OwnerUser;
-            viewModel.Color = list.Color;
-            if (list.Items != null)
-                viewModel.Items = list.Items.Select(i => ItemViewModel.FromItem(i)).ToList();
-
-            return viewModel;
         }
 
-        // add observablelist of list items ...
+        public ItemViewModel SelectedItem => _selectedItemIndex >= 0 ? _items[_selectedItemIndex] : null;
 
+        public void AddItem() {
+            var item = new ItemViewModel();
+            item.PropertyChanged += Item_OnNotifyPropertyChanged;
+            Items.Add(item);
+            _list.AddItem(item);
+            SelectedItemIndex = Items.IndexOf(item);
+        }
+
+        public void DeleteItem() {
+            if (SelectedItemIndex != -1) {
+                var item = Items[SelectedItemIndex];
+                Items.RemoveAt(SelectedItemIndex);
+                _list.RemoveItem(item);
+            }
+        }
+
+        void Item_OnNotifyPropertyChanged(Object sender, PropertyChangedEventArgs e) {
+            _list.Update((ItemViewModel) sender);
+        }
     }
 }
