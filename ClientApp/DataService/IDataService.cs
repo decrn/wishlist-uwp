@@ -18,7 +18,7 @@ namespace ClientApp.DataService {
         dynamic Register(RegisterViewModel vm);
 
         dynamic ChangePassword(ChangePasswordViewModel vm);
-        
+
         dynamic ForgotPassword(ForgotPasswordViewModel vm);
 
         dynamic ResetPassword(ResetPasswordViewModel vm);
@@ -37,6 +37,8 @@ namespace ClientApp.DataService {
         List<List> GetOwnedLists();
 
         List<List> GetSubscribedLists();
+
+        void RequestAccess(string emailaddress);
 
 
         // LISTS

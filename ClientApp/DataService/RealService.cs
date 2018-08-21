@@ -238,6 +238,10 @@ namespace ClientApp.DataService {
             return lists;
         }
 
+        public void RequestAccess(string emailaddress) {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         #region LISTS

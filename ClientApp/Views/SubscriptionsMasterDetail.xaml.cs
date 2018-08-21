@@ -1,6 +1,7 @@
 ﻿using ClientApp.Models;
 using ClientApp.Views;
 using System.Collections.Generic;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 
@@ -25,6 +26,11 @@ namespace ClientApp {
                 CurrentList = App.dataService.GetList(((List)selected).ListId);
                 return CurrentList;
             };
+        }
+
+        private async void RequestAccess(object sender, RoutedEventArgs e) {
+            RequestListAccess dialog = new RequestListAccess();
+            dialog.ShowAsync();
         }
 
         private void ViewSubscribers(object sender, TappedRoutedEventArgs e) {

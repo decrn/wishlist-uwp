@@ -92,6 +92,12 @@ namespace ClientApp.DataService {
             };
         }
 
+        public void RequestAccess(string emailaddress) {
+            Debug.WriteLine("POST request access " + emailaddress);
+        }
+
+        // LISTS
+
         public List GetList(int id) {
             Debug.WriteLine("GET list "+id);
             List list = new List {

@@ -34,6 +34,9 @@
                         Text="Subscribed lists"
                         Style="{ThemeResource TitleTextBlockStyle}"
                         VerticalAlignment="Center"/>
+                    <Button Click="RequestAccess" Background="Transparent" VerticalAlignment="Center">
+                        <SymbolIcon>AddFriend</SymbolIcon>
+                    </Button>
                 </StackPanel>
             </controls:MasterDetailsView.MasterHeader>
 
