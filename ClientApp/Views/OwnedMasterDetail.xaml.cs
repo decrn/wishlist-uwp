@@ -1,4 +1,5 @@
 ﻿using ClientApp.Models;
+using ClientApp.Views;
 using System.Collections.Generic;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -27,20 +28,8 @@ namespace ClientApp {
         }
 
         private async void NewList(object sender, RoutedEventArgs e) {
-
-            ContentDialog NewListDialog = new ContentDialog() {
-                Title = "Create a new list",
-                Content = new TextBox() { PlaceholderText = "Enter a list name" },
-                PrimaryButtonText = "Create",
-                CloseButtonText = "Cancel"
-            };
-
-            NewListDialog.PrimaryButtonClick += (x,y) => {
-                string newname = ((TextBox)x.Content).Text;
-                MasterDetail.SelectedItem = new List() { Name = newname };
-            };
-
-            NewListDialog.ShowAsync();
+            NewListDialog dialog = new NewListDialog();
+            dialog.ShowAsync();
         }
 
         private void Save(object sender, RoutedEventArgs e) {

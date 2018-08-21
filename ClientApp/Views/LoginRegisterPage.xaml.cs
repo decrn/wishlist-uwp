@@ -1,6 +1,8 @@
 ﻿using ClientApp.ViewModels;
 using ClientApp.Views;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -29,18 +31,29 @@ namespace ClientApp {
                     Password = PasswordBox.Password
                 };
 
-                JObject result = App.dataService.Login(vm);
+                ValidationContext validationContext = new ValidationContext(vm);
+                List<ValidationResult> validationResults = new List<ValidationResult>();
+                bool isValid = Validator.TryValidateObject(vm, validationContext, validationResults, true);
 
-                if (result["success"].ToString() == "True") {
-                    this.Frame.Navigate(typeof(MainPage));
+                if (isValid) {
+                    JObject result = App.dataService.Login(vm);
+
+                    if (result["success"].ToString() == "True") {
+                        this.Frame.Navigate(typeof(MainPage));
+                    } else {
+                        var test = result["errors"];
+                        if (result["errors"] == null)
+                            ErrorText.Text = "Wrong credentials";
+                        else
+                            ErrorText.Text = result["errors"][0]["message"].ToString();
+                        ErrorText.Visibility = Visibility.Visible;
+                    }
+
                 } else {
-                    var test = result["errors"];
-                    if (result["errors"] == null)
-                        ErrorText.Text = "Wrong credentials";
-                    else
-                        ErrorText.Text = result["errors"][0]["message"].ToString();
+                    ErrorText.Text = validationResults[0].ErrorMessage;
                     ErrorText.Visibility = Visibility.Visible;
                 }
+
             }
         }
 
@@ -49,7 +62,9 @@ namespace ClientApp {
             if (!registerMode) {
                 ToggleRegisterMode();
             } else {
-                // TODO: can you make viewmodels in xaml?
+
+                ErrorText.Visibility = Visibility.Collapsed;
+
                 RegisterViewModel vm = new RegisterViewModel() {
                     FirstName = FirstNameBox.Text,
                     LastName = LastNameBox.Text,
@@ -58,16 +73,27 @@ namespace ClientApp {
                     ConfirmPassword = ConfirmPasswordBox.Password
                 };
 
-                JObject result = App.dataService.Register(vm);
+                ValidationContext validationContext = new ValidationContext(vm);
+                List<ValidationResult> validationResults = new List<ValidationResult>();
+                bool isValid = Validator.TryValidateObject(vm, validationContext, validationResults, true);
 
-                if (result["success"].ToString() == "True") {
-                    this.Frame.Navigate(typeof(MainPage));
+                if (isValid) {
+
+                    JObject result = App.dataService.Register(vm);
+
+                    if (result["success"].ToString() == "True") {
+                        this.Frame.Navigate(typeof(MainPage));
+                    } else {
+                        var test = result["errors"];
+                        if (result["errors"] == null)
+                            ErrorText.Text = "Wrong credentials";
+                        else
+                            ErrorText.Text = result["errors"][0]["message"].ToString();
+                        ErrorText.Visibility = Visibility.Visible;
+                    }
+
                 } else {
-                    var test = result["errors"];
-                    if (result["errors"] == null)
-                        ErrorText.Text = "Wrong credentials";
-                    else
-                        ErrorText.Text = result["errors"][0]["message"].ToString();
+                    ErrorText.Text = validationResults[0].ErrorMessage;
                     ErrorText.Visibility = Visibility.Visible;
                 }
 
@@ -77,13 +103,13 @@ namespace ClientApp {
 
         private void LoginGoogle(object sender, RoutedEventArgs e) {
             // TODO: Implement Google Login
-            var messageDialog = new MessageDialog("This functioanlity hasn't been added yet.");
+            var messageDialog = new MessageDialog("This functionality hasn't been added yet.");
             messageDialog.ShowAsync();
         }
 
         private void LoginFacebook(object sender, RoutedEventArgs e) {
             // TODO: Implement Facebook Login
-            var messageDialog = new MessageDialog("This functioanlity hasn't been added yet.");
+            var messageDialog = new MessageDialog("This functionality hasn't been added yet.");
             messageDialog.ShowAsync();
         }
 

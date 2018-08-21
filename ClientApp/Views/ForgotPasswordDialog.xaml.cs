@@ -1,5 +1,7 @@
 ﻿using ClientApp.ViewModels;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -18,29 +20,43 @@ namespace ClientApp.Views {
         private void Request(object sender, RoutedEventArgs e) {
 
             ErrorText.Visibility = Visibility.Collapsed;
-            JObject result = App.dataService.ForgotPassword(new ForgotPasswordViewModel() { Email = EmailBox.Text });
+            ForgotPasswordViewModel vm = new ForgotPasswordViewModel() { Email = EmailBox.Text };
 
-            if (result["success"].ToString() == "True") {
+            ValidationContext validationContext = new ValidationContext(vm);
+            List<ValidationResult> validationResults = new List<ValidationResult>();
+            bool isValid = Validator.TryValidateObject(vm, validationContext, validationResults, true);
 
-                // Really, I tried to do it with x:Bind but the ui wouldn't update
-                CodeBox.Visibility = Visibility.Visible;
-                CodeBox.Focus(FocusState.Programmatic);
-                Border1.Visibility = Visibility.Visible;
-                Message.Visibility = Visibility.Visible;
-                PasswordBox.Visibility = Visibility.Visible;
-                ConfirmPasswordBox.Visibility = Visibility.Visible;
-                ResetButton.Visibility = Visibility.Visible;
-                RequestButton.Visibility = Visibility.Collapsed;
-                ErrorText.Visibility = Visibility.Collapsed;
+            if (isValid) {
+                JObject result = App.dataService.ForgotPassword(vm);
+
+                if (result["success"].ToString() == "True") {
+
+                    // Really, I tried to do it with x:Bind but the ui wouldn't update
+                    EmailBox.IsReadOnly = true;
+                    CodeBox.Visibility = Visibility.Visible;
+                    CodeBox.Focus(FocusState.Programmatic);
+                    Border1.Visibility = Visibility.Visible;
+                    Message.Visibility = Visibility.Visible;
+                    PasswordBox.Visibility = Visibility.Visible;
+                    ConfirmPasswordBox.Visibility = Visibility.Visible;
+                    ResetButton.Visibility = Visibility.Visible;
+                    RequestButton.Visibility = Visibility.Collapsed;
+                    ErrorText.Visibility = Visibility.Collapsed;
+
+                } else {
+                    var test = result["errors"];
+                    if (result["errors"] == null)
+                        ErrorText.Text = "Error";
+                    else
+                        ErrorText.Text = result["errors"][0]["message"].ToString();
+                    ErrorText.Visibility = Visibility.Visible;
+                }
 
             } else {
-                var test = result["errors"];
-                if (result["errors"] == null)
-                    ErrorText.Text = "Error";
-                else
-                    ErrorText.Text = result["errors"][0]["message"].ToString();
+                ErrorText.Text = validationResults[0].ErrorMessage;
                 ErrorText.Visibility = Visibility.Visible;
             }
+
         }
 
         private void Reset(object sender, RoutedEventArgs e) {
@@ -53,21 +69,32 @@ namespace ClientApp.Views {
                 Code = CodeBox.Text
             };
 
-            JObject result = App.dataService.ResetPassword(vm);
+            ValidationContext validationContext = new ValidationContext(vm);
+            List<ValidationResult> validationResults = new List<ValidationResult>();
+            bool isValid = Validator.TryValidateObject(vm, validationContext, validationResults, true);
 
-            if (result["success"].ToString() == "True") {
-                Hide();
-                var messageDialog = new MessageDialog("You can now login with your new password.");
-                messageDialog.ShowAsync();
+            if (isValid) {
+                JObject result = App.dataService.ResetPassword(vm);
+
+                if (result["success"].ToString() == "True") {
+                    Hide();
+                    var messageDialog = new MessageDialog("You can now login with your new password.");
+                    messageDialog.ShowAsync();
+
+                } else {
+                    var test = result["errors"];
+                    if (result["errors"] == null)
+                        ErrorText.Text = "Error";
+                    else
+                        ErrorText.Text = result["errors"][0]["message"].ToString();
+                    ErrorText.Visibility = Visibility.Visible;
+                }
 
             } else {
-                var test = result["errors"];
-                if (result["errors"] == null)
-                    ErrorText.Text = "Error";
-                else
-                    ErrorText.Text = result["errors"][0]["message"].ToString();
+                ErrorText.Text = validationResults[0].ErrorMessage;
                 ErrorText.Visibility = Visibility.Visible;
             }
+
         }
 
         private void Close(object sender, RoutedEventArgs e) {
@@ -77,9 +104,9 @@ namespace ClientApp.Views {
         private void OnTextBoxKeyDown(object sender, KeyRoutedEventArgs e) {
             if (e.Key == Windows.System.VirtualKey.Enter) {
                 if (resetMode)
-                    Reset(null, null);
+                    Reset(this, null);
                 else
-                    Request(null, null);
+                    Request(this, null);
             }
         }
 

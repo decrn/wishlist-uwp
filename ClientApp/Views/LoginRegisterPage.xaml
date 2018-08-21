@@ -26,7 +26,7 @@
 
             <PasswordBox x:Name="ConfirmPasswordBox" Margin="10" PlaceholderText="Confirm password" Width="210" Visibility="Collapsed" KeyDown="OnTextBoxKeyDown"/>
             
-            <TextBlock x:Name="ErrorText" Margin="10" TextWrapping="Wrap" Visibility="Collapsed" Width="210" Foreground="#FFA60000"/>
+            <TextBlock x:Name="ErrorText" Margin="10" TextWrapping="Wrap" Visibility="Collapsed" Width="210" Foreground="Red"/>
             
             <StackPanel Orientation="Horizontal">
                 <Button Margin="10" Click="Login">

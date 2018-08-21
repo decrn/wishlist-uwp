@@ -109,6 +109,9 @@
     <Compile Include="Views\ForgotPasswordDialog.xaml.cs">
       <DependentUpon>ForgotPasswordDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\NewListDialog.xaml.cs">
+      <DependentUpon>NewListDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\NotificationPart.xaml.cs">
       <DependentUpon>NotificationPart.xaml</DependentUpon>
     </Compile>
@@ -203,6 +206,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="Views\ForgotPasswordDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NewListDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

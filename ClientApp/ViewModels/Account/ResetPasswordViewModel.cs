@@ -12,7 +12,7 @@ namespace ClientApp.ViewModels {
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Compare("NewPassword", ErrorMessage = "Passwords don't match.")]
+        [Compare("Password", ErrorMessage = "Passwords don't match.")]
         public string ConfirmPassword { get; set; }
 
         [Required(ErrorMessage = "Please fill in the code you got in your mailbox.")]

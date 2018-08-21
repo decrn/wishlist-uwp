@@ -1,26 +1,25 @@
-﻿using Microsoft.Toolkit.Extensions;
-using Windows.UI.Xaml;
+﻿using ClientApp.Models;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 
 // The Content Dialog item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace ClientApp.Views {
-    public sealed partial class RequestListAccess : ContentDialog {
-        public RequestListAccess() {
+    public sealed partial class NewListDialog : ContentDialog {
+        public NewListDialog() {
             this.InitializeComponent();
-            Email.Focus(FocusState.Programmatic);
         }
 
-        private void Request(ContentDialog sender, ContentDialogButtonClickEventArgs args) {
-            string value = Email.Text;
-            if (value.IsEmail()) {
-                App.dataService.RequestAccess(value);
+        private void Save(ContentDialog sender, ContentDialogButtonClickEventArgs args) {
+            string value = ListName.Text;
+            if (value != "") {
+                List list = new List() { Name = value };
+                App.dataService.NewList(list);
                 base.Hide();
             } else {
                 if (args != null)
                     args.Cancel = true;
-                Error.Text = "Not a valid email address";
+                Error.Text = "Name cannot be empty";
             }
         }
 
@@ -31,12 +30,11 @@ namespace ClientApp.Views {
         private void OnTextBoxKeyDown(object sender, KeyRoutedEventArgs e) {
             Error.Text = "";
             if (e.Key == Windows.System.VirtualKey.Enter)
-                Request(this, null);
+                Save(this, null);
         }
 
         public void ShowAsync() {
             base.ShowAsync();
         }
-
     }
 }
