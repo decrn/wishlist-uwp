@@ -29,7 +29,7 @@ namespace ClientApp.DataService {
                 new KeyValuePair<string, string>("Password", vm.Password),
             });
 
-            JObject obj = HttpService.Post("Account/ResetPassword", body);
+            JObject obj = HttpService.Post("Account/Login", body, true);
             HttpService.TrySettingToken(obj);
 
             return obj;
@@ -46,7 +46,7 @@ namespace ClientApp.DataService {
                 new KeyValuePair<string, string>("ConfirmPassword", vm.ConfirmPassword),
             });
 
-            JObject obj = HttpService.Post("Account/ResetPassword", body);
+            JObject obj = HttpService.Post("Account/Register", body, true);
             HttpService.TrySettingToken(obj);
 
             return obj;
@@ -66,7 +66,7 @@ namespace ClientApp.DataService {
                 new KeyValuePair<string, string>("Email", vm.Email)
             });
 
-            JObject obj = HttpService.Post("Account/ForgotPassword", body);
+            JObject obj = HttpService.Post("Account/ForgotPassword", body, true);
             return obj;
         }
 
@@ -79,12 +79,12 @@ namespace ClientApp.DataService {
                 new KeyValuePair<string, string>("Code", vm.Code),
             });
 
-            JObject obj = HttpService.Post("Account/ResetPassword", body);
+            JObject obj = HttpService.Post("Account/ResetPassword", body, true);
             return obj;
         }
 
         public void Logout() {
-            HttpService.Get("Account/Logout");
+            HttpService.Get("Account/Logout", false);
             HttpService.ClearToken();
         }
 
@@ -104,13 +104,13 @@ namespace ClientApp.DataService {
         }
 
         public List<List> GetOwnedLists() {
-            JObject obj = HttpService.Get("Users/Lists");
+            JArray obj = JArray.Parse(HttpService.Get("Users/Lists"));
             List<List> lists = obj.ToObject<List<List>>();
             return lists;
         }
 
         public List<List> GetSubscribedLists() {
-            JObject obj = HttpService.Get("Users/Subscriptions");
+            JArray obj = JArray.Parse(HttpService.Get("Users/Subscriptions"));
             List<List> lists = obj.ToObject<List<List>>();
             return lists;
         }
@@ -125,7 +125,7 @@ namespace ClientApp.DataService {
         #region LISTS
 
         public List GetList(int id) {
-            JObject obj = HttpService.Get("Lists/" + id);
+            JObject obj = JObject.Parse(HttpService.Get("Lists/" + id));
             List list = obj.ToObject<List>();
             return list;
         }
@@ -186,7 +186,7 @@ namespace ClientApp.DataService {
         #region NOTIFICATIONS
 
         public List<Notification> GetNotifications() {
-            JObject obj = HttpService.Get("Notifications");
+            JArray obj = JArray.Parse(HttpService.Get("Notifications"));
             List<Notification> notifs = obj.ToObject<List<Notification>>();
             return notifs;
         }

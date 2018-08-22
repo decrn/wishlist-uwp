@@ -58,6 +58,6 @@
                 </StackPanel>
             </Button>
         </StackPanel>
-        
+        <!--TODO: Add loading spinner-->
     </Grid>
 </Page>
