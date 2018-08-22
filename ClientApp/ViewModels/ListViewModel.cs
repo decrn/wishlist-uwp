@@ -3,6 +3,7 @@ using ClientApp.ViewModels.ViewModels;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace ClientApp.ViewModels {
     public class ListViewModel : NotificationBase<List> {
@@ -18,8 +19,16 @@ namespace ClientApp.ViewModels {
         }
 
         public string Name {
-            get => This.Name;
-            set { SetProperty(This.Name, value, () => This.Name = value); }
+            get
+            {
+                Debug.WriteLine("Getting List.Name");
+                return This.Name;
+            }
+            set
+            {
+                Debug.WriteLine("Setting List.Name");
+                SetProperty(This.Name, value, () => This.Name = value);
+            }
         }
 
         public string Description {

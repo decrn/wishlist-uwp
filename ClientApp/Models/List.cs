@@ -1,18 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using ClientApp.ViewModels;
 using GalaSoft.MvvmLight;
 
 namespace ClientApp.Models {
     public class List : ObservableObject {
 
-        private int _listId;
-        public int ListId {
-            get { return _listId; }
-            set { _listId = value; }
-        }
+        public int ListId { get; set; }
 
-        public string Name { get; set; }
+        private string _name;
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                _name = value;
+                Debug.WriteLine("Setting Name in wrong place");
+            }
+        }
 
         public string Description { get; set; }
 

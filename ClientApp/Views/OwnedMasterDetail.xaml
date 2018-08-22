@@ -19,7 +19,7 @@
     <!--Start master detail-->
     <Grid>
         <controls:MasterDetailsView x:Name="MasterDetail"
-            ItemsSource="{x:Bind Lists.Lists, Mode=OneWay}"
+            ItemsSource="{x:Bind Lists.Lists, Mode=TwoWay}"
             CompactModeThresholdWidth="720"
             MasterPaneBackground="{ThemeResource MiddlePaneBackground}"
             Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
@@ -110,7 +110,7 @@
                             </Ellipse>
                             
                             <StackPanel Grid.Column="1" HorizontalAlignment="Left">
-                                <TextBox x:Name="Name" PlaceholderText="List Name" Margin="0,15,0,0" MaxLength="100" Width="200" Text="{x:Bind Name}"/>
+                                <TextBox x:Name="Name" PlaceholderText="List Name" Margin="0,15,0,0" MaxLength="100" Width="200" Text="{x:Bind Name, Mode=TwoWay}"/>
                                 <TextBox x:Name="Description" PlaceholderText="Description" Margin="0,15,0,0" MaxLength="300" Width="200" Text="{x:Bind Description}"/>
                                 <CalendarDatePicker x:Name="Deadline" PlaceholderText="Deadline" Margin="0,15,0,0" Width="200" Date="{x:Bind Deadline, Mode=TwoWay, Converter={StaticResource DateTimeToDateTimeOffset}}"></CalendarDatePicker>
                             </StackPanel>
@@ -136,7 +136,7 @@
                                         Text="Wishes"
                                         Style="{ThemeResource TitleTextBlockStyle}" />
 
-                                    <ListView x:Name="Items" Margin="0,20" ItemsSource="{x:Bind Items}" SelectionMode="None">
+                                    <ListView x:Name="Items" Margin="0,20" ItemsSource="{x:Bind List.Items}" SelectionMode="None">
                                         <!--TODO: Display a header with no items message-->
                                         <ListView.ItemTemplate>
                                             <DataTemplate x:DataType="models:Item">
@@ -192,7 +192,7 @@
                                     Text="Subscribed users"
                                     Style="{ThemeResource TitleTextBlockStyle}" />
 
-                                    <ListView x:Name="Users" Margin="0,20" ItemsSource="{x:Bind SubscribedUsers}" SelectionMode="None">
+                                    <ListView x:Name="Users" Margin="0,20" ItemsSource="{x:Bind List.SubscribedUsers}" SelectionMode="None">
                                         <!--TODO: Display a header with no items message-->
                                         <ListView.ItemTemplate>
                                             <DataTemplate x:DataType="models:User">
