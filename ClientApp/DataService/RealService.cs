@@ -29,11 +29,10 @@ namespace ClientApp.DataService {
                 new KeyValuePair<string, string>("Password", vm.Password),
             });
 
-            JObject obj = HttpService.Post("Account/Login", body, true);
+            JObject obj = JObject.Parse(HttpService.Post("Account/Login", body, true));
             HttpService.TrySettingToken(obj);
 
             return obj;
-            
         }
 
         public dynamic Register(RegisterViewModel vm) {
@@ -46,18 +45,34 @@ namespace ClientApp.DataService {
                 new KeyValuePair<string, string>("ConfirmPassword", vm.ConfirmPassword),
             });
 
-            JObject obj = HttpService.Post("Account/Register", body, true);
+            JObject obj = JObject.Parse(HttpService.Post("Account/Register", body, true));
             HttpService.TrySettingToken(obj);
 
             return obj;
         }
 
         public dynamic ChangePassword(ChangePasswordViewModel vm) {
-            throw new NotImplementedException();
+            var body = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string, string>("OldPassword", vm.OldPassword),
+                new KeyValuePair<string, string>("NewPassword", vm.NewPassword),
+                new KeyValuePair<string, string>("ConfirmPassword", vm.ConfirmPassword),
+            });
+
+            JObject obj = JObject.Parse(HttpService.Post("Account/Password", body, true));
+
+            return obj;
         }
 
         public dynamic EditAccount(EditAccountViewModel vm) {
-            throw new NotImplementedException();
+            var body = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string, string>("FirstName", vm.FirstName),
+                new KeyValuePair<string, string>("LastName", vm.LastName),
+                new KeyValuePair<string, string>("Email", vm.Email)
+            });
+
+            JObject obj = JObject.Parse(HttpService.Post("Account/Edit", body, true));
+
+            return obj;
         }
 
         public dynamic ForgotPassword(ForgotPasswordViewModel vm) {
@@ -66,7 +81,7 @@ namespace ClientApp.DataService {
                 new KeyValuePair<string, string>("Email", vm.Email)
             });
 
-            JObject obj = HttpService.Post("Account/ForgotPassword", body, true);
+            JObject obj = JObject.Parse(HttpService.Post("Account/ForgotPassword", body, true));
             return obj;
         }
 
@@ -79,7 +94,7 @@ namespace ClientApp.DataService {
                 new KeyValuePair<string, string>("Code", vm.Code),
             });
 
-            JObject obj = HttpService.Post("Account/ResetPassword", body, true);
+            JObject obj = JObject.Parse(HttpService.Post("Account/ResetPassword", body, true));
             return obj;
         }
 
@@ -98,7 +113,7 @@ namespace ClientApp.DataService {
         }
 
         public User GetUser(string id) {
-            JObject obj = HttpService.Get("Users/" + id);
+            JObject obj = JObject.Parse(HttpService.Get("Users/" + id));
             User user = obj.ToObject<User>();
             return user;
         }

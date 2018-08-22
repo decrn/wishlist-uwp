@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ClientApp.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace ClientApp.ViewModels {
     public class EditAccountViewModel {
@@ -13,6 +14,15 @@ namespace ClientApp.ViewModels {
         [DataType(DataType.EmailAddress)]
         [EmailAddress(ErrorMessage = "Email address is not valid.")]
         public string Email { get; set; }
+
+
+        public EditAccountViewModel() {
+            User User = App.dataService.GetCurrentUser();
+            // TODO: change this to the real mvvm way
+            Email = User.Email;
+            FirstName = User.FirstName;
+            LastName = User.LastName;
+        }
 
     }
 }
