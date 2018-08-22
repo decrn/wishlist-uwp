@@ -15,8 +15,9 @@ namespace ClientApp.Views {
         private void Request(ContentDialog sender, ContentDialogButtonClickEventArgs args) {
             string value = Email.Text;
             if (value.IsEmail()) {
-                App.dataService.RequestAccess(value);
                 base.Hide();
+                UserDetailsDialog dialog = new UserDetailsDialog(App.dataService.GetUser(value));
+                dialog.ShowAsync();
             } else {
                 if (args != null)
                     args.Cancel = true;
