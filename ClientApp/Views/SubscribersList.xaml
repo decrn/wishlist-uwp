@@ -15,7 +15,7 @@
         <ListView x:Name="UsersList" Margin="0,20" ItemsSource="{x:Bind Users}" SelectionMode="None">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:User">
-                    <StackPanel Margin="0,5">
+                    <StackPanel Margin="0,5" Tapped="OpenDetails" Tag="{x:Bind Id}">
                         <TextBlock Text="{x:Bind GetFullName()}" Style="{ThemeResource BaseTextBlockStyle}"/>
                         <TextBlock Text="{x:Bind Email}" Style="{ThemeResource ListBodyTextBlockStyle}"/>
                     </StackPanel>

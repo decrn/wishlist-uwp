@@ -69,7 +69,8 @@ namespace ClientApp.DataService {
                 FirstName = "Jan",
                 LastName = "Janssens",
                 Email = "jan@domain.com",
-                Id = "54674654"
+                Id = "54674654",
+                OwningLists = GetOwnedLists()
             };
         }
 
