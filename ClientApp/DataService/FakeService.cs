@@ -10,7 +10,6 @@ namespace ClientApp.DataService {
 
     public class FakeService : IDataService {
 
-        public static readonly string Name = "Fake Data Service";
         private string JWTToken = "skippinglogin";
 
         public Loading LoadingIndicator { get; set; }

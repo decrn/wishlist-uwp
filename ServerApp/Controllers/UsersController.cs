@@ -65,11 +65,11 @@ namespace ServerApp.Controllers {
             return Ok(publicuser);
         }
 
-        // POST: api/Users/5
-        [HttpPost("{id}")]
-        public async Task<IActionResult> SendRequestToUser([FromRoute] string id) {
+        // POST: api/Users/a@domain.com
+        [HttpPost("{Email}")]
+        public async Task<IActionResult> SendRequestToUser([FromRoute] string Email) {
             User loggedinuser = await _userManager.GetUserAsync(HttpContext.User);
-            User selecteduser = await _context.User.Include(u => u.Notifications).FirstOrDefaultAsync(m => m.Id == id);
+            User selecteduser = await _context.User.Include(u => u.Notifications).FirstOrDefaultAsync(m => m.Email == Email);
 
             if (selecteduser == null)
                 return NotFound();
