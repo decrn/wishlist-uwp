@@ -19,7 +19,7 @@
     <!--Start master detail-->
     <Grid>
         <controls:MasterDetailsView x:Name="MasterDetail"
-            ItemsSource="{x:Bind Lists, Mode=OneWay}"
+            ItemsSource="{x:Bind Lists.Lists, Mode=OneWay}"
             CompactModeThresholdWidth="720"
             MasterPaneBackground="{ThemeResource MiddlePaneBackground}"
             Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"

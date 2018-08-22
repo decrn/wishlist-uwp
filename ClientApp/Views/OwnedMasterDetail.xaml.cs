@@ -1,10 +1,7 @@
-﻿using ClientApp.Models;
+﻿using ClientApp.ViewModels;
 using ClientApp.Views;
-using System.Collections.Generic;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using ClientApp.ViewModels;
-using GalaSoft.MvvmLight.Messaging;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -20,15 +17,10 @@ namespace ClientApp {
             InitializeComponent();
             Lists = new ListMasterDetailViewModel("Owned");
 
-            /*MasterDetail.MapDetails = selected => { Lists.SelectedList = selected; }
-
-            MasterDetail.MapDetails = selected => { return Lists.SelectedList; };
             // return the full detail list when opening detail panel
-
             MasterDetail.MapDetails = (selected) => {
-                CurrentList = App.dataService.GetList(((List) selected).ListId);
-                return CurrentList;
-            };*/
+                return Lists.GetDetailed((ListViewModel) selected);
+            };
         }
 
         private async void NewList(object sender, RoutedEventArgs e) {

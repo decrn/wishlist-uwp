@@ -1,8 +1,7 @@
-﻿using System;
+﻿using ClientApp.ViewModels.ViewModels;
+using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using ClientApp.Models;
-using ClientApp.ViewModels.ViewModels;
 
 namespace ClientApp.ViewModels {
     public class ListMasterDetailViewModel : NotificationBase {
@@ -30,7 +29,7 @@ namespace ClientApp.ViewModels {
                 Debug.WriteLine(lvm.Name);
             }
         }
-        
+
         private ObservableCollection<ListViewModel> _lists = new ObservableCollection<ListViewModel>();
 
         public ObservableCollection<ListViewModel> Lists {
@@ -62,5 +61,10 @@ namespace ClientApp.ViewModels {
                 list.RemoveItem(item);
             }
         }*/
+
+
+        public ListViewModel GetDetailed(ListViewModel selected) {
+            return new ListViewModel(App.dataService.GetList(selected.ListId));
+        }
     }
 }
