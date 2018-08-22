@@ -37,21 +37,25 @@ namespace ClientApp.ViewModels {
             set => SetProperty(ref _lists, value);
         }
 
-        private int _selectedListIndex;
-
         public int SelectedListIndex {
-            get => _selectedListIndex;
-            set {
-                if (SetProperty(ref _selectedListIndex, value)) RaisePropertyChanged(nameof(SelectedList));
-            }
+            get => Lists.IndexOf(SelectedList);
         }
 
-        public ListViewModel SelectedList => _selectedListIndex >= 0 ? _lists[_selectedListIndex] : null;
+        public ListViewModel SelectedDetail;
+
+        private ListViewModel _selectedList;
+
+        public ListViewModel SelectedList {
+            get => _selectedList;
+            set {
+                SetProperty(ref _selectedList, value);
+            }
+        }
 
         public void AddList() {
             var list = new ListViewModel();
             Lists.Add(list);
-            SelectedListIndex = Lists.IndexOf(list);
+            //SelectedListIndex = Lists.IndexOf(list);
         }
 
         /*public void DeleteItem() {
@@ -64,7 +68,9 @@ namespace ClientApp.ViewModels {
 
 
         public ListViewModel GetDetailed(ListViewModel selected) {
-            return new ListViewModel(App.dataService.GetList(selected.ListId));
+            var vm = new ListViewModel(App.dataService.GetList(selected.ListId));
+            SelectedDetail = vm;
+            return vm;
         }
     }
 }

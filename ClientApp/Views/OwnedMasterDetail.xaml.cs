@@ -14,8 +14,8 @@ namespace ClientApp {
         public ListMasterDetailViewModel Lists { get; set; }
 
         public OwnedMasterDetail() {
-            InitializeComponent();
             Lists = new ListMasterDetailViewModel("Owned");
+            InitializeComponent();
 
             // return the full detail list when opening detail panel
             MasterDetail.MapDetails = (selected) => {
@@ -30,6 +30,7 @@ namespace ClientApp {
 
         private void Save(object sender, RoutedEventArgs e) {
             // check if list is new (no id) and use 'save' or 'create new' route
+            Lists.SelectedDetail.Save();
         }
 
         private void Send(object sender, RoutedEventArgs e) {

@@ -20,6 +20,7 @@
     <Grid>
         <controls:MasterDetailsView x:Name="MasterDetail"
             ItemsSource="{x:Bind Lists.Lists, Mode=TwoWay}"
+            SelectedItem="{x:Bind Lists.SelectedList, Mode=TwoWay}"
             CompactModeThresholdWidth="720"
             MasterPaneBackground="{ThemeResource MiddlePaneBackground}"
             Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
@@ -111,7 +112,7 @@
                             
                             <StackPanel Grid.Column="1" HorizontalAlignment="Left">
                                 <TextBox x:Name="Name" PlaceholderText="List Name" Margin="0,15,0,0" MaxLength="100" Width="200" Text="{x:Bind Name, Mode=TwoWay}"/>
-                                <TextBox x:Name="Description" PlaceholderText="Description" Margin="0,15,0,0" MaxLength="300" Width="200" Text="{x:Bind Description}"/>
+                                <TextBox x:Name="Description" PlaceholderText="Description" Margin="0,15,0,0" MaxLength="300" Width="200" Text="{x:Bind Description, Mode=TwoWay}"/>
                                 <CalendarDatePicker x:Name="Deadline" PlaceholderText="Deadline" Margin="0,15,0,0" Width="200" Date="{x:Bind Deadline, Mode=TwoWay, Converter={StaticResource DateTimeToDateTimeOffset}}"></CalendarDatePicker>
                             </StackPanel>
                         </Grid>

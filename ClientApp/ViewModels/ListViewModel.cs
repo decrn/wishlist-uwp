@@ -61,6 +61,10 @@ namespace ClientApp.ViewModels {
             set { SetProperty(This.Icon, value, () => This.Icon = value); }
         }
 
+        public void Save() {
+
+        }
+
         // items
 
         private ObservableCollection<ItemViewModel> _items = new ObservableCollection<ItemViewModel>();
