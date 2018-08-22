@@ -1,5 +1,7 @@
-﻿namespace ClientApp.Models {
-    public class Item {
+﻿using GalaSoft.MvvmLight;
+
+namespace ClientApp.Models {
+    public class Item : ObservableObject {
 
         public int ItemId { get; set; }
 

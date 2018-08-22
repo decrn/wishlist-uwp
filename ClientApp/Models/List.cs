@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using ClientApp.ViewModels;
+using GalaSoft.MvvmLight;
 
 namespace ClientApp.Models {
-    public class List {
+    public class List : ObservableObject {
 
         private int _listId;
         public int ListId {

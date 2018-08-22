@@ -8,10 +8,10 @@ using System.Linq;
 
 namespace ClientApp.ViewModels {
     public class ListViewModel : NotificationBase<List> {
-        private readonly List _list;
+        private List list;
 
         public ListViewModel(List list = null) : base(list) {
-            _list = list;
+            this.list = App.dataService.GetList(list.ListId);
         }
 
         public int ListId {
@@ -23,7 +23,7 @@ namespace ClientApp.ViewModels {
             get => This.Name;
             set { SetProperty(This.Name, value, () => This.Name = value); }
         }
-
+        
         public User OwnerUser {
             get => This.OwnerUser;
             set { SetProperty(This.OwnerUser, value, () => This.OwnerUser = value); }
@@ -58,7 +58,7 @@ namespace ClientApp.ViewModels {
             var item = new ItemViewModel();
             item.PropertyChanged += Item_OnNotifyPropertyChanged;
             Items.Add(item);
-            _list.AddItem(item);
+            list.AddItem(item);
             SelectedItemIndex = Items.IndexOf(item);
         }
 
@@ -66,12 +66,12 @@ namespace ClientApp.ViewModels {
             if (SelectedItemIndex != -1) {
                 var item = Items[SelectedItemIndex];
                 Items.RemoveAt(SelectedItemIndex);
-                _list.RemoveItem(item);
+                list.RemoveItem(item);
             }
         }
 
         void Item_OnNotifyPropertyChanged(Object sender, PropertyChangedEventArgs e) {
-            _list.Update((ItemViewModel) sender);
+            list.Update((ItemViewModel) sender);
         }
     }
 }

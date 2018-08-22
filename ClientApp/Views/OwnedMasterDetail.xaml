@@ -42,7 +42,7 @@
 
             <!--Define items in master list-->
             <controls:MasterDetailsView.ItemTemplate>
-                <DataTemplate x:DataType="models:List">
+                <DataTemplate x:DataType="viewmodels:ListViewModel">
                     <Grid Margin="0 12">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -81,7 +81,7 @@
 
             <!--Define detail panel-->
             <controls:MasterDetailsView.DetailsTemplate>
-                <DataTemplate x:DataType="models:List">
+                <DataTemplate x:DataType="viewmodels:ListViewModel">
 
                     <Grid>
                         <Grid.RowDefinitions>
