@@ -168,6 +168,10 @@ namespace ClientApp.DataService {
             };
         }
 
+        public int GetUnreadNotificationCount() {
+            return 3;
+        }
+
         public void MarkAllNotificationsAsRead() {
             Debug.WriteLine("POST markallnotifs");
         }

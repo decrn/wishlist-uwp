@@ -40,7 +40,8 @@ namespace ClientApp {
         }
 
         public void SelectList(List list) {
-            MasterDetail.SelectedItem = Lists.First((l) => l.ListId == list.ListId);
+            if (list == null) MasterDetail.SelectedItem = null;
+            else MasterDetail.SelectedItem = Lists.First((l) => l.ListId == list.ListId);
         }
     }
 }

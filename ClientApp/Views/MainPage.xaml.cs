@@ -13,6 +13,8 @@ namespace ClientApp {
 
     public sealed partial class MainPage : Page {
 
+        int NotificationCount;
+
         public MainPage() {
             this.InitializeComponent();
             App.dataService.LoadingIndicator = LoadingControl;
@@ -110,6 +112,10 @@ namespace ClientApp {
             notificationPart.MainPage = this;
         }
 
+        public void RefreshNotificationCount() {
+            NotificationCount = App.dataService.GetUnreadNotificationCount();
+        }
+
         private async void EditAccount(object sender, RoutedEventArgs e) {
             ContentFrame.Navigate(typeof(UserPage));
         }
@@ -119,8 +125,11 @@ namespace ClientApp {
             App.GoToLogin();
         }
 
-        public void GoToOwnedLists() {
+        public void GoToOwnedList(List list) {
             ContentFrame.Navigate(typeof(OwnedMasterDetail));
+
+            OwnedMasterDetail page = (OwnedMasterDetail)ContentFrame.Content;
+            page.SelectList(list);
         }
 
         public void GoToSubscribedList(List list) {

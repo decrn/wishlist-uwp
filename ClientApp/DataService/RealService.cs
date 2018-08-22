@@ -185,10 +185,16 @@ namespace ClientApp.DataService {
 
         #region NOTIFICATIONS
 
+        private List<Notification> Notifications;
+
         public List<Notification> GetNotifications() {
             JArray obj = JArray.Parse(HttpService.Get("Notifications"));
-            List<Notification> notifs = obj.ToObject<List<Notification>>();
-            return notifs;
+            Notifications = obj.ToObject<List<Notification>>();
+            return Notifications;
+        }
+
+        public int GetUnreadNotificationCount() {
+            return Notifications.FindAll(n => n.IsUnread).Count;
         }
 
         public void MarkAllNotificationsAsRead() {

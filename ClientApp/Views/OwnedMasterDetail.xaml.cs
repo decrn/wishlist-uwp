@@ -1,6 +1,7 @@
 ﻿using ClientApp.Models;
 using ClientApp.Views;
 using System.Collections.Generic;
+using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -12,7 +13,7 @@ namespace ClientApp {
     /// </summary>
     public sealed partial class OwnedMasterDetail : Page {
 
-        public IList<List> Lists{ get; set; }
+        public ICollection<List> Lists{ get; set; }
         private List CurrentList;
 
         public OwnedMasterDetail() {
@@ -25,6 +26,11 @@ namespace ClientApp {
                 CurrentList = App.dataService.GetList(((List) selected).ListId);
                 return CurrentList;
             };
+        }
+
+        public void SelectList(List list) {
+            if (list == null) MasterDetail.SelectedItem = null;
+            else MasterDetail.SelectedItem = Lists.First((l) => l.ListId == list.ListId);
         }
 
         private async void NewList(object sender, RoutedEventArgs e) {

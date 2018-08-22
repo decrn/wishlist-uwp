@@ -39,6 +39,7 @@ namespace ClientApp.Views {
                 // TODO: probably needed to use a ViewModel for this
                 Notifications.Add(n);
             }
+            if (MainPage != null) MainPage.RefreshNotificationCount();
         }
 
         public void Act(object sender, TappedRoutedEventArgs e) {
@@ -46,15 +47,19 @@ namespace ClientApp.Views {
             Notification notif = (Notification)((StackPanel)sender).Tag;
 
             if (notif.Type == NotificationType.ListJoinSuccess) {
-                return;
+                MainPage.GoToOwnedList(notif.SubjectList);
+
             } else if (notif.Type == NotificationType.JoinRequest) {
-                MainPage.GoToOwnedLists();
-                return;
+                MainPage.GoToOwnedList(null);
+
             } else if (notif.Type == NotificationType.ListInvitation) {
                 App.dataService.ActOnNotification(notif);
+
+            } else if (notif.Type == NotificationType.DeadlineReminder) {
+                MainPage.GoToSubscribedList(notif.SubjectList);
+
             }
 
-            MainPage.GoToSubscribedList(notif.SubjectList);
         }
     }
 }

@@ -35,9 +35,9 @@
 
                                 <TextBlock Text="Notifications" VerticalAlignment="Center" />
 
-                                <!-- TODO: Bind badge to actual notification count -->
-                                <RelativePanel  CornerRadius="10" Margin="10 0 0 0" Padding="7 3">
-                                    <TextBlock Text="3" FontSize="12" />
+                                <RelativePanel CornerRadius="10" Margin="10 0 0 0" Padding="7 3">
+                                    <!--TODO: fix binding notification count doesnt update-->
+                                    <TextBlock Text="{x:Bind NotificationCount, Mode=OneWay}" FontSize="12" />
                                 </RelativePanel>
 
                             </StackPanel>
