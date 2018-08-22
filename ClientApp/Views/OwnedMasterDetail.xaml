@@ -110,9 +110,12 @@
                             </Ellipse>
                             
                             <StackPanel Grid.Column="1" HorizontalAlignment="Left">
-                                <TextBox x:Name="Name" PlaceholderText="List Name" Margin="0,15,0,0" MaxLength="100" Width="200" Text="{x:Bind Name}"/>
-                                <TextBox x:Name="Description" PlaceholderText="Description" Margin="0,15,0,0" MaxLength="300" Width="200" Text="{x:Bind Description}"/>
-                                <CalendarDatePicker x:Name="Deadline" PlaceholderText="Deadline" Margin="0,15,0,0" Width="200" Date="{x:Bind Deadline, Mode=TwoWay, Converter={StaticResource DateTimeToDateTimeOffset}}"></CalendarDatePicker>
+                                <TextBox x:Name="Name" PlaceholderText="List Name" Margin="0,15,0,0" MaxLength="100" Width="400" Text="{x:Bind Name}"/>
+                                <TextBox x:Name="Description" PlaceholderText="Description" Margin="0,15,0,0" MaxLength="300" AcceptsReturn="True" TextWrapping="Wrap" Width="400" Text="{x:Bind Description}"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
+                                    <CalendarDatePicker x:Name="Deadline" PlaceholderText="Deadline" Width="200" Date="{x:Bind Deadline, Mode=TwoWay, Converter={StaticResource DateTimeToDateTimeOffset}}"></CalendarDatePicker>
+                                    <CheckBox IsChecked="{x:Bind IsHidden}" VerticalAlignment="Center" Margin="30,0,0,0" Content="Private List"></CheckBox>
+                                </StackPanel>
                             </StackPanel>
                         </Grid>
                         
@@ -127,10 +130,11 @@
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"></RowDefinition>
+                                    <RowDefinition Height="*"></RowDefinition>
                                 </Grid.RowDefinitions>
 
                                 <!--Wishes-->
-                                <StackPanel Grid.Row="0" Grid.Column="0" Padding="10" BorderThickness="0,0,1,0" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}">
+                                <StackPanel Grid.RowSpan="2" Grid.Column="0" Padding="10" BorderThickness="0,0,1,0" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}">
 
                                     <TextBlock
                                         Text="Wishes"
@@ -140,7 +144,7 @@
                                         <!--TODO: Display a header with no items message-->
                                         <ListView.ItemTemplate>
                                             <DataTemplate x:DataType="models:Item">
-                                                <Grid Margin="0,5">
+                                                <Grid Margin="0,5" Padding="0,0,0,10" BorderThickness="0,0,0,1" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}">
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="50"/>
                                                         <ColumnDefinition Width="*"/>
@@ -149,22 +153,32 @@
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition></RowDefinition>
                                                         <RowDefinition></RowDefinition>
+                                                        <RowDefinition></RowDefinition>
+                                                        <RowDefinition></RowDefinition>
                                                     </Grid.RowDefinitions>
 
-                                                    <Image Grid.Column="0" Grid.RowSpan="2"
-                                                        Source="Assets/placeholder.png"
-                                                        Width="35"
-                                                        Height="35"
-                                                        HorizontalAlignment="Center"/>
+                                                    <CheckBox Grid.RowSpan="3" IsChecked="{x:Bind IsCompleted}" IsEnabled="False"></CheckBox>
 
                                                     <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
                                                         <TextBox Margin="5" PlaceholderText="Name" Text="{x:Bind ProductName}" MinWidth="200" />
                                                         <TextBox Margin="5" PlaceholderText="Price" Text="{x:Bind ItemPriceUsd}" MinWidth="80" />
                                                     </StackPanel>
 
-                                                    <TextBox Grid.Column="1" Grid.Row="1" Margin="5" PlaceholderText="Description" Text="{x:Bind Description}" />
+                                                    <TextBox Grid.Column="1" AcceptsReturn="True" TextWrapping="Wrap" Grid.Row="1" Margin="5" PlaceholderText="Description" Text="{x:Bind Description}" />
 
-                                                    <Button Grid.Column="2" Grid.RowSpan="2" Margin="10,0,0,0">
+                                                    <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+                                                        <TextBox Margin="5" PlaceholderText="More Info Url" Text="{x:Bind ProductInfoUrl}" MinWidth="140" />
+                                                        <TextBox Margin="5" PlaceholderText="Image Url" Text="{x:Bind ProductImageUrl}" MinWidth="140" />
+                                                    </StackPanel>
+
+                                                    <AutoSuggestBox Grid.Column="1" Grid.Row="3"
+                                                        PlaceholderText="Category" Width="200"
+                                                        Text="{x:Bind Category}"
+                                                        TextChanged="Category_TextChanged"
+                                                        SuggestionChosen="Category_SuggestionChosen"
+                                                        GotFocus="Category_GotFocus"/>
+
+                                                    <Button Grid.Column="2" Grid.RowSpan="3" Margin="10,0,0,0">
                                                         <SymbolIcon>More</SymbolIcon>
                                                         <Button.Flyout>
                                                             <MenuFlyout>
@@ -181,18 +195,48 @@
                                         </ListView.ItemTemplate>
                                     </ListView>
 
-                                    <Button Content="Add more" Click="AddNewWish"></Button>
+                                    <Button Click="AddNewWish" Margin="10">
+                                        <StackPanel Orientation="Horizontal">
+                                            <SymbolIcon>Add</SymbolIcon>
+                                            <TextBlock Text="Add more" Margin="5,0,0,0"/>
+                                        </StackPanel>
+                                    </Button>
 
                                 </StackPanel>
 
 
-                                <!--Invited users-->
-                                <StackPanel Grid.Column="1" Padding="10" BorderThickness="0,0,1,0" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}">
+                                <!--subscribed users-->
+                                <StackPanel Grid.Row="1" Grid.Column="1" Padding="10" BorderThickness="0,0,1,0" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}">
                                     <TextBlock
                                     Text="Subscribed users"
                                     Style="{ThemeResource TitleTextBlockStyle}" />
+                                        
+                                    <ListView x:Name="SubscribedUsersList" Margin="0,20" ItemsSource="{x:Bind SubscribedUsers}" SelectionMode="None">
+                                        <!--TODO: Display a header with no items message-->
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate x:DataType="models:User">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition/>
+                                                        <ColumnDefinition Width="50"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="{x:Bind GetFullName()}" Grid.Column="0" Width="200"/>
+                                                    <Button Grid.Column="1" Background="Transparent" VerticalAlignment="Center">
+                                                        <SymbolIcon>Delete</SymbolIcon>
+                                                    </Button>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                </StackPanel>
 
-                                    <ListView x:Name="Users" Margin="0,20" ItemsSource="{x:Bind SubscribedUsers}" SelectionMode="None">
+                                <!--invited users-->
+                                <StackPanel Grid.Column="1" Padding="10" BorderThickness="0,0,1,0" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}">
+                                    <TextBlock
+                                    Text="Invite users"
+                                    Style="{ThemeResource TitleTextBlockStyle}" />
+
+                                    <ListView x:Name="InvitedUsersList" Margin="0,20" ItemsSource="{x:Bind InvitedUsers}" SelectionMode="None">
                                         <!--TODO: Display a header with no items message-->
                                         <ListView.ItemTemplate>
                                             <DataTemplate x:DataType="models:User">
@@ -210,7 +254,12 @@
                                         </ListView.ItemTemplate>
                                     </ListView>
 
-                                    <Button Content="Add more" Click="AddNewWish"></Button>
+                                    <Button Click="AddInvite" Margin="10">
+                                        <StackPanel Orientation="Horizontal">
+                                            <SymbolIcon>Add</SymbolIcon>
+                                            <TextBlock Text="Add more" Margin="5,0,0,0" />
+                                        </StackPanel>
+                                    </Button>
                                 </StackPanel>
 
                             </Grid>

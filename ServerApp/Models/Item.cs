@@ -25,6 +25,9 @@ namespace ServerApp.Models {
         public string ProductImageUrl { get; set; }
 
         // optional
+        public string Category { get; set; }
+
+        // optional
         public double? ItemPriceUsd { get; set; }
 
         [JsonIgnore]

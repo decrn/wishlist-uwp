@@ -25,13 +25,30 @@ namespace ClientApp {
             // return the full detail list when opening detail panel
             MasterDetail.MapDetails = (selected) => {
                 CurrentList = App.dataService.GetList(((List)selected).ListId);
+                // TODO: group items in detailslist per group
                 return CurrentList;
             };
         }
 
-        private async void RequestAccess(object sender, RoutedEventArgs e) {
+        private void RequestAccess(object sender, RoutedEventArgs e) {
             RequestListAccess dialog = new RequestListAccess();
             dialog.ShowAsync();
+        }
+
+        private void Unsubscribe(object sender, RoutedEventArgs e) {
+            App.dataService.UnsubscribeFromList(CurrentList);
+        }
+
+        private void OpenLink(object sender, RoutedEventArgs e) {
+            // The URI to launch
+            string url = (string)((Button)sender).Tag;
+
+            if (url != null) {
+                var promptOptions = new Windows.System.LauncherOptions();
+                promptOptions.TreatAsUntrusted = true;
+                Windows.System.Launcher.LaunchUriAsync(new System.Uri(url), promptOptions);
+            }
+
         }
 
         private void ViewSubscribers(object sender, TappedRoutedEventArgs e) {

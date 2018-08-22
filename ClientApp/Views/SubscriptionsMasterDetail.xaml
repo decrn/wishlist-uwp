@@ -158,23 +158,50 @@
 
                                     </StackPanel>
 
-                                    <ListView x:Name="Items" Margin="0,20" ItemsSource="{x:Bind Items}" SelectionMode="Multiple">
+                                    <ListView x:Name="Items" Margin="0,20" ItemsSource="{x:Bind Items}" SelectionMode="None">
                                         <ListView.ItemTemplate>
                                             <DataTemplate x:DataType="models:Item">
-                                                <Grid>
+                                                <Grid Padding="0,0,54,0">
                                                     <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="54"/>
+                                                        <ColumnDefinition Width="40"/>
+                                                        <ColumnDefinition/>
+                                                        <ColumnDefinition/>
+                                                        <ColumnDefinition/>
                                                         <ColumnDefinition/>
                                                     </Grid.ColumnDefinitions>
-                                                    <Image Source="Assets/placeholder.png"
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition/>
+                                                        <RowDefinition/>
+                                                    </Grid.RowDefinitions>
+
+                                                    <CheckBox Grid.RowSpan="3"  IsChecked="{x:Bind IsCompleted}" IsEnabled="{x:Bind CanCheck}"></CheckBox>
+
+                                                    <Image Grid.RowSpan="3" Grid.Column="1"
                                                         Width="44"
                                                         Height="44"
-                                                        HorizontalAlignment="Left"/>
-                                                    <TextBlock Text="{x:Bind ProductName}"
-                                                        FontSize="15" Grid.Column="1"
-                                                        Style="{ThemeResource TitleTextBlockStyle}" 
-                                                        VerticalAlignment="Center"
-                                                        Padding="0,0,54,0"/>
+                                                           Margin="0,0,20,0">
+                                                        <Image.Source>
+                                                            <BitmapImage UriSource="{x:Bind GetImageUrl()}"></BitmapImage>
+                                                        </Image.Source>
+                                                    </Image>
+
+                                                    <TextBlock Grid.Column="2" Grid.Row="0"
+                                                        Text="{x:Bind ProductName}"
+                                                        FontSize="15" 
+                                                        Style="{ThemeResource TitleTextBlockStyle}"/>
+
+                                                    <TextBlock Grid.Column="3" Grid.Row="0"
+                                                        Margin="10,0,0,0"
+                                                        Text="{x:Bind ItemPriceUsd}"/>
+
+                                                    <TextBlock Grid.Column="1"
+                                                        Text="{x:Bind Description}"
+                                                        TextWrapping="Wrap"/>
+
+                                                    <!--TODO: hide button when no url set -->
+                                                    <!--Visibility="{x:Bind ProductInfoUrl, Converter={StaticResource StringVisibilityConverter} }"-->
+                                                    <Button Grid.Column="4" Margin="10,0,0,0" Click="OpenLink" Tag="{x:Bind ProductInfoUrl}" Content="View more info" />
+
                                                 </Grid>
                                             </DataTemplate>
                                         </ListView.ItemTemplate>
@@ -187,8 +214,15 @@
 
                 </DataTemplate>
             </controls:MasterDetailsView.DetailsTemplate>
-            
-            <!--TODO: Add extra options like unsubscribe from list...-->
+
+            <!--Detail actions-->
+            <controls:MasterDetailsView.DetailsCommandBar>
+                <CommandBar>
+                    <CommandBar.SecondaryCommands>
+                        <AppBarButton Icon="Delete" Label="Leave List" Click="Unsubscribe"/>
+                    </CommandBar.SecondaryCommands>
+                </CommandBar>
+            </controls:MasterDetailsView.DetailsCommandBar>
 
         </controls:MasterDetailsView>
     </Grid>

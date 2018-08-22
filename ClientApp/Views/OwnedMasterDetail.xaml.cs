@@ -16,6 +16,8 @@ namespace ClientApp {
         public ICollection<List> Lists{ get; set; }
         private List CurrentList;
 
+        string[] CategorySuggestions = new string[] { "Toys", "Homewares", "Gadgets", "Vouchers", "Varia" };
+
         public OwnedMasterDetail() {
             // TODO: Use Viewmodels?
             Lists = App.dataService.GetOwnedLists();
@@ -56,6 +58,26 @@ namespace ClientApp {
 
         private void AddNewWish(object sender, RoutedEventArgs e) {
 
+        }
+
+        private void AddInvite(object sender, RoutedEventArgs e) {
+
+        }
+
+        private void Category_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args) {
+            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput) {
+                sender.ItemsSource = CategorySuggestions;
+            }
+        }
+
+        private void Category_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args) {
+            sender.Text = args.SelectedItem.ToString();
+        }
+
+        private void Category_GotFocus(object sender, RoutedEventArgs e) {
+            AutoSuggestBox box = (AutoSuggestBox)sender;
+            box.ItemsSource = CategorySuggestions;
+            box.IsSuggestionListOpen = true;
         }
     }
 }

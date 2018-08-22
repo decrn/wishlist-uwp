@@ -51,10 +51,10 @@ namespace ServerApp.Data {
                 // seed items
                 var items = new Item[]
                 {
-                    new Item { ProductName="Playstation 4",         List=lists[0], ItemPriceUsd=379.99, CheckedByUser=users[1] },
-                    new Item { ProductName="Headset",               List=lists[0], ItemPriceUsd=030.00, CheckedByUser=users[1] },
-                    new Item { ProductName="Lego train",            List=lists[0], ItemPriceUsd=120.00 },
-                    new Item { ProductName="Batman costume",        List=lists[0] },
+                    new Item { ProductName="Playstation 4",         List=lists[0], ItemPriceUsd=379.99, CheckedByUser=users[1], Category="Toys" },
+                    new Item { ProductName="Headset",               List=lists[0], ItemPriceUsd=030.00, CheckedByUser=users[1], Category="Gadgets" },
+                    new Item { ProductName="Lego train",            List=lists[0], ItemPriceUsd=120.00, Category="Toys" },
+                    new Item { ProductName="Batman costume",        List=lists[0], Category="Varia" },
                     new Item { ProductName="Extra PS4 game",        List=lists[0], ItemPriceUsd=059.99 },
                     new Item { ProductName="Barbie dolls",          List=lists[1], ItemPriceUsd=025.00, CheckedByUser=users[2] },
                     new Item { ProductName="Duplo blocks",          List=lists[1], ItemPriceUsd=050.00 },
