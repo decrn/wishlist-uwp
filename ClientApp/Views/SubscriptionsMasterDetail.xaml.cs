@@ -2,9 +2,12 @@
 using ClientApp.Views;
 using System.Collections.Generic;
 using System.Linq;
+using Windows.ApplicationModel.Appointments;
+using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -37,6 +40,20 @@ namespace ClientApp {
 
         private void Unsubscribe(object sender, RoutedEventArgs e) {
             App.dataService.UnsubscribeFromList(CurrentList);
+        }
+
+        private async void AddToCalendar(object sender, RoutedEventArgs e) {
+
+            var appt = new Appointment();
+            appt.Subject = CurrentList.Name;
+            appt.Details = "Reminder to buy something";
+            appt.StartTime = CurrentList.Deadline;
+
+            var element = sender as FrameworkElement;
+            GeneralTransform generalTransform = element.TransformToVisual((FrameworkElement) element.Parent);
+            Rect rect = generalTransform.TransformBounds(new Rect(new Point(element.Margin.Left, element.Margin.Top), element.RenderSize));
+
+            AppointmentManager.ShowAddAppointmentAsync(appt, rect, Windows.UI.Popups.Placement.Default);
         }
 
         private void OpenLink(object sender, RoutedEventArgs e) {

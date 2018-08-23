@@ -219,6 +219,7 @@
             <controls:MasterDetailsView.DetailsCommandBar>
                 <CommandBar>
                     <CommandBar.SecondaryCommands>
+                        <AppBarButton Icon="Calendar" Label="Add Deadline to calendar" Click="AddToCalendar"/>
                         <AppBarButton Icon="Delete" Label="Leave List" Click="Unsubscribe"/>
                     </CommandBar.SecondaryCommands>
                 </CommandBar>
