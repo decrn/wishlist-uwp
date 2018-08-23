@@ -18,6 +18,8 @@ namespace ClientApp {
         public MainPage() {
             this.InitializeComponent();
             App.dataService.LoadingIndicator = LoadingControl;
+            // make sure the user is cached for other sub pages
+            App.dataService.GetCurrentUser();
         }
 
         private void NavView_Loaded(object sender, RoutedEventArgs e) {

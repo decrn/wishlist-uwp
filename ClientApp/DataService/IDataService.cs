@@ -10,6 +10,8 @@ namespace ClientApp.DataService {
     public interface IDataService {
 
         Loading LoadingIndicator { get; set; }
+        
+        User LoggedInUser { get; set; }
 
         // ACCOUNT
 

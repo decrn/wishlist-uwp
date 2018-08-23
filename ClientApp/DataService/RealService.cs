@@ -15,6 +15,8 @@ namespace ClientApp.DataService {
 
         public Loading LoadingIndicator { get { return HttpService.LoadingIndicator; } set { HttpService.LoadingIndicator = value; }  }
 
+        public User LoggedInUser { get; set; }
+
 
         #region ACCOUNT
 
@@ -101,6 +103,7 @@ namespace ClientApp.DataService {
         public async void Logout() {
             await HttpService.Get("Account/Logout", false);
             HttpService.ClearToken();
+            LoggedInUser = null;
         }
 
         #endregion
@@ -109,7 +112,8 @@ namespace ClientApp.DataService {
         #region USERS
 
         public async Task<User> GetCurrentUser() {
-            return await GetUser("");
+            LoggedInUser = await GetUser("");
+            return LoggedInUser;
         }
 
         public async Task<User> GetUser(string id) {

@@ -58,11 +58,8 @@ namespace ClientApp.ViewModels {
             return ProductName;
         }
 
-        // TODO: implement Item.CanCheck
-        // Should return true if: !IsCompleted || CheckedByUser.Id == CurrentUser.Id
         public bool CanCheck {
-            get { return true; }
-            set { }
+            get { return !IsCompleted || CheckedByUser.Id == App.dataService.LoggedInUser.Id; }
         }
 
         public bool HasProductInfoUrl {

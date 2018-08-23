@@ -15,6 +15,8 @@ namespace ClientApp.DataService {
 
         public Loading LoadingIndicator { get; set; }
 
+        public User LoggedInUser { get; set; }
+
         // ACCOUNT
 
         public bool IsLoggedIn() {
@@ -61,6 +63,7 @@ namespace ClientApp.DataService {
 
         public void Logout() {
             Debug.WriteLine("Logout");
+            LoggedInUser = null;
             JWTToken = "";
         }
 
@@ -98,6 +101,7 @@ namespace ClientApp.DataService {
 
         public async Task<User> GetUser(string id) {
             Debug.WriteLine("GET user "+id);
+            LoggedInUser = GetFakeUser();
             return await Task.FromResult(
                 GetFakeUser()
             );
