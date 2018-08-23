@@ -3,6 +3,7 @@ using ClientApp.ViewModels.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace ClientApp.ViewModels {
@@ -51,9 +52,11 @@ namespace ClientApp.ViewModels {
             set { SetProperty(ref _selectedList, value); }
         }
 
-        public void AddList() {
-            var list = new ListViewModel();
-            Lists.Add(list);
+        public void AddList(List list) {
+            Debug.WriteLine("Adding list");
+            var lvm = new ListViewModel(list);
+            Lists.Add(lvm);
+            SelectedList = lvm;
         }
 
         /*public void DeleteItem() {

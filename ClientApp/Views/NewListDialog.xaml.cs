@@ -12,9 +12,6 @@ namespace ClientApp.Views {
         private void Save(ContentDialog sender, ContentDialogButtonClickEventArgs args) {
             string value = ListName.Text;
             if (value != "") {
-                // TODO: implement making new list
-                //List list = new List() { Name = value };
-                //App.dataService.NewList(list);
                 base.Hide();
             } else {
                 if (args != null)

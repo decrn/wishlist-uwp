@@ -70,25 +70,15 @@ namespace ClientApp.ViewModels {
             }
         }
 
-        public string ClaimedWishesCount {
-            get => Items.Where(i => i.IsCompleted).Count() + "/" + Items.Count;
-        }
+        public string ClaimedWishesCount => Items.Count(i => i.IsCompleted) + "/" + Items.Count;
 
-        public bool IsNew {
-            get => This.ListId == -1;
-        }
+        public bool IsNew => This.ListId == -1;
 
-        public bool HasNoItems {
-            get => Items.Count < 1;
-        }
+        public bool HasNoItems => Items.Count < 1;
 
-        public bool HasNoSubscribers {
-            get => SubscribedUsers.Count < 1;
-        }
+        public bool HasNoSubscribers => SubscribedUsers.Count < 1;
 
-        public bool HasNoInvited {
-            get => InvitedUsers.Count < 1;
-        }
+        public bool HasNoInvited => InvitedUsers.Count < 1;
 
         // TODO: Fix UserViewModel creation
         private UserViewModel _ownerUser;
@@ -123,10 +113,9 @@ namespace ClientApp.ViewModels {
         static DateTime ConvertFromDateTimeOffset(DateTimeOffset dateTime) {
             if (dateTime.Offset.Equals(TimeSpan.Zero))
                 return dateTime.UtcDateTime;
-            else if (dateTime.Offset.Equals(TimeZoneInfo.Local.GetUtcOffset(dateTime.DateTime)))
+            if (dateTime.Offset.Equals(TimeZoneInfo.Local.GetUtcOffset(dateTime.DateTime)))
                 return DateTime.SpecifyKind(dateTime.DateTime, DateTimeKind.Local);
-            else
-                return dateTime.DateTime;
+            return dateTime.DateTime;
         }
 
         // items

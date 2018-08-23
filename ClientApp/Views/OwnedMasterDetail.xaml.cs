@@ -36,8 +36,7 @@ namespace ClientApp {
         }
 
         private void NewList(object sender, RoutedEventArgs e) {
-            NewListDialog dialog = new NewListDialog();
-            dialog.ShowAsync();
+            Lists.AddList(new List());
         }
 
         private void Save(object sender, RoutedEventArgs e) {
