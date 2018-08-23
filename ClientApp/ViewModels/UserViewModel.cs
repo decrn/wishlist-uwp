@@ -9,9 +9,13 @@ namespace ClientApp.ViewModels {
 
         User user;
 
-        public UserViewModel() {
+        public UserViewModel(User ownerUser = null) {
 
-            user = new User();
+            if (ownerUser == null) {
+                user = new User();
+            } else {
+                user = ownerUser;
+            }
             _SelectedSubscriptionIndex = -1;
             _SelectedOwnedIndex = -1;
 
@@ -28,6 +32,8 @@ namespace ClientApp.ViewModels {
             }
 
         }
+
+        public string GetFullName() => user.GetFullName();
 
         // Subscriptions
 

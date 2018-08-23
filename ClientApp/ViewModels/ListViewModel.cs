@@ -41,9 +41,11 @@ namespace ClientApp.ViewModels {
             set { SetProperty(This.Deadline, value, () => This.Deadline = value); }
         }
 
-        public User OwnerUser {
-            get => This.OwnerUser;
-            set { SetProperty(This.OwnerUser, value, () => This.OwnerUser = value); }
+        private UserViewModel _ownerUser = new UserViewModel();
+        public UserViewModel OwnerUser {
+            get => new UserViewModel(This.OwnerUser);
+            set => SetProperty(ref _ownerUser, value);
+            // set { SetProperty(This.OwnerUser, value, () => This.OwnerUser = value); }
         }
 
         public bool IsHidden {
