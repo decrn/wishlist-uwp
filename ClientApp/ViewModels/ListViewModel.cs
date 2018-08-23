@@ -10,6 +10,23 @@ namespace ClientApp.ViewModels {
 
         public ListViewModel(List list = null) : base(list) {
             this.List = list;
+            if (list.Items != null) {
+                foreach (var item in list.Items) {
+                    AddItem(new ItemViewModel(item));
+                }
+            }
+
+            if (list.InvitedUsers != null) {
+                foreach (var invited in list.InvitedUsers) {
+                    _invitedUsers.Add(new UserViewModel(invited));
+                }
+            }
+
+            if (list.SubscribedUsers != null) {
+                foreach (var subscribed in list.SubscribedUsers) {
+                    _subscribedUsers.Add(new UserViewModel(subscribed));
+                }
+            }
         }
 
         public int ListId {
@@ -42,7 +59,7 @@ namespace ClientApp.ViewModels {
         private UserViewModel _ownerUser;
         public UserViewModel OwnerUser {
             get => new UserViewModel(This.OwnerUser);
-            //set => SetProperty(ref _ownerUser, value);
+            set => SetProperty(ref _ownerUser, value);
             // set { SetProperty(This.OwnerUser, value, () => This.OwnerUser = value); }
         }
 
@@ -78,6 +95,14 @@ namespace ClientApp.ViewModels {
 
         void Item_OnNotifyPropertyChanged(Object sender, PropertyChangedEventArgs e) {
             List.Update((ItemViewModel) sender);
+        }
+
+        public void AddItem(Item item) {
+            var ivm = new ItemViewModel(item);
+            ivm.PropertyChanged += Item_OnNotifyPropertyChanged;
+            Items.Add(ivm);
+            List.AddItem(ivm);
+            //SelectedItemIndex = Items.IndexOf(item);
         }
 
         // subscribed users

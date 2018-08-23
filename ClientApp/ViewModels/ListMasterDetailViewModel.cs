@@ -57,7 +57,6 @@ namespace ClientApp.ViewModels {
         public void AddList() {
             var list = new ListViewModel();
             Lists.Add(list);
-            //SelectedListIndex = Lists.IndexOf(list);
         }
 
         /*public void DeleteItem() {
@@ -71,8 +70,9 @@ namespace ClientApp.ViewModels {
 
         public async Task<ListViewModel> GetDetailed(ListViewModel selected) {
             List list = await App.dataService.GetList(selected.ListId);
-            selected.List = list;
-            return selected;
+            ListViewModel newvm = new ListViewModel(list);
+            SelectedList = newvm;
+            return newvm;
         }
     }
 }

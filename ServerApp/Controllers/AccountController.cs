@@ -54,7 +54,7 @@ namespace ServerApp.Controllers {
 
                 if (result.Succeeded) {
                     User user = _userManager.Users.SingleOrDefault(r => r.Email == model.Email);
-                    return Json(new { success = true, data = new { user = user, token = await GenerateJwtToken(user) } });
+                    return Json(new { success = true, data = new { user = user, token = GenerateJwtToken(user) } });
                 }
 
                 return Json(new { success = false, errors = new[] { new { message = "Wrong credentials.", data = result } } });
@@ -78,7 +78,7 @@ namespace ServerApp.Controllers {
 
                 IdentityResult result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded) {
-                    return Json(new { success = true, data = new { user = user, token = await GenerateJwtToken(user) } });
+                    return Json(new { success = true, data = new { user = user, token = GenerateJwtToken(user) } });
                 }
 
                 return Json(new { success = false, errors = result.Errors.Select(e => new { message = e.Description, data = e.Code }) });
@@ -213,7 +213,7 @@ namespace ServerApp.Controllers {
 
         #region Helpers
 
-        private async Task<object> GenerateJwtToken(IdentityUser user) {
+        private string GenerateJwtToken(IdentityUser user) {
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Email),

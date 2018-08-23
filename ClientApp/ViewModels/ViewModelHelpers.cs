@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace ClientApp.ViewModels {
     using System.ComponentModel;
+    using System.Reflection;
     using System.Runtime.CompilerServices;
 
     namespace ViewModels {
@@ -37,6 +38,13 @@ namespace ClientApp.ViewModels {
             protected void RaisePropertyChanged(string property) {
                 if (PropertyChanged != null) {
                     PropertyChanged(this, new PropertyChangedEventArgs(property));
+                }
+            }
+
+            public void RaiseAllPropertyChanged() {
+                PropertyInfo[] properties = GetType().GetProperties();
+                foreach (PropertyInfo prop in properties) {
+                    RaisePropertyChanged(prop.Name);
                 }
             }
         }

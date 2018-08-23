@@ -21,7 +21,6 @@
     <Grid x:Name="Grid">
         <controls:MasterDetailsView x:Name="MasterDetail"
             ItemsSource="{x:Bind Lists.Lists, Mode=TwoWay}"
-            SelectedItem="{x:Bind Lists.SelectedList, Mode=OneWay}"
             SelectionChanged="MasterDetail_SelectionChanged"
             CompactModeThresholdWidth="720"
             MasterPaneBackground="{ThemeResource MiddlePaneBackground}"

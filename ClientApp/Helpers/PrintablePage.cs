@@ -19,6 +19,7 @@ namespace ClientApp.Helpers {
         protected override void OnNavigatedTo(NavigationEventArgs e) {
             // Register for PrintTaskRequested event
             printMan = PrintManager.GetForCurrentView();
+            // TODO: sometimes crashes when logging in
             printMan.PrintTaskRequested += PrintTaskRequested;
 
             // Build a PrintDocument and register for callbacks

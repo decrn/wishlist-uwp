@@ -31,9 +31,11 @@ namespace ClientApp {
         bool SkipNextSelectionChanged = false;
         private async void MasterDetail_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (!SkipNextSelectionChanged) {
-                var item = MasterDetail.SelectedItem;
+                var simplelist = (ListViewModel) MasterDetail.SelectedItem;
+                var detailedlist = await Lists.GetDetailed(simplelist);
+
                 SkipNextSelectionChanged = true;
-                Lists.SelectedList = await Lists.GetDetailed((ListViewModel)item);
+                MasterDetail.SelectedItem = detailedlist;
             }
             SkipNextSelectionChanged = false;
         }
