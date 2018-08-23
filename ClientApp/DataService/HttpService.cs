@@ -1,7 +1,6 @@
 ﻿using Microsoft.Toolkit.Uwp.UI.Controls;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -75,13 +74,19 @@ namespace ClientApp.DataService {
 
         public async Task<string> Handle(Func<Task<HttpResponseMessage>> apicall, bool showLoading = true) {
             if (showLoading && LoadingIndicator != null) LoadingIndicator.IsLoading = true;
+            var response = "";
 
-            var res = await apicall();
-            if (res.StatusCode == System.Net.HttpStatusCode.Unauthorized) {
-                //TODO: remember credentials to refresh auth
-                Debug.WriteLine("Invalid Token");
+            try {
+                HttpResponseMessage res = await apicall();
+                if (res.StatusCode == System.Net.HttpStatusCode.Unauthorized) {
+                    //TODO: remember credentials to refresh auth
+                    throw new Exception("Token invalid!");
+                }
+                response = await res.Content.ReadAsStringAsync();
+
+            } catch {
+                throw new Exception("Server Offline!");
             }
-            var response = await res.Content.ReadAsStringAsync();
 
             if (showLoading && LoadingIndicator != null) LoadingIndicator.IsLoading = false;
             return response;

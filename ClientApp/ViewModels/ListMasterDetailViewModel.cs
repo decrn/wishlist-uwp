@@ -45,8 +45,6 @@ namespace ClientApp.ViewModels {
             get => Lists.IndexOf(SelectedList);
         }
 
-        public ListViewModel SelectedDetail;
-
         private ListViewModel _selectedList;
 
         public ListViewModel SelectedList {
@@ -73,9 +71,8 @@ namespace ClientApp.ViewModels {
 
         public async Task<ListViewModel> GetDetailed(ListViewModel selected) {
             List list = await App.dataService.GetList(selected.ListId);
-            var vm = new ListViewModel(list);
-            SelectedDetail = vm;
-            return vm;
+            selected.List = list;
+            return selected;
         }
     }
 }

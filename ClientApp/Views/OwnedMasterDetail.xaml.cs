@@ -23,9 +23,19 @@ namespace ClientApp {
             this.InitializeComponent();
 
             // return the full detail list when opening detail panel
-            MasterDetail.MapDetails = (selected) => {
-                return Lists.GetDetailed((ListViewModel) selected);
-            };
+            //MasterDetail.MapDetails = async (selected) => {
+            //    return await Lists.GetDetailed((ListViewModel) selected);
+            //};
+        }
+
+        bool SkipNextSelectionChanged = false;
+        private async void MasterDetail_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            if (!SkipNextSelectionChanged) {
+                var item = MasterDetail.SelectedItem;
+                SkipNextSelectionChanged = true;
+                Lists.SelectedList = await Lists.GetDetailed((ListViewModel)item);
+            }
+            SkipNextSelectionChanged = false;
         }
 
         public void SelectList(List list) {
@@ -40,7 +50,7 @@ namespace ClientApp {
 
         private void Save(object sender, RoutedEventArgs e) {
             // check if list is new (no id) and use 'save' or 'create new' route
-            Lists.SelectedDetail.Save();
+            Lists.SelectedList.Save();
         }
 
         private void Send(object sender, RoutedEventArgs e) {
@@ -74,6 +84,5 @@ namespace ClientApp {
             box.ItemsSource = CategorySuggestions;
             box.IsSuggestionListOpen = true;
         }
-
     }
 }

@@ -23,40 +23,40 @@ namespace ClientApp.DataService {
 
         public async Task<JObject> Login(LoginViewModel vm) {
             JWTToken = "temp";
-            return await new Task<JObject>(() => {
-                return JObject.FromObject(new { success = true, data = new { user = GetCurrentUser(), token = JWTToken } });
-            });
+            return await Task.FromResult(
+                JObject.FromObject(new { success = true, data = new { user = GetCurrentUser(), token = JWTToken } })
+            );
         }
 
         public async Task<JObject> Register(RegisterViewModel vm) {
             JWTToken = "temp";
-            return await new Task<JObject>(() => {
-                return JObject.FromObject(new { success = true, data = new { user = GetCurrentUser(), token = JWTToken } });
-            });
+            return await Task.FromResult(
+                JObject.FromObject(new { success = true, data = new { user = GetCurrentUser(), token = JWTToken } })
+            );
         }
 
         public async Task<JObject> ChangePassword(ChangePasswordViewModel vm) {
-            return await new Task<JObject>(() => {
-                return JObject.FromObject(new { success = true });
-            });
+            return await Task.FromResult(
+                JObject.FromObject(new { success = true })
+            );
         }
 
         public async Task<JObject> EditAccount(EditAccountViewModel vm) {
-            return await new Task<JObject>(() => {
-                return JObject.FromObject(new { success = true });
-            });
+            return await Task.FromResult(
+                JObject.FromObject(new { success = true })
+            );
         }
 
         public async Task<JObject> ForgotPassword(ForgotPasswordViewModel vm) {
-            return await new Task<JObject>(() => {
-                return JObject.FromObject(new { success = true });
-            });
+            return await Task.FromResult(
+                JObject.FromObject(new { success = true })
+            );
         }
 
         public async Task<JObject> ResetPassword(ResetPasswordViewModel vm) {
-            return await new Task<JObject>(() => {
-                return JObject.FromObject(new { success = true });
-            });
+            return await Task.FromResult(
+                JObject.FromObject(new { success = true })
+            );
         }
 
         public void Logout() {
@@ -68,14 +68,14 @@ namespace ClientApp.DataService {
 
         public async Task<User> GetCurrentUser() {
             Debug.WriteLine("GET currentuser");
-            return await new Task<User>(() => {
-                return new User() {
+            return await Task.FromResult(
+                new User() {
                     FirstName = "Peter",
                     LastName = "Petersson",
                     Email = "peter@domain.com",
                     Id = "4875185"
-                };
-            });
+                }
+            );
         }
 
         private User GetFakeUser(int id = 0) {
@@ -98,19 +98,17 @@ namespace ClientApp.DataService {
 
         public async Task<User> GetUser(string id) {
             Debug.WriteLine("GET user "+id);
-            return await new Task<User>(() => {
-                return GetFakeUser();
-            });
+            return await Task.FromResult(
+                GetFakeUser()
+            );
         }
 
         public async Task<List<List>> GetOwnedLists() {
             Debug.WriteLine("GET ownedlists");
-            return await new Task<List<List>>(() => {
-                return new List<List> {
-                    new List { ListId=0, Name="Verjaardag Jan", OwnerUser=GetFakeUser(), Description ="Voor op het feestje af te geven", Deadline=new DateTime(2018,12,31) },
-                    new List { ListId=1, Name="Babyborrel Charlotte", OwnerUser=GetFakeUser(), Description ="Een jonge spruit!", Deadline=new DateTime(2019,05,12) },
-                    new List { ListId=2, Name="Trouw", OwnerUser=GetFakeUser(1), Description="Al gepasseerd eigenlijk", Deadline=new DateTime(2018,01,01) }
-                };
+            return await Task.FromResult(new List<List> {
+                new List { ListId=0, Name="Verjaardag Jan", OwnerUser=GetFakeUser(), Description ="Voor op het feestje af te geven", Deadline=new DateTime(2018,12,31) },
+                new List { ListId=1, Name="Babyborrel Charlotte", OwnerUser=GetFakeUser(), Description ="Een jonge spruit!", Deadline=new DateTime(2019,05,12) },
+                new List { ListId=2, Name="Trouw", OwnerUser=GetFakeUser(1), Description="Al gepasseerd eigenlijk", Deadline=new DateTime(2018,01,01) }
             });
         }
 
@@ -146,23 +144,23 @@ namespace ClientApp.DataService {
 
         public async Task<List> GetList(int id) {
             Debug.WriteLine("GET list "+id);
-            return await new Task<List>(() => {
-                return GetFakeList();
-            });
+            return await Task.FromResult(
+                GetFakeList()
+            );
         }
 
         public async Task<JObject> NewList(List list) {
             Debug.WriteLine("POST newlist");
-            return await new Task<JObject>(() => {
-                return JObject.FromObject(new { success = true });
-            });
+            return await Task.FromResult(
+                JObject.FromObject(new { success = true })
+            );
         }
 
         public async Task<JObject> EditList(List list) {
             Debug.WriteLine("POST editlist");
-            return await new Task<JObject>(() => {
-                return JObject.FromObject(new { success = true });
-            });
+            return await Task.FromResult(
+                JObject.FromObject(new { success = true })
+            );
         }
 
         public void SendInvitations(List list) {
@@ -187,16 +185,16 @@ namespace ClientApp.DataService {
 
         public async Task<JObject> NewItem(Item item) {
             Debug.WriteLine("POST newitem");
-            return await new Task<JObject>(() => {
-                return JObject.FromObject(new { success = true });
-            });
+            return await Task.FromResult(
+                JObject.FromObject(new { success = true })
+            );
         }
 
         public async Task<JObject> EditItem(Item item) {
             Debug.WriteLine("POST editItem");
-            return await new Task<JObject>(() => {
-                return JObject.FromObject(new { success = true });
-            });
+            return await Task.FromResult(
+                JObject.FromObject(new { success = true })
+            );
         }
 
         public void DeleteItem(Item item) {
@@ -205,19 +203,16 @@ namespace ClientApp.DataService {
 
         public async Task<List<Notification>> GetNotifications() {
             Debug.WriteLine("GET notifications");
-            return await new Task<List<Notification>>(() => {
-                return new List<Notification> {
+            return await Task.FromResult(
+                new List<Notification> {
                 new Notification() { OwnerUser = GetFakeUser(), Type = NotificationType.DeadlineReminder, SubjectList = GetFakeList(1), NotificationId = 0, IsUnread=true },
                 new Notification() { OwnerUser = GetFakeUser(), Type = NotificationType.JoinRequest, SubjectUser = GetFakeUser(1), NotificationId = 1, IsUnread=true },
                 new Notification() { OwnerUser = GetFakeUser(), Type = NotificationType.ListInvitation, SubjectList = GetFakeList(2), NotificationId = 2, IsUnread=false },
                 new Notification() { OwnerUser = GetFakeUser(), Type = NotificationType.ListInvitation, SubjectList = GetFakeList(1), NotificationId = 3, IsUnread=true },
                 new Notification() { OwnerUser = GetFakeUser(), Type = NotificationType.ListInvitation, SubjectList = GetFakeList(0), NotificationId = 4, IsUnread=false },
                 new Notification() { OwnerUser = GetFakeUser(), Type = NotificationType.ListJoinSuccess, SubjectList = GetFakeList(2), SubjectUser=GetFakeUser(1), NotificationId = 5, IsUnread=false }
-            };
             });
         }
-
-        
 
         public int GetUnreadNotificationCount() {
             return 3;
