@@ -51,9 +51,10 @@ namespace ClientApp.ViewModels {
             set { SetProperty(ref _selectedList, value); }
         }
 
-        public void AddList() {
-            var list = new ListViewModel();
-            Lists.Add(list);
+        public void AddList(List list) {
+            var lvm = new ListViewModel(list);
+            Lists.Add(lvm);
+            SelectedList = lvm;
         }
 
         /*public void DeleteItem() {
