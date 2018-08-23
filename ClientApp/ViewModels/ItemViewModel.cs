@@ -45,6 +45,10 @@ namespace ClientApp.ViewModels {
             set { SetProperty(This.ItemPriceUsd, value, () => This.ItemPriceUsd = value); }
         }
 
+        public string Price {
+            get => ItemPriceUsd != null ? "$" + ItemPriceUsd : "";
+        }
+
         public bool IsCompleted {
             get { return CheckedByUser != null; }
             set { CheckedByUser = null; }
@@ -59,6 +63,10 @@ namespace ClientApp.ViewModels {
         public bool CanCheck {
             get { return true; }
             set { }
+        }
+
+        public bool HasProductInfoUrl {
+            get => ProductInfoUrl != null && ProductInfoUrl != "";
         }
 
         public Uri GetImageUrl() {

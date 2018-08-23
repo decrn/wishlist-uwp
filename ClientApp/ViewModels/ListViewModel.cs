@@ -1,6 +1,7 @@
 ﻿using ClientApp.Models;
 using ClientApp.ViewModels.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -60,7 +61,10 @@ namespace ClientApp.ViewModels {
         public string SubscribersTeaster {
             get {
                 int amount = 3;
-                string list = SubscribedUsers.Take(amount).Select(u => u.FirstName).Aggregate((current, next) => current + ", " + next);
+                string list = "";
+                try {
+                    list = SubscribedUsers.Take(amount).Select(u => u.FirstName).Aggregate((current, next) => current + ", " + next);
+                } catch { }
                 if (SubscribedUsers.Count > amount) list = list + "...";
                 return list;
             }
@@ -72,6 +76,18 @@ namespace ClientApp.ViewModels {
 
         public bool IsNew {
             get => This.ListId == -1;
+        }
+
+        public bool HasNoItems {
+            get => Items.Count < 1;
+        }
+
+        public bool HasNoSubscribers {
+            get => SubscribedUsers.Count < 1;
+        }
+
+        public bool HasNoInvited {
+            get => InvitedUsers.Count < 1;
         }
 
         // TODO: Fix UserViewModel creation
@@ -134,6 +150,14 @@ namespace ClientApp.ViewModels {
             Items.Add(ivm);
             List.AddItem(ivm);
             //SelectedItemIndex = Items.IndexOf(item);
+        }
+
+        public IEnumerable<IGrouping<string, ItemViewModel>> GetGroupedItems() {
+            //Group the data
+            var groups = from c in Items
+                         group c by c.Category;
+            //Set the grouped data to CollectionViewSource
+            return groups;
         }
 
         // subscribed users

@@ -29,6 +29,7 @@ namespace ClientApp {
 
                 SkipNextSelectionChanged = true;
                 MasterDetail.SelectedItem = detailedlist;
+                ItemGrouping.Source = detailedlist.GetGroupedItems();
             }
             SkipNextSelectionChanged = false;
         }

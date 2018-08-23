@@ -144,7 +144,9 @@
                                         Style="{ThemeResource TitleTextBlockStyle}" />
 
                                     <ListView x:Name="Items" Margin="0,20" ItemsSource="{x:Bind Items, Mode=TwoWay}" SelectionMode="None">
-                                        <!--TODO: Display a header with no items message-->
+                                        <ListView.Header>
+                                            <TextBlock Visibility="{x:Bind HasNoItems}">No items</TextBlock>
+                                        </ListView.Header>
                                         <ListView.ItemTemplate>
                                             <DataTemplate x:DataType="viewmodels:ItemViewModel">
                                                 <Grid Margin="0,5" Padding="0,0,0,10" BorderThickness="0,0,0,1" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}">
@@ -214,7 +216,9 @@
                                     Style="{ThemeResource TitleTextBlockStyle}" />
 
                                     <ListView x:Name="SubscribedUsersList" Margin="0,20" ItemsSource="{x:Bind SubscribedUsers, Mode=OneTime}" SelectionMode="None">
-                                        <!--TODO: Display a header with no items message-->
+                                        <ListView.Header>
+                                            <TextBlock Visibility="{x:Bind HasNoSubscribers}">No subscribers</TextBlock>
+                                        </ListView.Header>
                                         <ListView.ItemTemplate>
                                             <DataTemplate x:DataType="viewmodels:UserViewModel">
                                                 <Grid>
@@ -239,7 +243,9 @@
                                     Style="{ThemeResource TitleTextBlockStyle}" />
 
                                     <ListView x:Name="InvitedUsersList" Margin="0,20" ItemsSource="{x:Bind InvitedUsers, Mode=TwoWay}" SelectionMode="None">
-                                        <!--TODO: Display a header with no items message-->
+                                        <ListView.Header>
+                                            <TextBlock Visibility="{x:Bind HasNoInvited}">No invited users</TextBlock>
+                                        </ListView.Header>
                                         <ListView.ItemTemplate>
                                             <DataTemplate x:DataType="viewmodels:UserViewModel">
                                                 <Grid>

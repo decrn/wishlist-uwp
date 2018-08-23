@@ -51,15 +51,15 @@ namespace ServerApp.Data {
                 // seed items
                 var items = new Item[]
                 {
-                    new Item { ProductName="Playstation 4",         List=lists[0], ItemPriceUsd=379.99, CheckedByUser=users[1], Category="Toys" },
+                    new Item { ProductName="Playstation 4",         List=lists[0], ItemPriceUsd=379.99, CheckedByUser=users[1], Category="Toys", Description = "Just something I always wanted" },
                     new Item { ProductName="Headset",               List=lists[0], ItemPriceUsd=030.00, CheckedByUser=users[1], Category="Gadgets" },
-                    new Item { ProductName="Lego train",            List=lists[0], ItemPriceUsd=120.00, Category="Toys" },
+                    new Item { ProductName="Lego train",            List=lists[0], ItemPriceUsd=120.00, Category="Toys", ProductInfoUrl="https://shop.lego.com/en-BE/search/train", ProductImageUrl="https://sh-s7-live-s.legocdn.com/is/image/LEGO/60197" },
                     new Item { ProductName="Batman costume",        List=lists[0], Category="Varia" },
                     new Item { ProductName="Extra PS4 game",        List=lists[0], ItemPriceUsd=059.99 },
                     new Item { ProductName="Barbie dolls",          List=lists[1], ItemPriceUsd=025.00, CheckedByUser=users[2] },
                     new Item { ProductName="Duplo blocks",          List=lists[1], ItemPriceUsd=050.00 },
                     new Item { ProductName="Nice cutlery",          List=lists[2], ItemPriceUsd=249.98, CheckedByUser=users[0] },
-                    new Item { ProductName="Traditional adult toy", List=lists[2], ItemPriceUsd=050.00, CheckedByUser=users[2] },
+                    new Item { ProductName="Traditional adult toy", List=lists[2], ItemPriceUsd=050.00, CheckedByUser=users[2], Description = "You know what I want ;)" },
                     new Item { ProductName="Yoga set",              List=lists[2] },
                     new Item { ProductName="Tent",                  List=lists[3], ItemPriceUsd=149.99, CheckedByUser=users[0] },
                     new Item { ProductName="Cooking pot",           List=lists[3], ItemPriceUsd=075.00 },
