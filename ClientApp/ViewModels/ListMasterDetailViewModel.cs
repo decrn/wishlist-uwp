@@ -13,22 +13,21 @@ namespace ClientApp.ViewModels {
         }
 
         private async void Initialize(string type) {
+
             if (type == "Owned") {
-
                 List<List> lists = await App.dataService.GetOwnedLists();
-
                 foreach (var list in lists) {
                     var nl = new ListViewModel(list);
                     _lists.Add(nl);
                 }
+
             } else if (type == "Subscribed") {
-
                 List<List> lists = await App.dataService.GetSubscribedLists();
-
                 foreach (var list in lists) {
                     var nl = new ListViewModel(list);
                     _lists.Add(nl);
                 }
+
             } else {
                 throw new ArgumentException("This type of list is not supported. Use 'Owned' or 'Subscribed'.");
             }
@@ -49,9 +48,7 @@ namespace ClientApp.ViewModels {
 
         public ListViewModel SelectedList {
             get => _selectedList;
-            set {
-                SetProperty(ref _selectedList, value);
-            }
+            set { SetProperty(ref _selectedList, value); }
         }
 
         public void AddList() {

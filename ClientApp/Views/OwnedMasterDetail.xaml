@@ -9,6 +9,7 @@
     xmlns:models="using:ClientApp.Models"
     xmlns:viewmodels="using:ClientApp.ViewModels"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:system="using:System"
     mc:Ignorable="d"
     NavigationCacheMode="Enabled">
     <Page.Transitions>
@@ -56,7 +57,7 @@
                         </Grid.ColumnDefinitions>
 
                         <!-- name of the list-->
-                        <TextBlock Text="{x:Bind Name}" Style="{ThemeResource BaseTextBlockStyle}" />
+                        <TextBlock Text="{x:Bind Name, Mode=OneWay}" Style="{ThemeResource BaseTextBlockStyle}" />
 
                         <!-- creator of the list-->
                         <TextBlock
@@ -111,12 +112,12 @@
                             </Ellipse>
                             
                             <StackPanel Grid.Column="1" HorizontalAlignment="Left">
-                                <TextBox x:Name="Name" PlaceholderText="List Name" Margin="0,15,0,0" MaxLength="100" Width="400" Text="{x:Bind Name}"/>
-                                <TextBox x:Name="Description" PlaceholderText="Description" Margin="0,15,0,0" MaxLength="300" AcceptsReturn="True" TextWrapping="Wrap" Width="400" Text="{x:Bind Description}"/>
+                                <TextBox x:Name="Name" PlaceholderText="List Name" Margin="0,15,0,0" MaxLength="100" Width="400" Text="{x:Bind Name, Mode=TwoWay}"/>
+                                <TextBox x:Name="Description" PlaceholderText="Description" Margin="0,15,0,0" MaxLength="300" AcceptsReturn="True" TextWrapping="Wrap" Width="400" Text="{x:Bind Description, Mode=TwoWay}"/>
                                 <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
-                                    <!--TODO: Fix deadline input-->
-                                    <!--<CalendarDatePicker x:Name="Deadline" PlaceholderText="Deadline" Width="200" Date="{x:Bind Deadline, Mode=TwoWay, Converter={StaticResource DateTimeToDateTimeOffset}}"></CalendarDatePicker>-->
-                                    <CheckBox IsChecked="{x:Bind IsHidden}" VerticalAlignment="Center" Margin="30,0,0,0" Content="Private List"></CheckBox>
+                                    <!--TODO: Fix deadline input  Date="{x:Bind Deadline, Mode=TwoWay}"  -->
+                                    <CalendarDatePicker x:Name="Deadline" PlaceholderText="Deadline" Width="200" DateFormat="{}{year.full}-{month.integer}-{day.integer}"></CalendarDatePicker>
+                                    <CheckBox IsChecked="{x:Bind IsHidden, Mode=TwoWay}" VerticalAlignment="Center" Margin="30,0,0,0" Content="Private List"></CheckBox>
                                 </StackPanel>
                             </StackPanel>
                         </Grid>
@@ -142,7 +143,7 @@
                                         Text="Wishes"
                                         Style="{ThemeResource TitleTextBlockStyle}" />
 
-                                    <ListView x:Name="Items" Margin="0,20" ItemsSource="{x:Bind Items}" SelectionMode="None">
+                                    <ListView x:Name="Items" Margin="0,20" ItemsSource="{x:Bind Items, Mode=TwoWay}" SelectionMode="None">
                                         <!--TODO: Display a header with no items message-->
                                         <ListView.ItemTemplate>
                                             <DataTemplate x:DataType="viewmodels:ItemViewModel">
@@ -159,23 +160,23 @@
                                                         <RowDefinition></RowDefinition>
                                                     </Grid.RowDefinitions>
 
-                                                    <CheckBox Grid.RowSpan="3" IsChecked="{x:Bind IsCompleted}" IsEnabled="False"></CheckBox>
+                                                    <CheckBox Grid.RowSpan="3" IsChecked="{x:Bind IsCompleted, Mode=OneTime}" IsEnabled="False"></CheckBox>
 
                                                     <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-                                                        <TextBox Margin="5" PlaceholderText="Name" Text="{x:Bind ProductName}" MinWidth="200" />
-                                                        <TextBox Margin="5" PlaceholderText="Price" Text="{x:Bind ItemPriceUsd}" MinWidth="80" />
+                                                        <TextBox Margin="5" PlaceholderText="Name" Text="{x:Bind ProductName, Mode=TwoWay}" MinWidth="200" />
+                                                        <TextBox Margin="5" PlaceholderText="Price" Text="{x:Bind ItemPriceUsd, Mode=TwoWay}" MinWidth="80" />
                                                     </StackPanel>
 
-                                                    <TextBox Grid.Column="1" AcceptsReturn="True" TextWrapping="Wrap" Grid.Row="1" Margin="5" PlaceholderText="Description" Text="{x:Bind Description}" />
+                                                    <TextBox Grid.Column="1" AcceptsReturn="True" TextWrapping="Wrap" Grid.Row="1" Margin="5" PlaceholderText="Description" Text="{x:Bind Description, Mode=TwoWay}" />
 
                                                     <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
-                                                        <TextBox Margin="5" PlaceholderText="More Info Url" Text="{x:Bind ProductInfoUrl}" MinWidth="140" />
-                                                        <TextBox Margin="5" PlaceholderText="Image Url" Text="{x:Bind ProductImageUrl}" MinWidth="140" />
+                                                        <TextBox Margin="5" PlaceholderText="More Info Url" Text="{x:Bind ProductInfoUrl, Mode=TwoWay}" MinWidth="140" />
+                                                        <TextBox Margin="5" PlaceholderText="Image Url" Text="{x:Bind ProductImageUrl, Mode=TwoWay}" MinWidth="140" />
                                                     </StackPanel>
 
                                                     <AutoSuggestBox Grid.Column="1" Grid.Row="3"
                                                         PlaceholderText="Category" Width="200"
-                                                        Text="{x:Bind Category}"
+                                                        Text="{x:Bind Category, Mode=TwoWay}"
                                                         TextChanged="Category_TextChanged"
                                                         SuggestionChosen="Category_SuggestionChosen"
                                                         GotFocus="Category_GotFocus"/>
@@ -211,8 +212,8 @@
                                     <TextBlock
                                     Text="Subscribed users"
                                     Style="{ThemeResource TitleTextBlockStyle}" />
-                                        
-                                    <ListView x:Name="SubscribedUsersList" Margin="0,20" ItemsSource="{x:Bind SubscribedUsers}" SelectionMode="None">
+
+                                    <ListView x:Name="SubscribedUsersList" Margin="0,20" ItemsSource="{x:Bind SubscribedUsers, Mode=OneTime}" SelectionMode="None">
                                         <!--TODO: Display a header with no items message-->
                                         <ListView.ItemTemplate>
                                             <DataTemplate x:DataType="viewmodels:UserViewModel">
@@ -221,7 +222,7 @@
                                                         <ColumnDefinition/>
                                                         <ColumnDefinition Width="50"/>
                                                     </Grid.ColumnDefinitions>
-                                                    <TextBlock Text="{x:Bind FullName}" Grid.Column="0" Width="200"/>
+                                                    <TextBlock Text="{x:Bind FullName, Mode=OneTime}" Grid.Column="0" Width="200"/>
                                                     <Button Grid.Column="1" Background="Transparent" VerticalAlignment="Center">
                                                         <SymbolIcon>Delete</SymbolIcon>
                                                     </Button>
@@ -237,7 +238,7 @@
                                     Text="Invite users"
                                     Style="{ThemeResource TitleTextBlockStyle}" />
 
-                                    <ListView x:Name="InvitedUsersList" Margin="0,20" ItemsSource="{x:Bind InvitedUsers}" SelectionMode="None">
+                                    <ListView x:Name="InvitedUsersList" Margin="0,20" ItemsSource="{x:Bind InvitedUsers, Mode=TwoWay}" SelectionMode="None">
                                         <!--TODO: Display a header with no items message-->
                                         <ListView.ItemTemplate>
                                             <DataTemplate x:DataType="viewmodels:UserViewModel">
@@ -246,7 +247,7 @@
                                                         <ColumnDefinition/>
                                                         <ColumnDefinition Width="50"/>
                                                     </Grid.ColumnDefinitions>
-                                                    <TextBox Text="{x:Bind Email}" Grid.Column="0" Width="200"/>
+                                                    <TextBox Text="{x:Bind Email, Mode=TwoWay}" Grid.Column="0" Width="200"/>
                                                     <Button Grid.Column="1" Background="Transparent" VerticalAlignment="Center">
                                                         <SymbolIcon>Delete</SymbolIcon>
                                                     </Button>
