@@ -53,7 +53,6 @@ namespace ClientApp.ViewModels {
         }
 
         public void AddList(List list) {
-            Debug.WriteLine("Adding list");
             var lvm = new ListViewModel(list);
             Lists.Add(lvm);
             SelectedList = lvm;

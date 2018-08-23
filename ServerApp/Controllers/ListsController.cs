@@ -64,18 +64,28 @@ namespace ServerApp.Controllers {
 
             _context.Entry(list).State = EntityState.Modified;
 
-            // TODO: save items
-            //list.Items.ToList().ForEach(i => {
-            //    if (i.ItemId > 0) {
-            //        _context.Item.Update(i);
-            //    } else {
-            //        _context.Item.Add(i);
-            //    }
-            //});
+            await _context.SaveChangesAsync();
 
-            // TODO: also save new invitations
+            list.Items.ToList().ForEach(item => {
+                if (item.ItemId > 0) {
+                    // yes the lazy way
+                    var trueitem = _context.Item.First(i => i.ItemId == item.ItemId);
+                    trueitem.ProductName = item.ProductName;
+                    trueitem.Description = item.Description;
+                    trueitem.ProductInfoUrl = item.ProductInfoUrl;
+                    trueitem.ProductImageUrl = item.ProductImageUrl;
+                    trueitem.Category = item.Category;
+                    trueitem.ItemPriceUsd = item.ItemPriceUsd;
+
+                } else {
+                    // TODO: test adding new item when issue #38 is fixed
+                    _context.Item.Add(item);
+                }
+            });
 
             await _context.SaveChangesAsync();
+
+            // TODO: also save new invitations (only possible after #38 is fixed)
 
             return Ok(list);
         }

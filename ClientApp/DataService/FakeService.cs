@@ -71,6 +71,7 @@ namespace ClientApp.DataService {
 
         public async Task<User> GetCurrentUser() {
             Debug.WriteLine("GET currentuser");
+            LoggedInUser = GetFakeUser();
             return await Task.FromResult(
                 new User() {
                     FirstName = "Peter",
@@ -101,7 +102,6 @@ namespace ClientApp.DataService {
 
         public async Task<User> GetUser(string id) {
             Debug.WriteLine("GET user "+id);
-            LoggedInUser = GetFakeUser();
             return await Task.FromResult(
                 GetFakeUser()
             );

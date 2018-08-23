@@ -1,7 +1,6 @@
 ﻿using ClientApp.Helpers;
 using ClientApp.Models;
 using ClientApp.ViewModels;
-using ClientApp.Views;
 using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -20,8 +19,9 @@ namespace ClientApp {
 
         bool SkipNextSelectionChanged = false;
         private async void MasterDetail_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            var simplelist = (ListViewModel)MasterDetail.SelectedItem;
+            if (simplelist.ListId < 1) return;
             if (!SkipNextSelectionChanged) {
-                var simplelist = (ListViewModel) MasterDetail.SelectedItem;
                 var detailedlist = await Lists.GetDetailed(simplelist);
 
                 SkipNextSelectionChanged = true;
@@ -36,7 +36,7 @@ namespace ClientApp {
         }
 
         private void NewList(object sender, RoutedEventArgs e) {
-            Lists.AddList(new List());
+            MasterDetail.SelectedItem = new ListViewModel(new List());
         }
 
         private void Save(object sender, RoutedEventArgs e) {

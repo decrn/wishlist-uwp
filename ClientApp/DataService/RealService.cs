@@ -158,11 +158,15 @@ namespace ClientApp.DataService {
                 subs[i] = subs[i]["user"];
             }
 
+            // convert UserListInvite model from server to Users
+            JArray invited = obj["invitedUsers"] as JArray;
+            for (int i = 0; i < invited.Count; i++) {
+                invited[i] = invited[i]["user"];
+            }
+
             List list = obj.ToObject<List>();
             return list;
         }
-
-        // TODO: implement adding and editing lists
 
         public async Task<JObject> NewList(List list) {
             JObject body = JObject.FromObject(list);
@@ -216,14 +220,14 @@ namespace ClientApp.DataService {
             MarkItem(item);
         }
 
-        // TODO: implement adding and editing items
-
+        // isn't used, never tested but should work
         public async Task<JObject> NewItem(Item item) {
             JObject body = JObject.FromObject(item);
             JObject obj = JObject.Parse(await HttpService.Post("Items", body, true));
             return obj;
         }
 
+        // isn't used, never tested but should work
         public async Task<JObject> EditItem(Item item) {
             JObject body = JObject.FromObject(item);
             JObject obj = JObject.Parse(await HttpService.Post("Items/" + item.ItemId, body, true));
