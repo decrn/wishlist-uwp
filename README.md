@@ -4,7 +4,7 @@ This is the repo for our implementation of the Wishlist App project as defined i
 * Denis Carnier (201531416)
 
 # Running
-To run this wonderfull application you need to know a couple of things:
+To run this wonderful application you need to know a couple of things:
 - You can either run the application with or without a backend server. To change this setting you will have to run both the Client and Server solutions, login and go to the settings page. To run both solutions at once, go to the 'Configuration Manager' in Visual Studio.
 - Any valid email and password will do when not using the server. The accounts on the server have the following credentials:
 
