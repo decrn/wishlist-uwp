@@ -59,13 +59,13 @@ namespace ClientApp.ViewModels {
             SelectedList = lvm;
         }
 
-        /*public void DeleteItem() {
-            if (SelectedItemIndex != -1) {
-                var item = Lists[SelectedItemIndex];
-                Lists.RemoveAt(SelectedItemIndex);
-                list.RemoveItem(item);
+        public void DeleteSelectedList() {
+            Debug.WriteLine("Removing List: ", SelectedList.Name);
+            if (SelectedList != null) {
+                var list = SelectedList;
+                Lists.Remove(list);
             }
-        }*/
+        }
 
 
         public async Task<ListViewModel> GetDetailed(ListViewModel selected) {

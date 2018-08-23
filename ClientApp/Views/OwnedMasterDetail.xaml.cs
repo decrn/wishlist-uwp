@@ -48,8 +48,9 @@ namespace ClientApp {
 
         }
 
-        private void Delete(object sender, RoutedEventArgs e) {
-
+        private void Delete(object sender, RoutedEventArgs e)
+        {
+            Lists.DeleteSelectedList();
         }
 
         private void AddNewWish(object sender, RoutedEventArgs e) {
