@@ -129,7 +129,7 @@
                                 <StackPanel Margin="0,10,0,0" Orientation="Horizontal" Tapped="ViewSubscribers">
                                     <TextBlock Text="Subscribers: "></TextBlock>
                                     <TextBlock Margin="10,0,0,0" Text="{x:Bind SubscribersTeaster}"></TextBlock>
-                                    <TextBlock Margin="10,0,0,0" Visibility="{x:Bind HasNoInvited}">No invited users</TextBlock>
+                                    <TextBlock Margin="10,0,0,0" Visibility="{x:Bind HasNoSubscribers}">No subscribed users</TextBlock>
                                 </StackPanel>
 
                                 <TextBlock Margin="0,10,0,0" Text="{x:Bind Description}"/>

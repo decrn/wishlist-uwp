@@ -151,6 +151,13 @@ namespace ClientApp.DataService {
 
         public async Task<List> GetList(int id) {
             JObject obj = JObject.Parse(await HttpService.Get("Lists/" + id));
+
+            // convert UserListSubscribe model from server to Users
+            JArray subs = obj["subscribedUsers"] as JArray;
+            for (int i = 0; i < subs.Count; i++) {
+                subs[i] = subs[i]["user"];
+            }
+
             List list = obj.ToObject<List>();
             return list;
         }
@@ -165,6 +172,20 @@ namespace ClientApp.DataService {
 
         public async Task<JObject> EditList(List list) {
             JObject body = JObject.FromObject(list);
+
+            // convert User models to UserListInvite model for server
+            JArray invites = body["InvitedUsers"] as JArray;
+            for (int i = 0; i < invites.Count; i++) {
+                var user = invites[i];
+                var invite = new JObject();
+                invite["id"] = 0;
+                invite["user"] = user;
+                invites[i] = invite;
+            }
+
+            // remove unneeded properties
+            body.Remove("SubscribedUsers");
+
             JObject obj = JObject.Parse(await HttpService.Put("Lists/" + list.ListId, body, true));
             return obj;
         }

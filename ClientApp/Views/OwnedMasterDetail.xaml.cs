@@ -54,11 +54,11 @@ namespace ClientApp {
         }
 
         private void AddNewWish(object sender, RoutedEventArgs e) {
-
+            Lists.SelectedList.Items.Add(new ItemViewModel());
         }
 
         private void AddInvite(object sender, RoutedEventArgs e) {
-
+            Lists.SelectedList.InvitedUsers.Add(new UserViewModel());
         }
 
         private void Category_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args) {

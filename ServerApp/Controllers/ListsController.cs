@@ -63,6 +63,18 @@ namespace ServerApp.Controllers {
                 return Forbid();
 
             _context.Entry(list).State = EntityState.Modified;
+
+            // TODO: save items
+            //list.Items.ToList().ForEach(i => {
+            //    if (i.ItemId > 0) {
+            //        _context.Item.Update(i);
+            //    } else {
+            //        _context.Item.Add(i);
+            //    }
+            //});
+
+            // TODO: also save new invitations
+
             await _context.SaveChangesAsync();
 
             return Ok(list);
