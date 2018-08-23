@@ -1,5 +1,6 @@
 ﻿<helpers:PrintablePage
-    xmlns:helpers="using:ClientApp.Helpers"    x:Class="ClientApp.OwnedMasterDetail"
+    xmlns:helpers="using:ClientApp.Helpers"
+    x:Class="ClientApp.OwnedMasterDetail"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:ClientApp"
@@ -19,7 +20,8 @@
     <!--Start master detail-->
     <Grid x:Name="Grid">
         <controls:MasterDetailsView x:Name="MasterDetail"
-            ItemsSource="{x:Bind Lists, Mode=OneWay}"
+            ItemsSource="{x:Bind Lists.Lists, Mode=TwoWay}"
+            SelectedItem="{x:Bind Lists.SelectedList, Mode=TwoWay}"
             CompactModeThresholdWidth="720"
             MasterPaneBackground="{ThemeResource MiddlePaneBackground}"
             Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
@@ -42,7 +44,7 @@
 
             <!--Define items in master list-->
             <controls:MasterDetailsView.ItemTemplate>
-                <DataTemplate x:DataType="models:List">
+                <DataTemplate x:DataType="viewmodels:ListViewModel">
                     <Grid Margin="0 12">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -59,7 +61,7 @@
 
                         <!-- creator of the list-->
                         <TextBlock
-                            Text="{x:Bind OwnerUser.GetFullName()}"
+                            Text="{x:Bind OwnerUser.FullName}"
                             Grid.Row="1"
                             MaxLines="1"
                             Style="{ThemeResource ListBodyTextBlockStyle}" />
@@ -81,7 +83,7 @@
 
             <!--Define detail panel-->
             <controls:MasterDetailsView.DetailsTemplate>
-                <DataTemplate x:DataType="models:List">
+                <DataTemplate x:DataType="viewmodels:ListViewModel">
 
                     <Grid>
                         <Grid.RowDefinitions>
@@ -113,7 +115,8 @@
                                 <TextBox x:Name="Name" PlaceholderText="List Name" Margin="0,15,0,0" MaxLength="100" Width="400" Text="{x:Bind Name}"/>
                                 <TextBox x:Name="Description" PlaceholderText="Description" Margin="0,15,0,0" MaxLength="300" AcceptsReturn="True" TextWrapping="Wrap" Width="400" Text="{x:Bind Description}"/>
                                 <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
-                                    <CalendarDatePicker x:Name="Deadline" PlaceholderText="Deadline" Width="200" Date="{x:Bind Deadline, Mode=TwoWay, Converter={StaticResource DateTimeToDateTimeOffset}}"></CalendarDatePicker>
+                                    <!--TODO: Fix deadline input-->
+                                    <!--<CalendarDatePicker x:Name="Deadline" PlaceholderText="Deadline" Width="200" Date="{x:Bind Deadline, Mode=TwoWay, Converter={StaticResource DateTimeToDateTimeOffset}}"></CalendarDatePicker>-->
                                     <CheckBox IsChecked="{x:Bind IsHidden}" VerticalAlignment="Center" Margin="30,0,0,0" Content="Private List"></CheckBox>
                                 </StackPanel>
                             </StackPanel>
@@ -143,7 +146,7 @@
                                     <ListView x:Name="Items" Margin="0,20" ItemsSource="{x:Bind Items}" SelectionMode="None">
                                         <!--TODO: Display a header with no items message-->
                                         <ListView.ItemTemplate>
-                                            <DataTemplate x:DataType="models:Item">
+                                            <DataTemplate x:DataType="viewmodels:ItemViewModel">
                                                 <Grid Margin="0,5" Padding="0,0,0,10" BorderThickness="0,0,0,1" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}">
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="50"/>
@@ -189,7 +192,6 @@
                                                         </Button.Flyout>
                                                     </Button>
 
-
                                                 </Grid>
                                             </DataTemplate>
                                         </ListView.ItemTemplate>
@@ -214,13 +216,13 @@
                                     <ListView x:Name="SubscribedUsersList" Margin="0,20" ItemsSource="{x:Bind SubscribedUsers}" SelectionMode="None">
                                         <!--TODO: Display a header with no items message-->
                                         <ListView.ItemTemplate>
-                                            <DataTemplate x:DataType="models:User">
+                                            <DataTemplate x:DataType="viewmodels:UserViewModel">
                                                 <Grid>
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition/>
                                                         <ColumnDefinition Width="50"/>
                                                     </Grid.ColumnDefinitions>
-                                                    <TextBlock Text="{x:Bind GetFullName()}" Grid.Column="0" Width="200"/>
+                                                    <TextBlock Text="{x:Bind FullName}" Grid.Column="0" Width="200"/>
                                                     <Button Grid.Column="1" Background="Transparent" VerticalAlignment="Center">
                                                         <SymbolIcon>Delete</SymbolIcon>
                                                     </Button>
@@ -239,7 +241,7 @@
                                     <ListView x:Name="InvitedUsersList" Margin="0,20" ItemsSource="{x:Bind InvitedUsers}" SelectionMode="None">
                                         <!--TODO: Display a header with no items message-->
                                         <ListView.ItemTemplate>
-                                            <DataTemplate x:DataType="models:User">
+                                            <DataTemplate x:DataType="viewmodels:UserViewModel">
                                                 <Grid>
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition/>

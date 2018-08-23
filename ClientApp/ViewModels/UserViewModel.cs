@@ -9,9 +9,13 @@ namespace ClientApp.ViewModels {
 
         User user;
 
-        public UserViewModel() {
+        public UserViewModel(User ownerUser = null) {
 
-            user = new User();
+            if (ownerUser == null) {
+                user = new User();
+            } else {
+                user = ownerUser;
+            }
             _SelectedSubscriptionIndex = -1;
             _SelectedOwnedIndex = -1;
 
@@ -27,6 +31,25 @@ namespace ClientApp.ViewModels {
                 _Owned.Add(nl);
             }
 
+        }
+
+        public string FirstName {
+            get => This.FirstName;
+            set { SetProperty(This.FirstName, value, () => This.FirstName = value); }
+        }
+
+        public string LastName {
+            get => This.LastName;
+            set { SetProperty(This.LastName, value, () => This.LastName = value); }
+        }
+
+        public string Email {
+            get => This.Email;
+            set { SetProperty(This.Email, value, () => This.Email = value); }
+        }
+
+        public string FullName {
+            get { return FirstName + " " + LastName; }
         }
 
         // Subscriptions

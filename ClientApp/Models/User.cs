@@ -1,9 +1,10 @@
 using ClientApp.ViewModels;
+using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
 
 namespace ClientApp.Models {
-    public class User {
+    public class User : ObservableObject {
 
         public string Id;
         public string Email;

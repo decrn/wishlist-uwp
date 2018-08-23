@@ -1,7 +1,8 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight;
+using System;
 
 namespace ClientApp.Models {
-    public class Notification {
+    public class Notification : ObservableObject {
 
         // autogenerate
         public int NotificationId { get; set; }

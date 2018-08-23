@@ -1,17 +1,16 @@
 ﻿using ClientApp.Models;
 using ClientApp.ViewModels.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
+using System.Diagnostics;
 
 namespace ClientApp.ViewModels {
     public class ListViewModel : NotificationBase<List> {
-        private readonly List _list;
+        public List List;
 
         public ListViewModel(List list = null) : base(list) {
-            _list = list;
+            this.List = list;
         }
 
         public int ListId {
@@ -20,13 +19,38 @@ namespace ClientApp.ViewModels {
         }
 
         public string Name {
-            get => This.Name;
-            set { SetProperty(This.Name, value, () => This.Name = value); }
+            get
+            {
+                Debug.WriteLine("Getting List.Name");
+                return This.Name;
+            }
+            set
+            {
+                Debug.WriteLine("Setting List.Name");
+                SetProperty(This.Name, value, () => This.Name = value);
+            }
         }
 
-        public User OwnerUser {
-            get => This.OwnerUser;
-            set { SetProperty(This.OwnerUser, value, () => This.OwnerUser = value); }
+        public string Description {
+            get => This.Description;
+            set { SetProperty(This.Description, value, () => This.Description = value); }
+        }
+
+        public DateTime Deadline {
+            get => This.Deadline;
+            set { SetProperty(This.Deadline, value, () => This.Deadline = value); }
+        }
+
+        private UserViewModel _ownerUser = new UserViewModel();
+        public UserViewModel OwnerUser {
+            get => new UserViewModel(This.OwnerUser);
+            set => SetProperty(ref _ownerUser, value);
+            // set { SetProperty(This.OwnerUser, value, () => This.OwnerUser = value); }
+        }
+
+        public bool IsHidden {
+            get => This.IsHidden;
+            set { SetProperty(This.IsHidden, value, () => This.IsHidden = value); }
         }
 
         public string Color {
@@ -34,7 +58,16 @@ namespace ClientApp.ViewModels {
             set { SetProperty(This.Color, value, () => This.Color = value); }
         }
 
-        public string ItemCount => This.Items == null ? "" : This.Items.Count + " items";
+        public string Icon {
+            get => This.Icon;
+            set { SetProperty(This.Icon, value, () => This.Icon = value); }
+        }
+
+        public void Save() {
+
+        }
+
+        // items
 
         private ObservableCollection<ItemViewModel> _items = new ObservableCollection<ItemViewModel>();
 
@@ -43,35 +76,56 @@ namespace ClientApp.ViewModels {
             set => SetProperty(ref _items, value);
         }
 
-        private int _selectedItemIndex;
+        public string ItemCount => This.Items == null ? "" : This.Items.Count + " items";
 
-        public int SelectedItemIndex {
-            get => _selectedItemIndex;
-            set {
-                if (SetProperty(ref _selectedItemIndex, value)) RaisePropertyChanged(nameof(SelectedItem));
-            }
-        }
+        //private int _selectedItemIndex;
 
-        public ItemViewModel SelectedItem => _selectedItemIndex >= 0 ? _items[_selectedItemIndex] : null;
+        //public int SelectedItemIndex {
+        //    get => _selectedItemIndex;
+        //    set {
+        //        if (SetProperty(ref _selectedItemIndex, value)) RaisePropertyChanged(nameof(SelectedItem));
+        //    }
+        //}
 
-        public void AddItem() {
-            var item = new ItemViewModel();
-            item.PropertyChanged += Item_OnNotifyPropertyChanged;
-            Items.Add(item);
-            _list.AddItem(item);
-            SelectedItemIndex = Items.IndexOf(item);
-        }
+        //public ItemViewModel SelectedItem => _selectedItemIndex >= 0 ? _items[_selectedItemIndex] : null;
 
-        public void DeleteItem() {
-            if (SelectedItemIndex != -1) {
-                var item = Items[SelectedItemIndex];
-                Items.RemoveAt(SelectedItemIndex);
-                _list.RemoveItem(item);
-            }
-        }
+        //public void AddItem() {
+        //    var item = new ItemViewModel();
+        //    item.PropertyChanged += Item_OnNotifyPropertyChanged;
+        //    Items.Add(item);
+        //    list.AddItem(item);
+        //    SelectedItemIndex = Items.IndexOf(item);
+        //}
+
+        //public void DeleteItem() {
+        //    if (SelectedItemIndex != -1) {
+        //        var item = Items[SelectedItemIndex];
+        //        Items.RemoveAt(SelectedItemIndex);
+        //        list.RemoveItem(item);
+        //    }
+        //}
 
         void Item_OnNotifyPropertyChanged(Object sender, PropertyChangedEventArgs e) {
-            _list.Update((ItemViewModel) sender);
+            List.Update((ItemViewModel) sender);
+        }
+
+        // subscribed users
+
+        private ObservableCollection<UserViewModel> _subscribedUsers = new ObservableCollection<UserViewModel>();
+
+        public ObservableCollection<UserViewModel> SubscribedUsers {
+            get => _subscribedUsers;
+            set => SetProperty(ref _subscribedUsers, value);
+        }
+
+
+        // invited users
+
+        private ObservableCollection<UserViewModel> _invitedUsers = new ObservableCollection<UserViewModel>();
+
+        public ObservableCollection<UserViewModel> InvitedUsers {
+            get => _invitedUsers;
+            set => SetProperty(ref _invitedUsers, value);
         }
     }
 }

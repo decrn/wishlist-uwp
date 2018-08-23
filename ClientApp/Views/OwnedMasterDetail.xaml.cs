@@ -1,7 +1,7 @@
 ﻿using ClientApp.Helpers;
 using ClientApp.Models;
+using ClientApp.ViewModels;
 using ClientApp.Views;
-using System.Collections.Generic;
 using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -14,35 +14,33 @@ namespace ClientApp {
     /// </summary>
     public sealed partial class OwnedMasterDetail : PrintablePage {
 
-        public ICollection<List> Lists{ get; set; }
-        private List CurrentList;
+        public ListMasterDetailViewModel Lists { get; set; }
 
         string[] CategorySuggestions = new string[] { "Toys", "Homewares", "Gadgets", "Vouchers", "Varia" };
 
         public OwnedMasterDetail() {
-            // TODO: Use Viewmodels?
-            Lists = App.dataService.GetOwnedLists();
-            InitializeComponent();
+            Lists = new ListMasterDetailViewModel("Owned");
+            this.InitializeComponent();
 
             // return the full detail list when opening detail panel
             MasterDetail.MapDetails = (selected) => {
-                CurrentList = App.dataService.GetList(((List) selected).ListId);
-                return CurrentList;
+                return Lists.GetDetailed((ListViewModel) selected);
             };
         }
 
         public void SelectList(List list) {
             if (list == null) MasterDetail.SelectedItem = null;
-            else MasterDetail.SelectedItem = Lists.First((l) => l.ListId == list.ListId);
+            else MasterDetail.SelectedItem = Lists.Lists.First((l) => l.ListId == list.ListId);
         }
 
-        private async void NewList(object sender, RoutedEventArgs e) {
+        private void NewList(object sender, RoutedEventArgs e) {
             NewListDialog dialog = new NewListDialog();
             dialog.ShowAsync();
         }
 
         private void Save(object sender, RoutedEventArgs e) {
-            // check if list is new (no id) and use save or create new route
+            // check if list is new (no id) and use 'save' or 'create new' route
+            Lists.SelectedDetail.Save();
         }
 
         private void Send(object sender, RoutedEventArgs e) {
