@@ -1,4 +1,4 @@
-﻿using ClientApp.Models;
+﻿using ClientApp.ViewModels;
 using System.Collections.Generic;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -8,10 +8,10 @@ using Windows.UI.Xaml.Input;
 namespace ClientApp.Views {
     public sealed partial class SubscribersList : ContentDialog {
 
-        private List<User> Users;
+        private List<UserViewModel> Users;
 
-        public SubscribersList(List<User> subscribedUsers) {
-            this.Users = subscribedUsers;
+        public SubscribersList(List<UserViewModel> subscribedUsers) {
+            Users = subscribedUsers;
             this.InitializeComponent();
         }
 
@@ -24,9 +24,8 @@ namespace ClientApp.Views {
         }
 
         private async void OpenDetails(object sender, TappedRoutedEventArgs e) {
-            string id = (string) ((StackPanel)sender).Tag;
-            User user = await App.dataService.GetUser(id);
-            UserDetailsDialog dialog = new UserDetailsDialog(user);
+            UserViewModel vm = (UserViewModel) ((StackPanel)sender).Tag;
+            UserDetailsDialog dialog = new UserDetailsDialog(vm);
             Hide();
             dialog.ShowAsync();
         }

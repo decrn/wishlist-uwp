@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:ClientApp.Models"
+    xmlns:viewmodels="using:ClientApp.ViewModels"
     mc:Ignorable="d"
     Title="All subscribers"
     PrimaryButtonText="Close"
@@ -14,9 +15,9 @@
     <Grid>
         <ListView x:Name="UsersList" Margin="0,20" ItemsSource="{x:Bind Users}" SelectionMode="None">
             <ListView.ItemTemplate>
-                <DataTemplate x:DataType="models:User">
-                    <StackPanel Margin="0,5" Tapped="OpenDetails" Tag="{x:Bind Id}">
-                        <TextBlock Text="{x:Bind GetFullName()}" Style="{ThemeResource BaseTextBlockStyle}"/>
+                <DataTemplate x:DataType="viewmodels:UserViewModel">
+                    <StackPanel Margin="0,5" Tapped="OpenDetails" Tag="{x:Bind}">
+                        <TextBlock Text="{x:Bind FullName}" Style="{ThemeResource BaseTextBlockStyle}"/>
                         <TextBlock Text="{x:Bind Email}" Style="{ThemeResource ListBodyTextBlockStyle}"/>
                     </StackPanel>
                 </DataTemplate>

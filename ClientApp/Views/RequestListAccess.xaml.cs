@@ -1,4 +1,4 @@
-﻿using ClientApp.Models;
+﻿using ClientApp.ViewModels;
 using Microsoft.Toolkit.Extensions;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -17,7 +17,7 @@ namespace ClientApp.Views {
             string value = Email.Text;
             if (value.IsEmail()) {
                 base.Hide();
-                User user = await App.dataService.GetUser(value);
+                UserViewModel user = await UserViewModel.FromEmail(value);
                 UserDetailsDialog dialog = new UserDetailsDialog(user);
                 dialog.ShowAsync();
             } else {

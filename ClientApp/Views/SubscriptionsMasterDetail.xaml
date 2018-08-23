@@ -20,7 +20,8 @@
     <!--Start master detail-->
     <Grid>
         <controls:MasterDetailsView x:Name="MasterDetail"
-            ItemsSource="{x:Bind Lists, Mode=OneWay}"
+            ItemsSource="{x:Bind Lists.Lists, Mode=TwoWay}"
+            SelectionChanged="MasterDetail_SelectionChanged"
             CompactModeThresholdWidth="720"
             MasterPaneBackground="{ThemeResource MiddlePaneBackground}"
             Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
@@ -33,8 +34,7 @@
                     Padding="0 20 0 10" Grid.Column="0" Grid.Row="0">
                     <TextBlock
                         Text="Subscribed lists"
-                        Style="{ThemeResource TitleTextBlockStyle}"
-                        VerticalAlignment="Center"/>
+                        Style="{ThemeResource TitleTextBlockStyle}"/>
                     <Button Click="RequestAccess" Background="Transparent" VerticalAlignment="Center">
                         <SymbolIcon>AddFriend</SymbolIcon>
                     </Button>
@@ -43,7 +43,7 @@
 
             <!--Define items in master list-->
             <controls:MasterDetailsView.ItemTemplate>
-                <DataTemplate x:DataType="models:List">
+                <DataTemplate x:DataType="viewmodels:ListViewModel">
                     <Grid Margin="0 12">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -60,7 +60,7 @@
 
                         <!-- creator of the list-->
                         <TextBlock
-                            Text="{x:Bind OwnerUser.GetFullName()}"
+                            Text="{x:Bind OwnerUser.FullName}"
                             Grid.Row="1"
                             MaxLines="1"
                             Style="{ThemeResource ListBodyTextBlockStyle}" />
@@ -83,7 +83,7 @@
 
             <!--Define detail panel-->
             <controls:MasterDetailsView.DetailsTemplate>
-                <DataTemplate x:DataType="models:List">
+                <DataTemplate x:DataType="viewmodels:ListViewModel">
 
                     <Grid>
                         <Grid.RowDefinitions>
@@ -119,7 +119,7 @@
                                 </StackPanel>
                                 <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
                                     <TextBlock Text="By "/>
-                                    <TextBlock Margin="5,0,0,0" Text="{x:Bind OwnerUser.GetFullName()}"/>
+                                    <TextBlock Margin="5,0,0,0" Text="{x:Bind OwnerUser.FullName}"/>
                                     <TextBlock Margin="5,0,0,0" Text="{x:Bind OwnerUser.Email}"/>
                                 </StackPanel>
                                 <StackPanel Margin="0,10,0,0" Orientation="Horizontal" Tapped="ViewSubscribers">
@@ -161,7 +161,7 @@
 
                                     <ListView x:Name="Items" Margin="0,20" ItemsSource="{x:Bind Items}" SelectionMode="None">
                                         <ListView.ItemTemplate>
-                                            <DataTemplate x:DataType="models:Item">
+                                            <DataTemplate x:DataType="viewmodels:ItemViewModel">
                                                 <Grid Padding="0,0,54,0">
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="40"/>

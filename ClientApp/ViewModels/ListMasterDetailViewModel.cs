@@ -23,7 +23,7 @@ namespace ClientApp.ViewModels {
                 }
             } else if (type == "Subscribed") {
 
-                List<List> lists = await App.dataService.GetOwnedLists();
+                List<List> lists = await App.dataService.GetSubscribedLists();
 
                 foreach (var list in lists) {
                     var nl = new ListViewModel(list);

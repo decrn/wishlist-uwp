@@ -18,7 +18,7 @@
     </Page.Transitions>
 
     <!--Start master detail-->
-    <Grid x:Name="Grid">
+    <Grid>
         <controls:MasterDetailsView x:Name="MasterDetail"
             ItemsSource="{x:Bind Lists.Lists, Mode=TwoWay}"
             SelectionChanged="MasterDetail_SelectionChanged"
@@ -35,7 +35,6 @@
                     <TextBlock
                         Text="Created lists"
                         Style="{ThemeResource TitleTextBlockStyle}"/>
-
                     <Button Click="NewList" Background="Transparent" VerticalAlignment="Center">
                         <SymbolIcon>Add</SymbolIcon>
                     </Button>

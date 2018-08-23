@@ -1,4 +1,4 @@
-﻿using ClientApp.Models;
+﻿using ClientApp.ViewModels;
 using Windows.UI.Xaml.Controls;
 
 // The Content Dialog item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -6,9 +6,9 @@ using Windows.UI.Xaml.Controls;
 namespace ClientApp.Views {
     public sealed partial class UserDetailsDialog : ContentDialog {
 
-        User User;
+        UserViewModel User;
 
-        public UserDetailsDialog(User user) {
+        public UserDetailsDialog(UserViewModel user) {
             this.User = user;
             this.InitializeComponent();
         }

@@ -1,5 +1,6 @@
 ﻿using ClientApp.Helpers;
 using ClientApp.Models;
+using ClientApp.ViewModels;
 using ClientApp.Views;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,31 +11,29 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace ClientApp {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class SubscriptionMasterDetail : PrintablePage {
-        public ICollection<List> Lists { get; set; }
-        private List CurrentList;
+
+        public ListMasterDetailViewModel Lists { get; set; }
 
         public SubscriptionMasterDetail() {
-            Initialize();
+            Lists = new ListMasterDetailViewModel("Owned");
             InitializeComponent();
         }
 
-        private async void Initialize() {
-            // TODO: Use Viewmodels?
-            Lists = await App.dataService.GetSubscribedLists();
+        bool SkipNextSelectionChanged = false;
+        private async void MasterDetail_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            if (!SkipNextSelectionChanged) {
+                var simplelist = (ListViewModel)MasterDetail.SelectedItem;
+                var detailedlist = await Lists.GetDetailed(simplelist);
 
-            // return the full detail list when opening detail panel
-            MasterDetail.MapDetails = (selected) => {
-                return App.dataService.GetList(((List)selected).ListId);
-            };
-
+                SkipNextSelectionChanged = true;
+                MasterDetail.SelectedItem = detailedlist;
+            }
+            SkipNextSelectionChanged = false;
         }
+
+        // TODO: move these methods to the viewmodel or are they fine here?
 
         private void RequestAccess(object sender, RoutedEventArgs e) {
             RequestListAccess dialog = new RequestListAccess();
@@ -42,15 +41,15 @@ namespace ClientApp {
         }
 
         private void Unsubscribe(object sender, RoutedEventArgs e) {
-            App.dataService.UnsubscribeFromList(CurrentList);
+            App.dataService.UnsubscribeFromList(Lists.SelectedList.List);
         }
 
         private async void AddToCalendar(object sender, RoutedEventArgs e) {
 
             var appt = new Appointment();
-            appt.Subject = CurrentList.Name;
+            appt.Subject = Lists.SelectedList.Name;
             appt.Details = "Reminder to buy something";
-            appt.StartTime = CurrentList.Deadline;
+            appt.StartTime = Lists.SelectedList.Deadline;
 
             var element = sender as FrameworkElement;
             GeneralTransform generalTransform = element.TransformToVisual((FrameworkElement) element.Parent);
@@ -68,17 +67,17 @@ namespace ClientApp {
                 promptOptions.TreatAsUntrusted = true;
                 Windows.System.Launcher.LaunchUriAsync(new System.Uri(url), promptOptions);
             }
-
         }
 
         private void ViewSubscribers(object sender, TappedRoutedEventArgs e) {
-            SubscribersList dialog = new SubscribersList(CurrentList.SubscribedUsers);
+            List<UserViewModel> subs = Lists.SelectedList.SubscribedUsers.ToList();
+            SubscribersList dialog = new SubscribersList(subs);
             dialog.ShowAsync();
         }
 
         public void SelectList(List list) {
             if (list == null) MasterDetail.SelectedItem = null;
-            else MasterDetail.SelectedItem = Lists.First((l) => l.ListId == list.ListId);
+            else MasterDetail.SelectedItem = Lists.Lists.First((l) => l.ListId == list.ListId);
         }
     }
 }

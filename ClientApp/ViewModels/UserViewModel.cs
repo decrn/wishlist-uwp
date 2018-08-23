@@ -3,34 +3,44 @@ using ClientApp.ViewModels.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading.Tasks;
 
 namespace ClientApp.ViewModels {
     public class UserViewModel : NotificationBase<User> {
+        User User;
 
-        User user;
+        public UserViewModel(User user = null) : base(user) {
 
-        public UserViewModel(User ownerUser = null) {
-
-            if (ownerUser == null) {
-                user = new User();
+            if (user == null) {
+                User = new User();
             } else {
-                user = ownerUser;
+                User = user;
             }
             _SelectedSubscriptionIndex = -1;
             _SelectedOwnedIndex = -1;
 
-            foreach (var list in user.SubscribedLists) {
+            foreach (var list in User.SubscribedLists) {
                 var nl = new ListViewModel(list);
                 nl.PropertyChanged += List_OnNotifyPropertyChanged;
                 _Subscriptions.Add(nl);
             }
 
-            foreach (var list in user.OwningLists) {
+            foreach (var list in User.OwningLists) {
                 var nl = new ListViewModel(list);
                 nl.PropertyChanged += List_OnNotifyPropertyChanged;
                 _Owned.Add(nl);
             }
 
+        }
+
+        // TODO: is this allowed? needed in RequestListAccess
+        public async static Task<UserViewModel> FromEmail(string email) {
+            return new UserViewModel(await App.dataService.GetUser(email));
+        }
+
+        public string Id {
+            get => This.Id;
+            set { SetProperty(This.Id, value, () => This.Id = value); }
         }
 
         public string FirstName {
@@ -73,7 +83,7 @@ namespace ClientApp.ViewModels {
         }
 
         // _SelectedIndex is used internally when navigating into lists in the details view, when navigating back
-        // This index remembers where the user left off and helps them scroll through all subscribed lists to where they were
+        // This index remembers where the User left off and helps them scroll through all subscribed lists to where they were
         int _SelectedSubscriptionIndex;
 
         public int SelectedSubscriptionIndex {
@@ -87,7 +97,7 @@ namespace ClientApp.ViewModels {
             var list = new ListViewModel();
             list.PropertyChanged += List_OnNotifyPropertyChanged;
             Subscriptions.Add(list);
-            user.RegisterSubscription(list);
+            User.RegisterSubscription(list);
             SelectedSubscriptionIndex = Subscriptions.IndexOf(list);
         }
 
@@ -95,7 +105,7 @@ namespace ClientApp.ViewModels {
             if (SelectedSubscriptionIndex != -1) {
                 var sub = Subscriptions[SelectedSubscriptionIndex];
                 Subscriptions.RemoveAt(SelectedSubscriptionIndex);
-                user.RemoveSubscription(sub);
+                User.RemoveSubscription(sub);
             }
         }
 
@@ -119,8 +129,9 @@ namespace ClientApp.ViewModels {
             throw new IndexOutOfRangeException();
         }
 
+        // TODO: do we need this?
         // _SelectedIndex is used internally when navigating into lists in the details view, when navigating back
-        // This index remembers where the user left off and helps them scroll through all subscribed lists to where they were
+        // This index remembers where the User left off and helps them scroll through all subscribed lists to where they were
         int _SelectedOwnedIndex;
 
         public int SelectedOwnedIndex {
@@ -134,7 +145,7 @@ namespace ClientApp.ViewModels {
             var list = new ListViewModel();
             list.PropertyChanged += List_OnNotifyPropertyChanged;
             Owned.Add(list);
-            user.RegisterOwned(list);
+            User.RegisterOwned(list);
             SelectedOwnedIndex = Owned.IndexOf(list);
         }
 
@@ -142,14 +153,14 @@ namespace ClientApp.ViewModels {
             if (SelectedOwnedIndex != -1) {
                 var list = Owned[SelectedOwnedIndex];
                 Owned.RemoveAt(SelectedOwnedIndex);
-                user.RemoveOwned(list);
+                User.RemoveOwned(list);
             }
         }
 
         // Other
 
         void List_OnNotifyPropertyChanged(Object sender, PropertyChangedEventArgs e) {
-            user.Update((ListViewModel)sender);
+            User.Update((ListViewModel)sender);
 
         }
 

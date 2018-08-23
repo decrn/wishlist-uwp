@@ -15,7 +15,7 @@
 
     <StackPanel>
 
-        <TextBlock Text="{x:Bind User.GetFullName()}"/>
+        <TextBlock Text="{x:Bind User.FullName}"/>
         <TextBlock Text="{x:Bind User.Email}"/>
 
         <TextBlock
@@ -23,7 +23,7 @@
             Style="{ThemeResource TitleTextBlockStyle}"
             Margin="0,20"/>
 
-        <ListView x:Name="ListsList" ItemsSource="{x:Bind User.OwningLists}" SelectionMode="None">
+        <ListView x:Name="ListsList" ItemsSource="{x:Bind User.Owned}" SelectionMode="None">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:List">
                     <StackPanel Margin="0,5">
