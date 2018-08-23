@@ -37,8 +37,8 @@ namespace ServerApp.Data {
                 // seed list
                 var lists = new List[]
                 {
-                    new List { Name="Birthday Jan", OwnerUser=users[0], Description="Just some ideas for when you come visit", Deadline=DateTime.UtcNow.AddDays(25).AddMinutes(555) },
-                    new List { Name="Baby shower Charlotte", IsHidden = true, OwnerUser=users[0], Description="Let's welcome Charlotte with a bunch of gifts or a green shower!", Deadline=DateTime.UtcNow.AddDays(200) },
+                    new List { Name="Birthday Jan", OwnerUser=users[0], Description="Just some ideas for when you come visit", Deadline=DateTime.UtcNow.AddDays(200) },
+                    new List { Name="Baby shower Charlotte", IsHidden = true, OwnerUser=users[0], Description="Let's welcome Charlotte with a bunch of gifts or a green shower!", Deadline=DateTime.UtcNow.AddDays(25).AddMinutes(555) },
                     new List { Name="Wedding A&M", OwnerUser=users[1], Deadline=DateTime.UtcNow.AddDays(-5).AddHours(3) },
                     new List { Name="Last minute B-Day", OwnerUser=users[2], Description="Sorry, I didn't have time to make my list.", Deadline=DateTime.UtcNow.AddDays(2) },
                     new List { Name="Retirement Grandpa Charles", IsHidden=true, OwnerUser=users[2], Description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quantum Aristoxeni ingenium consumptum videmus in musicis? Videsne, ut haec concinant? Quae cum magnifice primo dici viderentur, considerata minus probabantur.", Deadline=DateTime.UtcNow.AddDays(50).AddHours(-60) },

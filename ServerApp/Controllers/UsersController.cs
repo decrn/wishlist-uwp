@@ -25,7 +25,7 @@ namespace ServerApp.Controllers {
         [HttpGet("Lists")]
         public async Task<IEnumerable<List>> GetOwnedLists() {
             User user = await _userManager.GetUserAsync(HttpContext.User);
-            return _context.List.Where(l => l.OwnerUser.Id == user.Id);
+            return _context.List.Where(l => l.OwnerUser.Id == user.Id).OrderBy(l => l.Deadline);
         }
 
         // GET: api/Users/Subscriptions
@@ -34,7 +34,7 @@ namespace ServerApp.Controllers {
             User user = await _userManager.GetUserAsync(HttpContext.User);
             return _context.List.Include(l => l.OwnerUser).Where(l => 
                 l.SubscribedUsers.Any(s=>
-                    s.UserId == user.Id));
+                    s.UserId == user.Id)).OrderBy(l => l.Deadline);
         }
 
         // GET: api/Users/
