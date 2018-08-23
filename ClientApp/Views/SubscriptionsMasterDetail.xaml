@@ -1,4 +1,5 @@
-﻿<Page
+﻿<helpers:PrintablePage
+    xmlns:helpers="using:ClientApp.Helpers"
     x:Class="ClientApp.SubscriptionMasterDetail"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -219,6 +220,7 @@
             <controls:MasterDetailsView.DetailsCommandBar>
                 <CommandBar>
                     <CommandBar.SecondaryCommands>
+                        <AppBarButton Icon="Print" Label="Print (also to PDF)" Click="Export"/>
                         <AppBarButton Icon="Calendar" Label="Add Deadline to calendar" Click="AddToCalendar"/>
                         <AppBarButton Icon="Delete" Label="Leave List" Click="Unsubscribe"/>
                     </CommandBar.SecondaryCommands>
@@ -228,4 +230,4 @@
         </controls:MasterDetailsView>
     </Grid>
     
-</Page>
+</helpers:PrintablePage>

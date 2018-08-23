@@ -1,4 +1,5 @@
-﻿using ClientApp.Models;
+﻿using ClientApp.Helpers;
+using ClientApp.Models;
 using ClientApp.Views;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,8 +16,7 @@ namespace ClientApp {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class SubscriptionMasterDetail : Page
-    {
+    public sealed partial class SubscriptionMasterDetail : PrintablePage {
         public ICollection<List> Lists { get; set; }
         private List CurrentList;
 
