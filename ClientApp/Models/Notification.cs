@@ -23,22 +23,20 @@ namespace ClientApp.Models {
             get {
                 switch (Type) {
                     case NotificationType.JoinRequest:
-                        return SubjectUser.GetFullName() + " (" + SubjectUser.Email + ") wants you to add them to one of your lists";
+                        return SubjectUser.FirstName + " " + SubjectUser.LastName + " (" + SubjectUser.Email + ") wants you to add them to one of your lists";
                     case NotificationType.ListInvitation:
-                        return SubjectList.OwnerUser.GetFullName() + " invited you to their list '" + SubjectList.Name + "'";
+                        return SubjectList.OwnerUser.FirstName + " " + SubjectList.OwnerUser.LastName + " invited you to their list '" + SubjectList.Name + "'";
                     case NotificationType.DeadlineReminder:
                         return "The deadline for the list '" + SubjectList.Name + "' is coming up soon!";
                     case NotificationType.ListJoinSuccess:
-                        return "" + SubjectUser.GetFullName() + " has joined your list '"+ SubjectList.Name +"'.";
+                        return "" + SubjectUser.FirstName + " " + SubjectUser.LastName + " has joined your list '"+ SubjectList.Name +"'.";
                 }
                 return "";
             }
         }
 
         public string FormattedTimestamp {
-            get {
-                return Timestamp.ToString("dd MMMM yyyy | HH:mm");
-            }
+            get { return Timestamp.ToString("dd MMMM yyyy | HH:mm"); }
         }
 
         public Notification() {}

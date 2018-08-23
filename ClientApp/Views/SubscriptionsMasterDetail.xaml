@@ -68,7 +68,7 @@
                         <!-- deadline -->
                         <!--TODO: Improve date format & decently float right-->
                         <TextBlock
-                            Text="{x:Bind Deadline}"
+                            Text="{x:Bind FormattedFullDeadline}"
                             Grid.Column="1"
                             Grid.Row="1"
                             Margin="12,1,0,0"

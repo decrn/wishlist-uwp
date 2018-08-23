@@ -1,6 +1,5 @@
 ﻿
 using GalaSoft.MvvmLight;
-using System;
 
 namespace ClientApp.Models {
     public class Item : ObservableObject {
@@ -22,22 +21,6 @@ namespace ClientApp.Models {
         public double? ItemPriceUsd { get; set; }
 
         public virtual List List { get; set; }
-
-        public bool IsCompleted {
-            get { return CheckedByUser != null; }
-            set { CheckedByUser = null; }
-        }
-
-        // TODO: Remove CanCheck when ItemViewModel is completely implemented
-        public bool CanCheck {
-            get { return true; }
-            set { }
-        }
-
-        // TODO: Remove GetImageUrl when ItemViewModel is completely implemented
-        public Uri GetImageUrl() {
-            return new Uri(ProductImageUrl ?? "https://via.placeholder.com/50x50");
-        }
 
     }
 }

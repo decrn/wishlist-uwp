@@ -31,6 +31,8 @@ namespace ClientApp.Models {
             Items = new List<Item>();
         }
 
+        // TODO: Is this legal?
+
         public void AddItem(Item item) {
             if (!Items.Contains(item)) {
                 Items.Add(item);

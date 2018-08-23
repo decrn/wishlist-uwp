@@ -42,8 +42,8 @@ namespace ClientApp.ViewModels {
         }
 
         public bool IsCompleted {
-            get { return This.IsCompleted; }
-            set { SetProperty(This.IsCompleted, value, () => This.IsCompleted = value); }
+            get { return CheckedByUser != null; }
+            set { CheckedByUser = null; }
         }
 
         public override string ToString() {
@@ -59,15 +59,6 @@ namespace ClientApp.ViewModels {
 
         public Uri GetImageUrl() {
             return new Uri(ProductImageUrl ?? "https://via.placeholder.com/50x50");
-        }
-
-        public static ItemViewModel FromItem(Item item) {
-            var viewModel = new ItemViewModel {
-                ProductName = item.ProductName,
-                IsCompleted = item.IsCompleted
-            };
-
-            return viewModel;
         }
 
     }

@@ -50,9 +50,11 @@ namespace ClientApp.ViewModels {
         }
 
         public string FormattedDeadline {
-            get {
-                return Deadline.ToString("yyyy-mm-dd");
-            }
+            get { return Deadline.ToString("yyyy-mm-dd"); }
+        }
+
+        public string FormattedFullDeadline {
+            get { return Deadline.ToString("yyyy-mm-dd HH:MM:ss"); }
         }
 
         // TODO: Fix UserViewModel creation

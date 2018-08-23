@@ -6,10 +6,13 @@ using System.Collections.Generic;
 namespace ClientApp.Models {
     public class User : ObservableObject {
 
-        public string Id;
-        public string Email;
-        public string FirstName;
-        public string LastName;
+        public string Id { get; set; }
+
+        public string Email { get; set; }
+
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
 
         public virtual ICollection<List> OwningLists { get; set; } = new List<List>();
 
@@ -17,9 +20,7 @@ namespace ClientApp.Models {
 
         public virtual ICollection<Notification> Notifications { get; set; } = new List<Notification>();
 
-        public User() {
-            
-        }
+        public User() {}
 
         public void RegisterSubscription(List list) {
             if (!SubscribedLists.Contains(list)) {
@@ -65,10 +66,6 @@ namespace ClientApp.Models {
                 OwningLists.Remove(list);
                 App.dataService.DeleteList(list);
             }
-        }
-
-        public string GetFullName() {
-            return FirstName + " " + LastName;
         }
     }
 }
