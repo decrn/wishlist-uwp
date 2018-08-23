@@ -29,3 +29,5 @@ To run this wonderfull application you need to know a couple of things:
 - Adaptive theme: changes light/dark and accent color based on Windows settings
 - Checks for notifications in background and shows native Windows notifications
 - Complete account management: Login, Register, Edit Account, Reset password.
+- Very basic printing functionality
+- Add a subscribed wishlist deadline to your calendar
