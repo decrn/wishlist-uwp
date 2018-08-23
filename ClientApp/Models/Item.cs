@@ -28,13 +28,13 @@ namespace ClientApp.Models {
             set { CheckedByUser = null; }
         }
 
-        // TODO: Remove CanCheck and GetImageUrl, when ItemViewModel is completely implemented
-
+        // TODO: Remove CanCheck when ItemViewModel is completely implemented
         public bool CanCheck {
             get { return true; }
             set { }
         }
 
+        // TODO: Remove GetImageUrl when ItemViewModel is completely implemented
         public Uri GetImageUrl() {
             return new Uri(ProductImageUrl ?? "https://via.placeholder.com/50x50");
         }

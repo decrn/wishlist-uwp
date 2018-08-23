@@ -52,8 +52,8 @@
                         </Grid.RowDefinitions>
 
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" MinWidth="215" />
-                            <ColumnDefinition Width="75" />
+                            <ColumnDefinition Width="*" MinWidth="205" />
+                            <ColumnDefinition Width="85" />
                         </Grid.ColumnDefinitions>
 
                         <!-- name of the list-->
@@ -67,9 +67,9 @@
                             Style="{ThemeResource ListBodyTextBlockStyle}" />
 
                         <!-- deadline -->
-                        <!--TODO: Improve date format & decently float right-->
+                        <!--TODO: Decently float right-->
                         <TextBlock
-                            Text="{x:Bind Deadline}"
+                            Text="{x:Bind FormattedDeadline}"
                             Grid.Column="1"
                             Grid.Row="1"
                             Margin="12,1,0,0"

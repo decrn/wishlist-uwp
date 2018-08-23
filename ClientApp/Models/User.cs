@@ -70,7 +70,5 @@ namespace ClientApp.Models {
         public string GetFullName() {
             return FirstName + " " + LastName;
         }
-
-        // add methods for users to be able to change their info, pw, emails, ...
     }
 }

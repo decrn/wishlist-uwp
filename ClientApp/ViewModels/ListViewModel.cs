@@ -3,7 +3,6 @@ using ClientApp.ViewModels.ViewModels;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 
 namespace ClientApp.ViewModels {
     public class ListViewModel : NotificationBase<List> {
@@ -19,16 +18,8 @@ namespace ClientApp.ViewModels {
         }
 
         public string Name {
-            get
-            {
-                Debug.WriteLine("Getting List.Name");
-                return This.Name;
-            }
-            set
-            {
-                Debug.WriteLine("Setting List.Name");
-                SetProperty(This.Name, value, () => This.Name = value);
-            }
+            get => This.Name;
+            set { SetProperty(This.Name, value, () => This.Name = value); }
         }
 
         public string Description {
@@ -41,10 +32,17 @@ namespace ClientApp.ViewModels {
             set { SetProperty(This.Deadline, value, () => This.Deadline = value); }
         }
 
-        private UserViewModel _ownerUser = new UserViewModel();
+        public string FormattedDeadline {
+            get {
+                return Deadline.ToString("yyyy-mm-dd");
+            }
+        }
+
+        // TODO: Fix UserViewModel creation
+        private UserViewModel _ownerUser;
         public UserViewModel OwnerUser {
             get => new UserViewModel(This.OwnerUser);
-            set => SetProperty(ref _ownerUser, value);
+            //set => SetProperty(ref _ownerUser, value);
             // set { SetProperty(This.OwnerUser, value, () => This.OwnerUser = value); }
         }
 
@@ -77,33 +75,6 @@ namespace ClientApp.ViewModels {
         }
 
         public string ItemCount => This.Items == null ? "" : This.Items.Count + " items";
-
-        //private int _selectedItemIndex;
-
-        //public int SelectedItemIndex {
-        //    get => _selectedItemIndex;
-        //    set {
-        //        if (SetProperty(ref _selectedItemIndex, value)) RaisePropertyChanged(nameof(SelectedItem));
-        //    }
-        //}
-
-        //public ItemViewModel SelectedItem => _selectedItemIndex >= 0 ? _items[_selectedItemIndex] : null;
-
-        //public void AddItem() {
-        //    var item = new ItemViewModel();
-        //    item.PropertyChanged += Item_OnNotifyPropertyChanged;
-        //    Items.Add(item);
-        //    list.AddItem(item);
-        //    SelectedItemIndex = Items.IndexOf(item);
-        //}
-
-        //public void DeleteItem() {
-        //    if (SelectedItemIndex != -1) {
-        //        var item = Items[SelectedItemIndex];
-        //        Items.RemoveAt(SelectedItemIndex);
-        //        list.RemoveItem(item);
-        //    }
-        //}
 
         void Item_OnNotifyPropertyChanged(Object sender, PropertyChangedEventArgs e) {
             List.Update((ItemViewModel) sender);

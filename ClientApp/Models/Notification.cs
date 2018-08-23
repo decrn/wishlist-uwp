@@ -4,7 +4,6 @@ using System;
 namespace ClientApp.Models {
     public class Notification : ObservableObject {
 
-        // autogenerate
         public int NotificationId { get; set; }
 
         public DateTime Timestamp { get; set; }
@@ -25,16 +24,12 @@ namespace ClientApp.Models {
                 switch (Type) {
                     case NotificationType.JoinRequest:
                         return SubjectUser.GetFullName() + " (" + SubjectUser.Email + ") wants you to add them to one of your lists";
-                        break;
                     case NotificationType.ListInvitation:
                         return SubjectList.OwnerUser.GetFullName() + " invited you to their list '" + SubjectList.Name + "'";
-                        break;
                     case NotificationType.DeadlineReminder:
                         return "The deadline for the list '" + SubjectList.Name + "' is coming up soon!";
-                        break;
                     case NotificationType.ListJoinSuccess:
                         return "" + SubjectUser.GetFullName() + " has joined your list '"+ SubjectList.Name +"'.";
-                        break;
                 }
                 return "";
             }
