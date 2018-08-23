@@ -3,6 +3,7 @@ using ClientApp.ViewModels.ViewModels;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 
 namespace ClientApp.ViewModels {
     public class ListViewModel : NotificationBase<List> {
@@ -50,11 +51,24 @@ namespace ClientApp.ViewModels {
         }
 
         public string FormattedDeadline {
-            get { return Deadline.ToString("yyyy-mm-dd"); }
+            get { return Deadline.ToString("yyyy-MM-dd"); }
         }
 
         public string FormattedFullDeadline {
-            get { return Deadline.ToString("yyyy-mm-dd HH:MM:ss"); }
+            get { return Deadline.ToString("yyyy-MM-dd HH:mm:ss"); }
+        }
+
+        public string SubscribersTeaster {
+            get {
+                int amount = 3;
+                string list = SubscribedUsers.Take(amount).Select(u => u.FirstName).Aggregate((current, next) => current + ", " + next);
+                if (SubscribedUsers.Count > amount) list = list + "...";
+                return list;
+            }
+        }
+
+        public string ClaimedWishesCount {
+            get { return Items.Where(i => i.IsCompleted).Count() + "/" + Items.Count; }
         }
 
         // TODO: Fix UserViewModel creation

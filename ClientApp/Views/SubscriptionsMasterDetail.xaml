@@ -51,8 +51,8 @@
                         </Grid.RowDefinitions>
 
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" MinWidth="215" />
-                            <ColumnDefinition Width="75" />
+                            <ColumnDefinition Width="*" MinWidth="205" />
+                            <ColumnDefinition Width="85" />
                         </Grid.ColumnDefinitions>
 
                         <!-- name of the list-->
@@ -66,9 +66,9 @@
                             Style="{ThemeResource ListBodyTextBlockStyle}" />
 
                         <!-- deadline -->
-                        <!--TODO: Improve date format & decently float right-->
+                        <!--TODO: decently float right-->
                         <TextBlock
-                            Text="{x:Bind FormattedFullDeadline}"
+                            Text="{x:Bind FormattedDeadline}"
                             Grid.Column="1"
                             Grid.Row="1"
                             Margin="12,1,0,0"
@@ -114,17 +114,16 @@
                             <StackPanel Grid.Column="1" HorizontalAlignment="Left">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{x:Bind Name}" Style="{ThemeResource TitleTextBlockStyle}"/>
-                                    <!--TODO: improve time format with viewmodel-->
-                                    <TextBlock Margin="10,5,0,0" VerticalAlignment="Center" Text="{x:Bind Deadline}"></TextBlock>
+                                    <TextBlock Margin="10,5,0,0" VerticalAlignment="Center" Text="{x:Bind FormattedFullDeadline}"></TextBlock>
                                 </StackPanel>
                                 <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
                                     <TextBlock Text="By "/>
                                     <TextBlock Margin="5,0,0,0" Text="{x:Bind OwnerUser.FullName}"/>
-                                    <TextBlock Margin="5,0,0,0" Text="{x:Bind OwnerUser.Email}"/>
+                                    <TextBlock Margin="5,0,0,0" Text="{x:Bind OwnerUser.BracketedEmail}"/>
                                 </StackPanel>
                                 <StackPanel Margin="0,10,0,0" Orientation="Horizontal" Tapped="ViewSubscribers">
                                     <TextBlock Text="Subscribers: "></TextBlock>
-                                    <!--TODO: show abbreviated list of subscribed users + open popup with full list-->
+                                    <TextBlock Margin="10,0,0,0" Text="{x:Bind SubscribersTeaster}"></TextBlock>
                                 </StackPanel>
 
                                 <TextBlock Margin="0,10,0,0" Text="{x:Bind Description}"/>
@@ -151,11 +150,10 @@
                                             Text="Wishes"
                                             Style="{ThemeResource TitleTextBlockStyle}" />
 
-                                        <!--TODO: add a n out of total wishes have been claimed with viewmodel-->
                                         <TextBlock
-                                            Text="{x:Bind Items.Count}"
-                                            VerticalAlignment="Center"
-                                            Margin="10,0,0,0"/>
+                                            Text="{x:Bind ClaimedWishesCount}"
+                                            VerticalAlignment="Bottom"
+                                            Margin="10,0,0,3"/>
 
                                     </StackPanel>
 

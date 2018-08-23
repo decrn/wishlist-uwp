@@ -62,6 +62,10 @@ namespace ClientApp.ViewModels {
             get { return FirstName + " " + LastName; }
         }
 
+        public string BracketedEmail {
+            get { return "(" + Email + ")"; }
+        }
+
         // Subscriptions
 
         List<ListViewModel> _Subscriptions = new List<ListViewModel>();
