@@ -31,24 +31,22 @@ namespace ClientApp.Models {
             Items = new List<Item>();
         }
 
-        // TODO: Is this legal?
-
         public void AddItem(Item item) {
             if (!Items.Contains(item)) {
                 Items.Add(item);
-                App.dataService.EditList(this);
+                //App.dataService.EditList(this);
             }
         }
 
         public void RemoveItem(Item item) {
             if (Items.Contains(item)) {
                 Items.Remove(item);
-                App.dataService.EditList(this);
+                //App.dataService.EditList(this);
             }
         }
 
         public void Update(Item item) {
-            App.dataService.EditList(this);
+            //App.dataService.EditList(this);
         }
     }
 }

@@ -95,24 +95,33 @@ namespace ClientApp.DataService {
 
         public async Task<string> Get(string path, bool showLoading = true) {
             return await Handle(() => HttpClient.GetAsync(new Uri(BaseUri + path)), showLoading);
-            //return await Handle(async () => await HttpClient.GetAsync(new Uri(BaseUri + path)), showLoading);
         }
 
 
-        public async Task<string> Post(string path, HttpContent body, bool showLoading = false) {
-            return await Handle(() => HttpClient.PostAsync( new Uri(BaseUri + path), body), showLoading);
+        public async Task<string> Post(string path, JObject json, bool showLoading = false) {
+            var body = new StringContent(json.ToString());
+            body.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            return await Handle(() => HttpClient.PostAsync(new Uri(BaseUri + path), body), showLoading);
         }
 
 
-        public async Task<string> Put(string path, HttpContent body, bool showLoading = false) {
+        public async Task<string> PostForm(string path, HttpContent body, bool showLoading = false) {
+            return await Handle(() => HttpClient.PostAsync(new Uri(BaseUri + path), body), showLoading);
+        }
+
+
+        public async Task<string> Put(string path, JObject json, bool showLoading = false) {
+            var body = new StringContent(json.ToString());
+            body.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             return await Handle(() => HttpClient.PutAsync(new Uri(BaseUri + path), body), showLoading);
         }
 
 
-        public async Task<string> Patch(string path, HttpContent body, bool showLoading = false) {
+        public async Task<string> Patch(string path, JObject json, bool showLoading = false) {
+            var body = new StringContent(json.ToString());
+            body.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             var method = new HttpMethod("PATCH");
             var request = new HttpRequestMessage(method, new Uri(BaseUri + path)) { Content = body };
-
             return await Handle(() => HttpClient.SendAsync(request), showLoading);
         }
 

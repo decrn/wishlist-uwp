@@ -29,7 +29,7 @@ namespace ClientApp.DataService {
                 new KeyValuePair<string, string>("Password", vm.Password),
             });
 
-            JObject obj = JObject.Parse(await HttpService.Post("Account/Login", body, true));
+            JObject obj = JObject.Parse(await HttpService.PostForm("Account/Login", body, true));
             HttpService.TrySettingToken(obj);
 
             return obj;
@@ -45,7 +45,7 @@ namespace ClientApp.DataService {
                 new KeyValuePair<string, string>("ConfirmPassword", vm.ConfirmPassword),
             });
 
-            JObject obj = JObject.Parse(await HttpService.Post("Account/Register", body, true));
+            JObject obj = JObject.Parse(await HttpService.PostForm("Account/Register", body, true));
             HttpService.TrySettingToken(obj);
 
             return obj;
@@ -58,7 +58,7 @@ namespace ClientApp.DataService {
                 new KeyValuePair<string, string>("ConfirmPassword", vm.ConfirmPassword),
             });
 
-            JObject obj = JObject.Parse(await HttpService.Post("Account/Password", body, true));
+            JObject obj = JObject.Parse(await HttpService.PostForm("Account/Password", body, true));
 
             return obj;
         }
@@ -70,7 +70,7 @@ namespace ClientApp.DataService {
                 new KeyValuePair<string, string>("Email", vm.Email)
             });
 
-            JObject obj = JObject.Parse(await HttpService.Post("Account/Edit", body, true));
+            JObject obj = JObject.Parse(await HttpService.PostForm("Account/Edit", body, true));
 
             return obj;
         }
@@ -81,7 +81,7 @@ namespace ClientApp.DataService {
                 new KeyValuePair<string, string>("Email", vm.Email)
             });
 
-            JObject obj = JObject.Parse(await HttpService.Post("Account/ForgotPassword", body, true));
+            JObject obj = JObject.Parse(await HttpService.PostForm("Account/ForgotPassword", body, true));
             return obj;
         }
 
@@ -94,7 +94,7 @@ namespace ClientApp.DataService {
                 new KeyValuePair<string, string>("Code", vm.Code),
             });
 
-            JObject obj = JObject.Parse(await HttpService.Post("Account/ResetPassword", body, true));
+            JObject obj = JObject.Parse(await HttpService.PostForm("Account/ResetPassword", body, true));
             return obj;
         }
 
@@ -154,11 +154,15 @@ namespace ClientApp.DataService {
         // TODO: implement adding and editing lists
 
         public async Task<JObject> NewList(List list) {
-            throw new NotImplementedException();
+            JObject body = JObject.FromObject(list);
+            JObject obj = JObject.Parse(await HttpService.Post("Lists", body, true));
+            return obj;
         }
 
         public async Task<JObject> EditList(List list) {
-            throw new NotImplementedException();
+            JObject body = JObject.FromObject(list);
+            JObject obj = JObject.Parse(await HttpService.Put("Lists/" + list.ListId, body, true));
+            return obj;
         }
 
         public async void SendInvitations(List list) {
@@ -190,11 +194,15 @@ namespace ClientApp.DataService {
         // TODO: implement adding and editing items
 
         public async Task<JObject> NewItem(Item item) {
-            throw new NotImplementedException();
+            JObject body = JObject.FromObject(item);
+            JObject obj = JObject.Parse(await HttpService.Post("Items", body, true));
+            return obj;
         }
 
         public async Task<JObject> EditItem(Item item) {
-            throw new NotImplementedException();
+            JObject body = JObject.FromObject(item);
+            JObject obj = JObject.Parse(await HttpService.Post("Items/" + item.ItemId, body, true));
+            return obj;
         }
 
         public async void DeleteItem(Item item) {

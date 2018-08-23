@@ -32,7 +32,6 @@ namespace ClientApp.ViewModels {
 
         public int ListId {
             get => This.ListId;
-            set { SetProperty(This.ListId, value, () => This.ListId = value); }
         }
 
         public string Name {
@@ -51,11 +50,11 @@ namespace ClientApp.ViewModels {
         }
 
         public string FormattedDeadline {
-            get { return Deadline.ToString("yyyy-MM-dd"); }
+            get => Deadline.ToString("yyyy-MM-dd");
         }
 
         public string FormattedFullDeadline {
-            get { return Deadline.ToString("yyyy-MM-dd HH:mm:ss"); }
+            get => Deadline.ToString("yyyy-MM-dd HH:mm:ss");
         }
 
         public string SubscribersTeaster {
@@ -68,7 +67,11 @@ namespace ClientApp.ViewModels {
         }
 
         public string ClaimedWishesCount {
-            get { return Items.Where(i => i.IsCompleted).Count() + "/" + Items.Count; }
+            get => Items.Where(i => i.IsCompleted).Count() + "/" + Items.Count;
+        }
+
+        public bool IsNew {
+            get => This.ListId == -1;
         }
 
         // TODO: Fix UserViewModel creation
@@ -95,7 +98,10 @@ namespace ClientApp.ViewModels {
         }
 
         public void Save() {
-
+            if (IsNew)
+                App.dataService.NewList(List);
+            else
+                App.dataService.EditList(List);
         }
 
         static DateTime ConvertFromDateTimeOffset(DateTimeOffset dateTime) {

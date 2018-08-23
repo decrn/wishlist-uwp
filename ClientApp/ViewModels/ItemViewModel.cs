@@ -6,6 +6,10 @@ namespace ClientApp.ViewModels {
     public class ItemViewModel : NotificationBase<Item> {
         public ItemViewModel(Item item = null) : base(item) { }
 
+        public int ItemId {
+            get { return This.ItemId; }
+        }
+
         public string ProductName {
             get { return This.ProductName; }
             set { SetProperty(This.ProductName, value, () => This.ProductName = value); }

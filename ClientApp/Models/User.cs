@@ -25,7 +25,7 @@ namespace ClientApp.Models {
         public void RegisterSubscription(List list) {
             if (!SubscribedLists.Contains(list)) {
                 SubscribedLists.Add(list);
-                App.dataService.EditList(list);
+                //App.dataService.EditList(list);
             }
         }
 
@@ -36,28 +36,28 @@ namespace ClientApp.Models {
         public void RegisterOwned(List list) {
             if (!OwningLists.Contains(list)) {
                 OwningLists.Add(list);
-                App.dataService.EditList(list);
+                //App.dataService.EditList(list);
             }
         }
 
         public void RemoveSubscription(List list) {
             if (SubscribedLists.Contains(list)) {
                 SubscribedLists.Remove(list);
-                App.dataService.DeleteList(list);
+                //App.dataService.DeleteList(list);
             }
         }
 
         public void RemoveOwned(List list) {
             if (SubscribedLists.Contains(list)) {
                 SubscribedLists.Remove(list);
-                App.dataService.DeleteList(list);
+                //App.dataService.DeleteList(list);
             }
         }
 
         public void Add(List list) {
             if (!OwningLists.Contains(list)) {
                 OwningLists.Add(list);
-                App.dataService.EditList(list);
+                //App.dataService.EditList(list);
             }
         }
 

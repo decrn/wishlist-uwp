@@ -40,7 +40,6 @@ namespace ClientApp.ViewModels {
 
         public string Id {
             get => This.Id;
-            set { SetProperty(This.Id, value, () => This.Id = value); }
         }
 
         public string FirstName {
@@ -123,14 +122,6 @@ namespace ClientApp.ViewModels {
 
         public ListViewModel SelectedOwned {
             get { return (_SelectedOwnedIndex >= 0) ? _Owned[_SelectedOwnedIndex] : null; }
-        }
-
-        // used explicitly by ListDetailPage to grab content for a specific list
-        public List GetOwnedById(int id) {
-            foreach (var list in _Owned) {
-                if (list.ListId == id) { return list; }
-            }
-            throw new IndexOutOfRangeException();
         }
 
         // TODO: do we need this?
