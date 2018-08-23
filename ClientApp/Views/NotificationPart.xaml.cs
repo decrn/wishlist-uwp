@@ -1,4 +1,5 @@
 ﻿using ClientApp.Models;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -33,9 +34,10 @@ namespace ClientApp.Views {
             this.Refresh(null,null);
         }
 
-        public void Refresh(object sender, RoutedEventArgs e) {
+        public async void Refresh(object sender, RoutedEventArgs e) {
             Notifications.Clear();
-            foreach (Notification n in App.dataService.GetNotifications()) {
+            List<Notification> notifs = await App.dataService.GetNotifications();
+            foreach (Notification n in notifs) {
                 // TODO: probably needed to use a ViewModel for this
                 Notifications.Add(n);
             }

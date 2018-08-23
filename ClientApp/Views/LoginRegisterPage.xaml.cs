@@ -16,9 +16,10 @@ namespace ClientApp {
 
         public LoginRegisterPage() {
             this.InitializeComponent();
+            App.dataService.LoadingIndicator = LoadingControl;
         }
 
-        private void Login(object sender, RoutedEventArgs e) {
+        private async void Login(object sender, RoutedEventArgs e) {
 
             if (registerMode) {
                 ToggleRegisterMode();
@@ -36,7 +37,7 @@ namespace ClientApp {
                 bool isValid = Validator.TryValidateObject(vm, validationContext, validationResults, true);
 
                 if (isValid) {
-                    JObject result = App.dataService.Login(vm);
+                    JObject result = await App.dataService.Login(vm);
 
                     if (result["success"].ToString() == "True") {
                         this.Frame.Navigate(typeof(MainPage));
@@ -57,7 +58,7 @@ namespace ClientApp {
             }
         }
 
-        private void Register(object sender, RoutedEventArgs e) {
+        private async void Register(object sender, RoutedEventArgs e) {
 
             if (!registerMode) {
                 ToggleRegisterMode();
@@ -79,7 +80,7 @@ namespace ClientApp {
 
                 if (isValid) {
 
-                    JObject result = App.dataService.Register(vm);
+                    JObject result = await App.dataService.Register(vm);
 
                     if (result["success"].ToString() == "True") {
                         this.Frame.Navigate(typeof(MainPage));

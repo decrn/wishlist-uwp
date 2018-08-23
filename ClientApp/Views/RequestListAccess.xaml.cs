@@ -1,4 +1,5 @@
-﻿using Microsoft.Toolkit.Extensions;
+﻿using ClientApp.Models;
+using Microsoft.Toolkit.Extensions;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -12,11 +13,12 @@ namespace ClientApp.Views {
             Email.Focus(FocusState.Programmatic);
         }
 
-        private void Request(ContentDialog sender, ContentDialogButtonClickEventArgs args) {
+        private async void Request(ContentDialog sender, ContentDialogButtonClickEventArgs args) {
             string value = Email.Text;
             if (value.IsEmail()) {
                 base.Hide();
-                UserDetailsDialog dialog = new UserDetailsDialog(App.dataService.GetUser(value));
+                User user = await App.dataService.GetUser(value);
+                UserDetailsDialog dialog = new UserDetailsDialog(user);
                 dialog.ShowAsync();
             } else {
                 if (args != null)

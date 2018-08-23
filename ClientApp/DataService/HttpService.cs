@@ -26,7 +26,9 @@ namespace ClientApp.DataService {
             HttpClient = new HttpClient();
             Vault = new PasswordVault();
 
-            JWTToken = Vault.Retrieve("Wishlist", "token").Password;
+            try {
+                JWTToken = Vault.Retrieve("Wishlist", "token").Password;
+            } catch { }
             HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWTToken);
         }
 
@@ -71,56 +73,47 @@ namespace ClientApp.DataService {
 
         #region Requests
 
-        public dynamic Handle(Func<Task<HttpResponseMessage>> apicall, bool showLoading = true) {
+        public async Task<string> Handle(Func<Task<HttpResponseMessage>> apicall, bool showLoading = true) {
             if (showLoading && LoadingIndicator != null) LoadingIndicator.IsLoading = true;
 
-            var response = "";
-            Task task = Task.Run(async () => {
-                var res = await apicall();
-                if (res.StatusCode == System.Net.HttpStatusCode.Unauthorized) {
-                    //TODO: remember credentials to refresh auth
-                    Debug.WriteLine("Invalid Token");
-                }
-                response = await res.Content.ReadAsStringAsync();
-            });
-            task.Wait();
+            var res = await apicall();
+            if (res.StatusCode == System.Net.HttpStatusCode.Unauthorized) {
+                //TODO: remember credentials to refresh auth
+                Debug.WriteLine("Invalid Token");
+            }
+            var response = await res.Content.ReadAsStringAsync();
 
             if (showLoading && LoadingIndicator != null) LoadingIndicator.IsLoading = false;
             return response;
         }
 
 
-        public dynamic Get(string path, bool showLoading = true) {
-            var response = Handle(() => HttpClient.GetAsync(new Uri(BaseUri + path)), showLoading);
-            return response;
+        public async Task<string> Get(string path, bool showLoading = true) {
+            return await Handle(() => HttpClient.GetAsync(new Uri(BaseUri + path)), showLoading);
+            //return await Handle(async () => await HttpClient.GetAsync(new Uri(BaseUri + path)), showLoading);
         }
 
 
-        public dynamic Post(string path, HttpContent body, bool showLoading = false) {
-            var response = Handle(() => HttpClient.PostAsync( new Uri(BaseUri + path), body), showLoading);
-            return response;
+        public async Task<string> Post(string path, HttpContent body, bool showLoading = false) {
+            return await Handle(() => HttpClient.PostAsync( new Uri(BaseUri + path), body), showLoading);
         }
 
 
-        public dynamic Put(string path, HttpContent body, bool showLoading = false) {
-            var response = Handle(() => HttpClient.PutAsync(new Uri(BaseUri + path), body), showLoading);
-            return response;
+        public async Task<string> Put(string path, HttpContent body, bool showLoading = false) {
+            return await Handle(() => HttpClient.PutAsync(new Uri(BaseUri + path), body), showLoading);
         }
 
 
-        public dynamic Patch(string path, HttpContent body, bool showLoading = false) {
-
+        public async Task<string> Patch(string path, HttpContent body, bool showLoading = false) {
             var method = new HttpMethod("PATCH");
             var request = new HttpRequestMessage(method, new Uri(BaseUri + path)) { Content = body };
 
-            var response = Handle(() => HttpClient.SendAsync(request), showLoading);
-            return response;
+            return await Handle(() => HttpClient.SendAsync(request), showLoading);
         }
 
 
-        public dynamic Delete(string path, bool showLoading = false) {
-            var response = Handle(() => HttpClient.DeleteAsync(new Uri(BaseUri + path)), showLoading);
-            return response;
+        public async Task<string> Delete(string path, bool showLoading = false) {
+            return await Handle(() => HttpClient.DeleteAsync(new Uri(BaseUri + path)), showLoading);
         }
 
         #endregion

@@ -99,7 +99,7 @@ namespace ClientApp {
 
         // Background task
 
-        protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args) {
+        protected async override void OnBackgroundActivated(BackgroundActivatedEventArgs args) {
             base.OnBackgroundActivated(args);
             IBackgroundTaskInstance taskInstance = args.TaskInstance;
             BackgroundTaskDeferral _deferral = taskInstance.GetDeferral();
@@ -110,7 +110,7 @@ namespace ClientApp {
 
             if (dataService.IsLoggedIn() && settingsService.GetBackgroundTaskEnabledSetting()) {
 
-                List<Models.Notification> notifications = dataService.GetNotifications();
+                List<Models.Notification> notifications = await dataService.GetNotifications();
 
                 notifications.FindAll(n => n.IsUnread).ForEach(n => {
                     Debug.WriteLine(DateTime.Now + " - " + n.Message);

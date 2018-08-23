@@ -5,7 +5,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-
+using System.Threading.Tasks;
 
 namespace ClientApp.DataService {
 
@@ -22,20 +22,20 @@ namespace ClientApp.DataService {
             return HttpService.IsTokenSet();
         }
 
-        public dynamic Login(LoginViewModel vm) {
+        public async Task<JObject> Login(LoginViewModel vm) {
             
             var body = new FormUrlEncodedContent(new[] {
                 new KeyValuePair<string, string>("Email", vm.Email),
                 new KeyValuePair<string, string>("Password", vm.Password),
             });
 
-            JObject obj = JObject.Parse(HttpService.Post("Account/Login", body, true));
+            JObject obj = JObject.Parse(await HttpService.Post("Account/Login", body, true));
             HttpService.TrySettingToken(obj);
 
             return obj;
         }
 
-        public dynamic Register(RegisterViewModel vm) {
+        public async Task<JObject> Register(RegisterViewModel vm) {
 
             var body = new FormUrlEncodedContent(new[] {
                 new KeyValuePair<string, string>("FirstName", vm.FirstName),
@@ -45,47 +45,47 @@ namespace ClientApp.DataService {
                 new KeyValuePair<string, string>("ConfirmPassword", vm.ConfirmPassword),
             });
 
-            JObject obj = JObject.Parse(HttpService.Post("Account/Register", body, true));
+            JObject obj = JObject.Parse(await HttpService.Post("Account/Register", body, true));
             HttpService.TrySettingToken(obj);
 
             return obj;
         }
 
-        public dynamic ChangePassword(ChangePasswordViewModel vm) {
+        public async Task<JObject> ChangePassword(ChangePasswordViewModel vm) {
             var body = new FormUrlEncodedContent(new[] {
                 new KeyValuePair<string, string>("OldPassword", vm.OldPassword),
                 new KeyValuePair<string, string>("NewPassword", vm.NewPassword),
                 new KeyValuePair<string, string>("ConfirmPassword", vm.ConfirmPassword),
             });
 
-            JObject obj = JObject.Parse(HttpService.Post("Account/Password", body, true));
+            JObject obj = JObject.Parse(await HttpService.Post("Account/Password", body, true));
 
             return obj;
         }
 
-        public dynamic EditAccount(EditAccountViewModel vm) {
+        public async Task<JObject> EditAccount(EditAccountViewModel vm) {
             var body = new FormUrlEncodedContent(new[] {
                 new KeyValuePair<string, string>("FirstName", vm.FirstName),
                 new KeyValuePair<string, string>("LastName", vm.LastName),
                 new KeyValuePair<string, string>("Email", vm.Email)
             });
 
-            JObject obj = JObject.Parse(HttpService.Post("Account/Edit", body, true));
+            JObject obj = JObject.Parse(await HttpService.Post("Account/Edit", body, true));
 
             return obj;
         }
 
-        public dynamic ForgotPassword(ForgotPasswordViewModel vm) {
+        public async Task<JObject> ForgotPassword(ForgotPasswordViewModel vm) {
             
             var body = new FormUrlEncodedContent(new[] {
                 new KeyValuePair<string, string>("Email", vm.Email)
             });
 
-            JObject obj = JObject.Parse(HttpService.Post("Account/ForgotPassword", body, true));
+            JObject obj = JObject.Parse(await HttpService.Post("Account/ForgotPassword", body, true));
             return obj;
         }
 
-        public dynamic ResetPassword(ResetPasswordViewModel vm) {
+        public async Task<JObject> ResetPassword(ResetPasswordViewModel vm) {
 
             var body = new FormUrlEncodedContent(new[] {
                 new KeyValuePair<string, string>("Email", vm.Email),
@@ -94,12 +94,12 @@ namespace ClientApp.DataService {
                 new KeyValuePair<string, string>("Code", vm.Code),
             });
 
-            JObject obj = JObject.Parse(HttpService.Post("Account/ResetPassword", body, true));
+            JObject obj = JObject.Parse(await HttpService.Post("Account/ResetPassword", body, true));
             return obj;
         }
 
-        public void Logout() {
-            HttpService.Get("Account/Logout", false);
+        public async void Logout() {
+            await HttpService.Get("Account/Logout", false);
             HttpService.ClearToken();
         }
 
@@ -108,30 +108,36 @@ namespace ClientApp.DataService {
 
         #region USERS
 
-        public User GetCurrentUser() {
-            return GetUser("");
+        public async Task<User> GetCurrentUser() {
+            return await GetUser("");
         }
 
-        public User GetUser(string id) {
-            JObject obj = JObject.Parse(HttpService.Get("Users/" + id));
+        public async Task<User> GetUser(string id) {
+            JObject obj = JObject.Parse(await HttpService.Get("Users/" + id));
             User user = obj.ToObject<User>();
             return user;
         }
 
-        public List<List> GetOwnedLists() {
-            JArray obj = JArray.Parse(HttpService.Get("Users/Lists"));
+        public async Task<List<List>> GetOwnedLists() {
+            JArray obj = JArray.Parse(await HttpService.Get("Users/Lists"));
             List<List> lists = obj.ToObject<List<List>>();
             return lists;
         }
 
-        public List<List> GetSubscribedLists() {
-            JArray obj = JArray.Parse(HttpService.Get("Users/Subscriptions"));
+        public async Task<List<List>> GetOwnedListsAsync() {
+            JArray obj = JArray.Parse(await HttpService.Get("Users/Lists"));
             List<List> lists = obj.ToObject<List<List>>();
             return lists;
         }
 
-        public void RequestAccess(string emailaddress) {
-            HttpService.Post("Users/" + emailaddress, null);
+        public async Task<List<List>> GetSubscribedLists() {
+            JArray obj = JArray.Parse(await HttpService.Get("Users/Subscriptions"));
+            List<List> lists = obj.ToObject<List<List>>();
+            return lists;
+        }
+
+        public async void RequestAccess(string emailaddress) {
+            await HttpService.Post("Users/" + emailaddress, null);
         }
 
         #endregion
@@ -139,32 +145,32 @@ namespace ClientApp.DataService {
 
         #region LISTS
 
-        public List GetList(int id) {
-            JObject obj = JObject.Parse(HttpService.Get("Lists/" + id));
+        public async Task<List> GetList(int id) {
+            JObject obj = JObject.Parse(await HttpService.Get("Lists/" + id));
             List list = obj.ToObject<List>();
             return list;
         }
 
         // TODO: implement adding and editing lists
 
-        public dynamic NewList(List list) {
+        public async Task<JObject> NewList(List list) {
             throw new NotImplementedException();
         }
 
-        public dynamic EditList(List list) {
+        public async Task<JObject> EditList(List list) {
             throw new NotImplementedException();
         }
 
-        public void SendInvitations(List list) {
-            HttpService.Post("Lists/" + list.ListId, null);
+        public async void SendInvitations(List list) {
+            await HttpService.Post("Lists/" + list.ListId, null);
         }
 
-        public void UnsubscribeFromList(List list) {
+        public async void UnsubscribeFromList(List list) {
             // this is fine, a subscriber cant remove the list and the owner cant subscribe to the list
             DeleteList(list); 
         }
 
-        public void DeleteList(List list) {
+        public async void DeleteList(List list) {
             HttpService.Delete("Lists/" + list.ListId);
         }
 
@@ -173,25 +179,25 @@ namespace ClientApp.DataService {
 
         #region ITEMS
 
-        public void MarkItem(Item item) {
+        public async void MarkItem(Item item) {
             HttpService.Put("Items/" + item.ItemId, null);
         }
 
-        public void UnMarkItem(Item item) {
+        public async void UnMarkItem(Item item) {
             MarkItem(item);
         }
 
         // TODO: implement adding and editing items
 
-        public dynamic NewItem(Item item) {
+        public async Task<JObject> NewItem(Item item) {
             throw new NotImplementedException();
         }
 
-        public dynamic EditItem(Item item) {
+        public async Task<JObject> EditItem(Item item) {
             throw new NotImplementedException();
         }
 
-        public void DeleteItem(Item item) {
+        public async void DeleteItem(Item item) {
             HttpService.Delete("Items/" + item.ItemId);
         }
 
@@ -202,8 +208,14 @@ namespace ClientApp.DataService {
 
         private List<Notification> Notifications;
 
-        public List<Notification> GetNotifications() {
-            JArray obj = JArray.Parse(HttpService.Get("Notifications"));
+        public async Task<List<Notification>> GetNotifications() {
+            JArray obj = JArray.Parse(await HttpService.Get("Notifications"));
+            Notifications = obj.ToObject<List<Notification>>();
+            return Notifications;
+        }
+
+        public async Task<List<Notification>> GetNotificationsAsync() {
+            JArray obj = JArray.Parse(await HttpService.Get("Notifications"));
             Notifications = obj.ToObject<List<Notification>>();
             return Notifications;
         }
@@ -212,16 +224,16 @@ namespace ClientApp.DataService {
             return Notifications.FindAll(n => n.IsUnread).Count;
         }
 
-        public void MarkAllNotificationsAsRead() {
+        public async void MarkAllNotificationsAsRead() {
             HttpService.Put("Notifications", null);
         }
 
-        public void MarkNotification(Notification notif) {
+        public async void MarkNotification(Notification notif) {
             HttpService.Put("Notifications/" + notif.NotificationId, null);
         }
 
-        public void ActOnNotification(Notification notif) {
-            HttpService.Post("Notifications/" + notif.NotificationId, null);
+        public async void ActOnNotification(Notification notif) {
+            await HttpService.Post("Notifications/" + notif.NotificationId, null);
         }
 
         #endregion

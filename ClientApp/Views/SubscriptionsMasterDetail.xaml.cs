@@ -21,16 +21,19 @@ namespace ClientApp {
         private List CurrentList;
 
         public SubscriptionMasterDetail() {
-            // TODO: Use Viewmodels?
-            Lists = App.dataService.GetSubscribedLists();
+            Initialize();
             InitializeComponent();
+        }
+
+        private async void Initialize() {
+            // TODO: Use Viewmodels?
+            Lists = await App.dataService.GetSubscribedLists();
 
             // return the full detail list when opening detail panel
             MasterDetail.MapDetails = (selected) => {
-                CurrentList = App.dataService.GetList(((List)selected).ListId);
-                // TODO: group items in detailslist per group
-                return CurrentList;
+                return App.dataService.GetList(((List)selected).ListId);
             };
+
         }
 
         private void RequestAccess(object sender, RoutedEventArgs e) {

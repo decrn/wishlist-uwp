@@ -23,9 +23,10 @@ namespace ClientApp.Views {
             base.ShowAsync();
         }
 
-        private void OpenDetails(object sender, TappedRoutedEventArgs e) {
+        private async void OpenDetails(object sender, TappedRoutedEventArgs e) {
             string id = (string) ((StackPanel)sender).Tag;
-            UserDetailsDialog dialog = new UserDetailsDialog(App.dataService.GetUser(id));
+            User user = await App.dataService.GetUser(id);
+            UserDetailsDialog dialog = new UserDetailsDialog(user);
             Hide();
             dialog.ShowAsync();
         }

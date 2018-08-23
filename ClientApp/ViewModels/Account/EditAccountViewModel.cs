@@ -17,8 +17,12 @@ namespace ClientApp.ViewModels {
 
 
         public EditAccountViewModel() {
-            User User = App.dataService.GetCurrentUser();
             // TODO: change this to the real mvvm way
+            Initialize();
+        }
+
+        private async void Initialize() {
+            User User = await App.dataService.GetCurrentUser();
             Email = User.Email;
             FirstName = User.FirstName;
             LastName = User.LastName;

@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace ClientApp.DataService {
 
@@ -20,14 +21,42 @@ namespace ClientApp.DataService {
             return JWTToken != "";
         }        
 
-        public dynamic Login(LoginViewModel vm) {
+        public async Task<JObject> Login(LoginViewModel vm) {
             JWTToken = "temp";
-            return JObject.FromObject( new { success = true, data = new {user = GetCurrentUser(), token = JWTToken} });
+            return await new Task<JObject>(() => {
+                return JObject.FromObject(new { success = true, data = new { user = GetCurrentUser(), token = JWTToken } });
+            });
         }
 
-        public dynamic Register(RegisterViewModel vm) {
+        public async Task<JObject> Register(RegisterViewModel vm) {
             JWTToken = "temp";
-            return JObject.FromObject(new { success = true, data = new { user = GetCurrentUser(), token = JWTToken } });
+            return await new Task<JObject>(() => {
+                return JObject.FromObject(new { success = true, data = new { user = GetCurrentUser(), token = JWTToken } });
+            });
+        }
+
+        public async Task<JObject> ChangePassword(ChangePasswordViewModel vm) {
+            return await new Task<JObject>(() => {
+                return JObject.FromObject(new { success = true });
+            });
+        }
+
+        public async Task<JObject> EditAccount(EditAccountViewModel vm) {
+            return await new Task<JObject>(() => {
+                return JObject.FromObject(new { success = true });
+            });
+        }
+
+        public async Task<JObject> ForgotPassword(ForgotPasswordViewModel vm) {
+            return await new Task<JObject>(() => {
+                return JObject.FromObject(new { success = true });
+            });
+        }
+
+        public async Task<JObject> ResetPassword(ResetPasswordViewModel vm) {
+            return await new Task<JObject>(() => {
+                return JObject.FromObject(new { success = true });
+            });
         }
 
         public void Logout() {
@@ -35,61 +64,58 @@ namespace ClientApp.DataService {
             JWTToken = "";
         }
 
-        public dynamic ChangePassword(ChangePasswordViewModel vm) {
-            return JObject.FromObject(new { success = true });
-        }
-
-        public dynamic EditAccount(EditAccountViewModel vm) {
-            return JObject.FromObject(new { success = true });
-        }
-
-        public dynamic ForgotPassword(ForgotPasswordViewModel vm) {
-            return JObject.FromObject(new { success = true });
-        }
-
-        public dynamic ResetPassword(ResetPasswordViewModel vm) {
-            return JObject.FromObject(new { success = true });
-        }
-
         // USER
 
-        public User GetCurrentUser() {
+        public async Task<User> GetCurrentUser() {
             Debug.WriteLine("GET currentuser");
-            return new User() {
-                FirstName = "Peter",
-                LastName = "Petersson",
-                Email = "peter@domain.com",
-                Id = "4875185"
-            };
+            return await new Task<User>(() => {
+                return new User() {
+                    FirstName = "Peter",
+                    LastName = "Petersson",
+                    Email = "peter@domain.com",
+                    Id = "4875185"
+                };
+            });
         }
 
-        public User GetUser(string id) {
-            Debug.WriteLine("GET user "+id);
+        private User GetFakeUser(int id = 0) {
+            if (id == 1)
+                return new User() {
+                    FirstName = "Karel",
+                    LastName = "Carlston",
+                    Email = "carl@domain.com",
+                    Id = "2884857",
+                    //OwningLists = GetOwnedLists()
+                };
             return new User() {
                 FirstName = "Jan",
                 LastName = "Janssens",
                 Email = "jan@domain.com",
                 Id = "54674654",
-                OwningLists = GetOwnedLists()
+                //OwningLists = GetOwnedLists()
             };
         }
 
-        public List<List> GetOwnedLists() {
+        public async Task<User> GetUser(string id) {
+            Debug.WriteLine("GET user "+id);
+            return await new Task<User>(() => {
+                return GetFakeUser();
+            });
+        }
+
+        public async Task<List<List>> GetOwnedLists() {
             Debug.WriteLine("GET ownedlists");
-            return new List<List> {
-                new List { ListId=0, Name="Verjaardag Jan", OwnerUser=GetCurrentUser(), Description="Voor op het feestje af te geven", Deadline=new DateTime(2018,12,31) },
-                new List { ListId=1, Name="Babyborrel Charlotte", OwnerUser=GetCurrentUser(), Description="Een jonge spruit!", Deadline=new DateTime(2019,05,12) },
-                new List { ListId=2, Name="Trouw", OwnerUser=GetCurrentUser(), Description="Al gepasseerd eigenlijk", Deadline=new DateTime(2018,01,01) }
-            };
+            return await new Task<List<List>>(() => {
+                return new List<List> {
+                    new List { ListId=0, Name="Verjaardag Jan", OwnerUser=GetFakeUser(), Description ="Voor op het feestje af te geven", Deadline=new DateTime(2018,12,31) },
+                    new List { ListId=1, Name="Babyborrel Charlotte", OwnerUser=GetFakeUser(), Description ="Een jonge spruit!", Deadline=new DateTime(2019,05,12) },
+                    new List { ListId=2, Name="Trouw", OwnerUser=GetFakeUser(1), Description="Al gepasseerd eigenlijk", Deadline=new DateTime(2018,01,01) }
+                };
+            });
         }
 
-        public List<List> GetSubscribedLists() {
-            Debug.WriteLine("GET subscribedlists");
-            return new List<List> {
-                new List { ListId=0, Name="Verjaardag Jan", OwnerUser=GetUser(""), Description="Voor op het feestje af te geven", Deadline=new DateTime(2018,12,31) },
-                new List { ListId=1, Name="Babyborrel Charlotte", OwnerUser=GetUser(""), Description="Een jonge spruit!", Deadline=new DateTime(2019,05,12) },
-                new List { ListId=2, Name="Trouw", OwnerUser=GetUser(""), Description="Al gepasseerd eigenlijk", Deadline=new DateTime(2018,01,01) }
-            };
+        public Task<List<List>> GetSubscribedLists() {
+            return GetOwnedLists();
         }
 
         public void RequestAccess(string emailaddress) {
@@ -98,29 +124,45 @@ namespace ClientApp.DataService {
 
         // LISTS
 
-        public List GetList(int id) {
-            Debug.WriteLine("GET list "+id);
-            List list = new List {
-                ListId = 0, Name = "Verjaardag Jan", OwnerUser = GetUser(""), Description = "Voor op het feestje af te geven", Deadline = new DateTime(2018, 12, 31), SubscribedUsers = new List<User> { GetUser(""), GetCurrentUser() },
-                Items = new List<Item> {
-                    new Item { ItemId=0, ProductName="Playstation",  CheckedByUser=GetCurrentUser() },
-                    new Item { ItemId=1, ProductName="Tent", ItemPriceUsd=19.99, CheckedByUser=GetUser("") },
-                    new Item { ItemId=2, ProductName="Ovenschotel", ItemPriceUsd=9.99 },
-                    new Item { ItemId=3, ProductName="Barbies" }
-                }
+        private List GetFakeList(int id = 0) {
+            List list;
+
+            if (id == 2)
+                list = new List { ListId = 2, Name = "Trouw", OwnerUser = GetFakeUser(1), Description = "Al gepasseerd eigenlijk", Deadline = new DateTime(2018, 01, 01) };
+            else if (id == 1)
+                list = new List { ListId = 0, Name = "Verjaardag Jan", OwnerUser = GetFakeUser(), Description = "Voor op het feestje af te geven", Deadline = new DateTime(2018, 12, 31) };
+            else
+                list = new List { ListId = 0, Name = "Verjaardag Jan", OwnerUser = GetFakeUser(), Description = "Voor op het feestje af te geven", Deadline = new DateTime(2018, 12, 31), SubscribedUsers = new List<User> { GetFakeUser(), GetFakeUser(1) } };
+
+            list.Items = new List<Item> {
+                new Item { ItemId=0, ProductName="Playstation",  CheckedByUser=GetFakeUser() },
+                new Item { ItemId=1, ProductName="Tent", ItemPriceUsd=19.99, CheckedByUser=GetFakeUser(1) },
+                new Item { ItemId=2, ProductName="Ovenschotel", ItemPriceUsd=9.99 },
+                new Item { ItemId=3, ProductName="Barbies" }
             };
 
             return list;
         }
 
-        public dynamic NewList(List list) {
-            Debug.WriteLine("POST newlist");
-            return JObject.FromObject(new { success = true });
+        public async Task<List> GetList(int id) {
+            Debug.WriteLine("GET list "+id);
+            return await new Task<List>(() => {
+                return GetFakeList();
+            });
         }
 
-        public dynamic EditList(List list) {
+        public async Task<JObject> NewList(List list) {
+            Debug.WriteLine("POST newlist");
+            return await new Task<JObject>(() => {
+                return JObject.FromObject(new { success = true });
+            });
+        }
+
+        public async Task<JObject> EditList(List list) {
             Debug.WriteLine("POST editlist");
-            return JObject.FromObject(new { success = true });
+            return await new Task<JObject>(() => {
+                return JObject.FromObject(new { success = true });
+            });
         }
 
         public void SendInvitations(List list) {
@@ -143,31 +185,39 @@ namespace ClientApp.DataService {
             Debug.WriteLine("POST unmarkitem " + item.ItemId);
         }
 
-        public dynamic NewItem(Item item) {
+        public async Task<JObject> NewItem(Item item) {
             Debug.WriteLine("POST newitem");
-            return JObject.FromObject(new { success = true });
+            return await new Task<JObject>(() => {
+                return JObject.FromObject(new { success = true });
+            });
         }
 
-        public dynamic EditItem(Item item) {
-            Debug.WriteLine("POST edititem "+item.ItemId);
-            return JObject.FromObject(new { success = true });
+        public async Task<JObject> EditItem(Item item) {
+            Debug.WriteLine("POST editItem");
+            return await new Task<JObject>(() => {
+                return JObject.FromObject(new { success = true });
+            });
         }
 
         public void DeleteItem(Item item) {
             Debug.WriteLine("DELETE item " + item.ItemId);
         }
 
-        public List<Notification> GetNotifications() {
+        public async Task<List<Notification>> GetNotifications() {
             Debug.WriteLine("GET notifications");
-            return new List<Notification> {
-                new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.DeadlineReminder, SubjectList = GetList(1), NotificationId = 0, IsUnread=true },
-                new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.JoinRequest, SubjectUser = GetUser(""), NotificationId = 1, IsUnread=true },
-                new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.ListInvitation, SubjectList = GetList(2), NotificationId = 2, IsUnread=false },
-                new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.ListInvitation, SubjectList = GetList(1), NotificationId = 3, IsUnread=true },
-                new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.ListInvitation, SubjectList = GetList(0), NotificationId = 4, IsUnread=false },
-                new Notification() { OwnerUser = GetCurrentUser(), Type = NotificationType.ListJoinSuccess, SubjectList = GetList(2), SubjectUser=GetUser(""), NotificationId = 5, IsUnread=false }
+            return await new Task<List<Notification>>(() => {
+                return new List<Notification> {
+                new Notification() { OwnerUser = GetFakeUser(), Type = NotificationType.DeadlineReminder, SubjectList = GetFakeList(1), NotificationId = 0, IsUnread=true },
+                new Notification() { OwnerUser = GetFakeUser(), Type = NotificationType.JoinRequest, SubjectUser = GetFakeUser(1), NotificationId = 1, IsUnread=true },
+                new Notification() { OwnerUser = GetFakeUser(), Type = NotificationType.ListInvitation, SubjectList = GetFakeList(2), NotificationId = 2, IsUnread=false },
+                new Notification() { OwnerUser = GetFakeUser(), Type = NotificationType.ListInvitation, SubjectList = GetFakeList(1), NotificationId = 3, IsUnread=true },
+                new Notification() { OwnerUser = GetFakeUser(), Type = NotificationType.ListInvitation, SubjectList = GetFakeList(0), NotificationId = 4, IsUnread=false },
+                new Notification() { OwnerUser = GetFakeUser(), Type = NotificationType.ListJoinSuccess, SubjectList = GetFakeList(2), SubjectUser=GetFakeUser(1), NotificationId = 5, IsUnread=false }
             };
+            });
         }
+
+        
 
         public int GetUnreadNotificationCount() {
             return 3;

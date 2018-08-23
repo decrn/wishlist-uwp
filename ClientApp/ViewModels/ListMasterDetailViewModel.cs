@@ -1,32 +1,36 @@
-﻿using ClientApp.ViewModels.ViewModels;
+﻿using ClientApp.Models;
+using ClientApp.ViewModels.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace ClientApp.ViewModels {
     public class ListMasterDetailViewModel : NotificationBase {
 
         public ListMasterDetailViewModel(string type) {
+            Initialize(type);
+        }
+
+        private async void Initialize(string type) {
             if (type == "Owned") {
-                Debug.WriteLine("GETTING all OWNED lists");
-                foreach (var list in App.dataService.GetOwnedLists()) {
+
+                List<List> lists = await App.dataService.GetOwnedLists();
+
+                foreach (var list in lists) {
                     var nl = new ListViewModel(list);
                     _lists.Add(nl);
                 }
             } else if (type == "Subscribed") {
-                Debug.WriteLine("GETTING all SUBSCRIBED lists");
-                foreach (var list in App.dataService.GetSubscribedLists()) {
+
+                List<List> lists = await App.dataService.GetOwnedLists();
+
+                foreach (var list in lists) {
                     var nl = new ListViewModel(list);
                     _lists.Add(nl);
                 }
-            }
-            else {
+            } else {
                 throw new ArgumentException("This type of list is not supported. Use 'Owned' or 'Subscribed'.");
-            }
-
-            
-            foreach (var lvm in _lists) {
-                Debug.WriteLine(lvm.Name);
             }
         }
 
@@ -67,8 +71,9 @@ namespace ClientApp.ViewModels {
         }*/
 
 
-        public ListViewModel GetDetailed(ListViewModel selected) {
-            var vm = new ListViewModel(App.dataService.GetList(selected.ListId));
+        public async Task<ListViewModel> GetDetailed(ListViewModel selected) {
+            List list = await App.dataService.GetList(selected.ListId);
+            var vm = new ListViewModel(list);
             SelectedDetail = vm;
             return vm;
         }

@@ -1,7 +1,9 @@
 ﻿using ClientApp.Models;
 using ClientApp.ViewModels;
 using Microsoft.Toolkit.Uwp.UI.Controls;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ClientApp.DataService {
 
@@ -13,41 +15,41 @@ namespace ClientApp.DataService {
 
         bool IsLoggedIn();
 
-        dynamic Login(LoginViewModel vm);
+        Task<JObject> Login(LoginViewModel vm);
 
-        dynamic Register(RegisterViewModel vm);
+        Task<JObject> Register(RegisterViewModel vm);
 
-        dynamic ChangePassword(ChangePasswordViewModel vm);
+        Task<JObject> ChangePassword(ChangePasswordViewModel vm);
 
-        dynamic ForgotPassword(ForgotPasswordViewModel vm);
+        Task<JObject> ForgotPassword(ForgotPasswordViewModel vm);
 
-        dynamic ResetPassword(ResetPasswordViewModel vm);
+        Task<JObject> ResetPassword(ResetPasswordViewModel vm);
 
-        dynamic EditAccount(EditAccountViewModel vm);
+        Task<JObject> EditAccount(EditAccountViewModel vm);
 
         void Logout();
 
 
         // USERS
 
-        User GetCurrentUser();
+        Task<User> GetCurrentUser();
 
-        User GetUser(string id);
+        Task<User> GetUser(string id);
 
-        List<List> GetOwnedLists();
+        Task<List<List>> GetOwnedLists();
 
-        List<List> GetSubscribedLists();
+        Task<List<List>> GetSubscribedLists();
 
         void RequestAccess(string emailaddress);
 
 
         // LISTS
 
-        List GetList(int id);
+        Task<List> GetList(int id);
 
-        dynamic NewList(List list);
+        Task<JObject> NewList(List list);
 
-        dynamic EditList(List list);
+        Task<JObject> EditList(List list);
 
         void SendInvitations(List list);
 
@@ -62,16 +64,16 @@ namespace ClientApp.DataService {
 
         void UnMarkItem(Item item);
 
-        dynamic NewItem(Item item);
+        Task<JObject> NewItem(Item item);
 
-        dynamic EditItem(Item item);
+        Task<JObject> EditItem(Item item);
 
         void DeleteItem(Item item);
 
 
         // NOTIFICATIONS
 
-        List<Notification> GetNotifications();
+        Task<List<Notification>> GetNotifications();
 
         int GetUnreadNotificationCount();
 

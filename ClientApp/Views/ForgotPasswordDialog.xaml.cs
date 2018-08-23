@@ -17,7 +17,7 @@ namespace ClientApp.Views {
             this.InitializeComponent();
         }
 
-        private void Request(object sender, RoutedEventArgs e) {
+        private async void Request(object sender, RoutedEventArgs e) {
 
             ErrorText.Visibility = Visibility.Collapsed;
             ForgotPasswordViewModel vm = new ForgotPasswordViewModel() { Email = EmailBox.Text };
@@ -27,7 +27,7 @@ namespace ClientApp.Views {
             bool isValid = Validator.TryValidateObject(vm, validationContext, validationResults, true);
 
             if (isValid) {
-                JObject result = App.dataService.ForgotPassword(vm);
+                JObject result = await App.dataService.ForgotPassword(vm);
 
                 if (result["success"].ToString() == "True") {
 
@@ -59,7 +59,7 @@ namespace ClientApp.Views {
 
         }
 
-        private void Reset(object sender, RoutedEventArgs e) {
+        private async void Reset(object sender, RoutedEventArgs e) {
             ErrorText.Visibility = Visibility.Collapsed;
 
             ResetPasswordViewModel vm = new ResetPasswordViewModel() {
@@ -74,7 +74,7 @@ namespace ClientApp.Views {
             bool isValid = Validator.TryValidateObject(vm, validationContext, validationResults, true);
 
             if (isValid) {
-                JObject result = App.dataService.ResetPassword(vm);
+                JObject result = await App.dataService.ResetPassword(vm);
 
                 if (result["success"].ToString() == "True") {
                     Hide();

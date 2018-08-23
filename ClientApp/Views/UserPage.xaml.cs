@@ -22,7 +22,7 @@ namespace ClientApp {
             Passwords = new ChangePasswordViewModel();
         }
 
-        private void Save(object sender, RoutedEventArgs e) {
+        private async void Save(object sender, RoutedEventArgs e) {
 
             UserError.Visibility = Visibility.Collapsed;
             ValidationContext validationContext = new ValidationContext(User);
@@ -30,7 +30,7 @@ namespace ClientApp {
             bool isValid = Validator.TryValidateObject(User, validationContext, validationResults, true);
 
             if (isValid) {
-                JObject result = App.dataService.EditAccount(User);
+                JObject result = await App.dataService.EditAccount(User);
 
                 if (result["success"].ToString() == "True") {
                     this.Frame.Navigate(typeof(UserPage));
@@ -45,7 +45,7 @@ namespace ClientApp {
             }
         }
 
-        private void ChangePassword(object sender, RoutedEventArgs e) {
+        private async void ChangePassword(object sender, RoutedEventArgs e) {
 
             PasswordsError.Visibility = Visibility.Collapsed;
             ValidationContext validationContext = new ValidationContext(Passwords);
@@ -53,7 +53,7 @@ namespace ClientApp {
             bool isValid = Validator.TryValidateObject(Passwords, validationContext, validationResults, true);
 
             if (isValid) {
-                JObject result = App.dataService.ChangePassword(Passwords);
+                JObject result = await App.dataService.ChangePassword(Passwords);
 
                 if (result["success"].ToString() == "True") {
                     this.Frame.Navigate(typeof(UserPage));
