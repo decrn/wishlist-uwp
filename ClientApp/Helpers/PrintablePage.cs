@@ -9,8 +9,6 @@ using Windows.UI.Xaml.Printing;
 
 // Source: https://stackoverflow.com/a/39140069
 
-// TODO: change default orientation, try toolkit PrintHelper
-
 namespace ClientApp.Helpers {
     public class PrintablePage : Page {
 
@@ -19,8 +17,7 @@ namespace ClientApp.Helpers {
         private IPrintDocumentSource printDocSource;
 
         protected override void OnNavigatedTo(NavigationEventArgs e) {
-
-            // TODO: sometimes crashes when logging in
+            
             try {
 
                 printMan = PrintManager.GetForCurrentView();

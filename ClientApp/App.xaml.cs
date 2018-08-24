@@ -53,9 +53,7 @@ namespace ClientApp {
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
 
-                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated) {
-                    //TODO: Load state from previously suspended application
-                }
+                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated) {}
 
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
@@ -93,7 +91,6 @@ namespace ClientApp {
 
         private void OnSuspending(object sender, SuspendingEventArgs e) {
             var deferral = e.SuspendingOperation.GetDeferral();
-            //TODO: Save application state and stop any background activity
             deferral.Complete();
         }
 

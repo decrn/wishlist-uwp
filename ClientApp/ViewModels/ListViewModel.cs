@@ -80,12 +80,10 @@ namespace ClientApp.ViewModels {
 
         public bool HasNoInvited => InvitedUsers.Count < 1;
 
-        // TODO: Fix UserViewModel creation
         private UserViewModel _ownerUser;
         public UserViewModel OwnerUser {
             get => new UserViewModel(This.OwnerUser);
             set => SetProperty(ref _ownerUser, value);
-            // set { SetProperty(This.OwnerUser, value, () => This.OwnerUser = value); }
         }
 
         public bool IsHidden {

@@ -17,7 +17,6 @@ namespace ClientApp.ViewModels {
                 User = user;
             }
             _SelectedSubscriptionIndex = -1;
-            _SelectedOwnedIndex = -1;
 
             foreach (var list in User.SubscribedLists) {
                 var nl = new ListViewModel(list);
@@ -114,37 +113,6 @@ namespace ClientApp.ViewModels {
         public List<ListViewModel> Owned {
             get { return _Owned; }
             set { SetProperty(ref _Owned, value); }
-        }
-
-        public ListViewModel SelectedOwned {
-            get { return (_SelectedOwnedIndex >= 0) ? _Owned[_SelectedOwnedIndex] : null; }
-        }
-
-        // _SelectedIndex is used internally when navigating into lists in the details view, when navigating back
-        // This index remembers where the User left off and helps them scroll through all subscribed lists to where they were
-        int _SelectedOwnedIndex;
-
-        public int SelectedOwnedIndex {
-            get { return _SelectedOwnedIndex; }
-            set {
-                if (SetProperty(ref _SelectedOwnedIndex, value)) { RaisePropertyChanged(nameof(SelectedOwned)); }
-            }
-        }
-
-        public void AddOwned() {
-            var list = new ListViewModel();
-            list.PropertyChanged += List_OnNotifyPropertyChanged;
-            Owned.Add(list);
-            User.RegisterOwned(list);
-            SelectedOwnedIndex = Owned.IndexOf(list);
-        }
-
-        public void RemoveOwned() {
-            if (SelectedOwnedIndex != -1) {
-                var list = Owned[SelectedOwnedIndex];
-                Owned.RemoveAt(SelectedOwnedIndex);
-                User.RemoveOwned(list);
-            }
         }
 
         // Other
