@@ -57,7 +57,7 @@ namespace ClientApp.DataService {
 
         void UnsubscribeFromList(List list);
         
-        void DeleteList(List list);
+        Task DeleteList(List list);
 
 
         // ITEMS

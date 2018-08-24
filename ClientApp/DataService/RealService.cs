@@ -203,8 +203,8 @@ namespace ClientApp.DataService {
             DeleteList(list); 
         }
 
-        public async void DeleteList(List list) {
-            HttpService.Delete("Lists/" + list.ListId);
+        public async Task DeleteList(List list) {
+            await HttpService.Delete("Lists/" + list.ListId);
         }
 
         #endregion

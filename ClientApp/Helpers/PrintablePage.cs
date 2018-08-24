@@ -19,17 +19,20 @@ namespace ClientApp.Helpers {
         private IPrintDocumentSource printDocSource;
 
         protected override void OnNavigatedTo(NavigationEventArgs e) {
-            // Register for PrintTaskRequested event
-            printMan = PrintManager.GetForCurrentView();
-            // TODO: sometimes crashes when logging in
-            printMan.PrintTaskRequested += PrintTaskRequested;
 
-            // Build a PrintDocument and register for callbacks
-            printDoc = new PrintDocument();
-            printDocSource = printDoc.DocumentSource;
-            printDoc.Paginate += Paginate;
-            printDoc.GetPreviewPage += GetPreviewPage;
-            printDoc.AddPages += AddPages;
+            // TODO: sometimes crashes when logging in
+            try {
+
+                printMan = PrintManager.GetForCurrentView();
+                printMan.PrintTaskRequested += PrintTaskRequested;
+
+                printDoc = new PrintDocument();
+                printDocSource = printDoc.DocumentSource;
+                printDoc.Paginate += Paginate;
+                printDoc.GetPreviewPage += GetPreviewPage;
+                printDoc.AddPages += AddPages;
+
+            } catch { }
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e) {

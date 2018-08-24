@@ -38,6 +38,18 @@ namespace ClientApp {
                 this.RequestedTheme = ApplicationTheme.Dark;
         }
 
+        public static void Reload() {
+            // cheeky way of reloading
+            var _Frame = Window.Current.Content as Frame;
+            _Frame.Navigate(typeof(MainPage));
+            _Frame.GoBack();
+        }
+
+        // helper function because I'm sick of looking this up while testing
+        public static void Wait(int milliseconds) {
+            System.Threading.Tasks.Task.Delay(milliseconds).Wait();
+        }
+
 
         // Lifecycle events
 

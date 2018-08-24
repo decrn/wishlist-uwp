@@ -3,7 +3,6 @@ using ClientApp.ViewModels.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace ClientApp.ViewModels {
@@ -58,11 +57,10 @@ namespace ClientApp.ViewModels {
             SelectedList = lvm;
         }
 
-        public void DeleteSelectedList() {
-            Debug.WriteLine("Removing List: ", SelectedList.Name);
+        public async void DeleteSelectedList() {
             if (SelectedList != null) {
-                var list = SelectedList;
-                Lists.Remove(list);
+                await App.dataService.DeleteList(SelectedList);
+                App.Reload();
             }
         }
 

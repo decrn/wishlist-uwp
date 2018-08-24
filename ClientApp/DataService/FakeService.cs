@@ -175,8 +175,9 @@ namespace ClientApp.DataService {
             this.DeleteList(list);
         }
 
-        public void DeleteList(List list) {
+        public Task DeleteList(List list) {
             Debug.WriteLine("DELETE list "+list.ListId);
+            throw new Exception("");
         }
 
         public void MarkItem(Item item) {
