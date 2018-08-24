@@ -127,14 +127,16 @@ namespace ClientApp {
             ContentFrame.Navigate(typeof(OwnedMasterDetail));
 
             OwnedMasterDetail page = (OwnedMasterDetail)ContentFrame.Content;
-            page.SelectList(list);
+            if (list != null)
+                page.SelectList(list);
         }
 
         public void GoToSubscribedList(List list) {
             ContentFrame.Navigate(typeof(SubscriptionMasterDetail));
             
             SubscriptionMasterDetail page = (SubscriptionMasterDetail) ContentFrame.Content;
-            page.SelectList(list);
+            if (list != null)
+                page.SelectList(list);
         }
 
     }

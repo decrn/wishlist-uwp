@@ -55,7 +55,7 @@ namespace ClientApp.Views {
 
             } else if (notif.Type == NotificationType.ListInvitation) {
                 await App.dataService.ActOnNotification(notif);
-                MainPage.GoToSubscribedList(notif.SubjectList);
+                App.Reload();
 
             } else if (notif.Type == NotificationType.DeadlineReminder) {
                 MainPage.GoToSubscribedList(notif.SubjectList);

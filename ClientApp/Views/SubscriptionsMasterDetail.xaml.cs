@@ -78,7 +78,7 @@ namespace ClientApp {
 
         public void SelectList(List list) {
             if (list == null) MasterDetail.SelectedItem = null;
-            else MasterDetail.SelectedItem = Lists.Lists.First((l) => l.ListId == list.ListId);
+            else MasterDetail.SelectedItem = Lists.Lists.FirstOrDefault((l) => l.ListId == list.ListId);
         }
 
         private void CheckItem(object sender, TappedRoutedEventArgs e) {

@@ -127,8 +127,8 @@
                         </Grid>
                         
                         <!--Content-->
-                        <ScrollViewer Grid.Row="1" VerticalAlignment="Stretch" HorizontalScrollMode="Disabled" VerticalScrollMode="Auto">
-                            <Grid>
+                        <ScrollViewer Grid.Row="1" VerticalAlignment="Stretch" HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto" VerticalScrollMode="Auto">
+                            <Grid MinWidth="800">
 
                                 <!--TODO: Collapse Grid on mobile-->
                                 <Grid.ColumnDefinitions>
