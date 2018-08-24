@@ -79,7 +79,7 @@ namespace ClientApp.DataService {
 
         // Use fake data service
 
-        private bool _UseFakeDataService = true; // TODO: Edit this to true once everyone has set setting manually
+        private bool _UseFakeDataService = true;
 
         public bool UseFakeDataService {
             get { return _UseFakeDataService; }
