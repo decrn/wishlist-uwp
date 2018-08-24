@@ -59,7 +59,7 @@ namespace ServerApp.Controllers {
                 LastName = user.LastName,
                 userName = user.UserName,
                 Email = user.Email,
-                Lists = _context.List.Where(l => l.OwnerUser.Id == user.Id).Where(l => !l.IsHidden || loggedinuser.Id == id)
+                Lists = _context.List.Where(l => l.OwnerUser.Id == user.Id).Where(l => !l.IsHidden || loggedinuser.Id == id).ToList()
             };
 
             return Ok(publicuser);

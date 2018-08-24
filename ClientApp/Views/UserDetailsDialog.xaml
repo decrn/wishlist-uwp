@@ -23,7 +23,7 @@
             Style="{ThemeResource TitleTextBlockStyle}"
             Margin="0,20"/>
 
-        <ListView x:Name="ListsList" ItemsSource="{x:Bind User.Owned}" SelectionMode="None">
+        <ListView x:Name="ListsList" ItemsSource="{x:Bind Lists}" SelectionMode="None">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:List">
                     <StackPanel Margin="0,5">

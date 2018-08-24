@@ -179,6 +179,11 @@
                                                         <RowDefinition/>
                                                     </Grid.RowDefinitions>
 
+                                                    <ToolTipService.ToolTip>
+                                                        <ToolTip Content="{x:Bind CheckedUserName}" Visibility="{x:Bind IsCompleted}"
+                                                                HorizontalOffset="20" VerticalOffset="30"/>
+                                                    </ToolTipService.ToolTip>
+
                                                     <!--using tapped here means keyboard uses wont get to check marks, ohwell-->
                                                     <CheckBox Grid.RowSpan="3"  IsChecked="{x:Bind IsCompleted}" IsEnabled="{x:Bind CanCheck}" Tapped="CheckItem" Tag="{x:Bind}"></CheckBox>
 

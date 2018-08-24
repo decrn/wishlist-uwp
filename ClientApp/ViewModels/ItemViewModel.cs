@@ -61,6 +61,8 @@ namespace ClientApp.ViewModels {
 
         public bool CanCheck { get => !IsCompleted || CheckedByUser.Id == App.dataService.LoggedInUser.Id; }
 
+        public string CheckedUserName { get => CheckedByUser != null ? CheckedByUser.FirstName + " " + CheckedByUser.LastName : ""; }
+
         public bool HasProductInfoUrl { get => ProductInfoUrl != null && ProductInfoUrl != ""; }
 
         public Uri ImageUrl { get => new Uri(ProductImageUrl ?? "https://via.placeholder.com/50x50"); }
