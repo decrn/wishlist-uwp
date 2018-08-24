@@ -179,14 +179,15 @@
                                                         <RowDefinition/>
                                                     </Grid.RowDefinitions>
 
-                                                    <CheckBox Grid.RowSpan="3"  IsChecked="{x:Bind IsCompleted}" IsEnabled="{x:Bind CanCheck}"></CheckBox>
+                                                    <!--using tapped here means keyboard uses wont get to check marks, ohwell-->
+                                                    <CheckBox Grid.RowSpan="3"  IsChecked="{x:Bind IsCompleted}" IsEnabled="{x:Bind CanCheck}" Tapped="CheckItem" Tag="{x:Bind}"></CheckBox>
 
                                                     <Image Grid.RowSpan="3" Grid.Column="1"
                                                         Width="44"
                                                         Height="44"
                                                            Margin="0,0,20,0">
                                                         <Image.Source>
-                                                            <BitmapImage UriSource="{x:Bind GetImageUrl()}"></BitmapImage>
+                                                            <BitmapImage UriSource="{x:Bind ImageUrl}"></BitmapImage>
                                                         </Image.Source>
                                                     </Image>
 

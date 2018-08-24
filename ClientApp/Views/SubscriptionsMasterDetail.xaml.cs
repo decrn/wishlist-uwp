@@ -17,7 +17,7 @@ namespace ClientApp {
         public ListMasterDetailViewModel Lists { get; set; }
 
         public SubscriptionMasterDetail() {
-            Lists = new ListMasterDetailViewModel("Owned");
+            Lists = new ListMasterDetailViewModel("Subscribed");
             InitializeComponent();
         }
 
@@ -42,7 +42,7 @@ namespace ClientApp {
         }
 
         private void Unsubscribe(object sender, RoutedEventArgs e) {
-            App.dataService.UnsubscribeFromList(Lists.SelectedList.List);
+            Lists.SelectedList.UnsubscribeAsync();
         }
 
         private async void AddToCalendar(object sender, RoutedEventArgs e) {
@@ -79,6 +79,11 @@ namespace ClientApp {
         public void SelectList(List list) {
             if (list == null) MasterDetail.SelectedItem = null;
             else MasterDetail.SelectedItem = Lists.Lists.First((l) => l.ListId == list.ListId);
+        }
+
+        private void CheckItem(object sender, TappedRoutedEventArgs e) {
+            ItemViewModel item = (ItemViewModel)((FrameworkElement)sender).Tag;
+            item.Check();
         }
     }
 }

@@ -58,17 +58,16 @@ namespace ClientApp.ViewModels {
             return ProductName;
         }
 
-        public bool CanCheck {
-            get { return !IsCompleted || CheckedByUser.Id == App.dataService.LoggedInUser.Id; }
-        }
+        public bool CanCheck { get => !IsCompleted || CheckedByUser.Id == App.dataService.LoggedInUser.Id; }
 
-        public bool HasProductInfoUrl {
-            get => ProductInfoUrl != null && ProductInfoUrl != "";
-        }
+        public bool HasProductInfoUrl { get => ProductInfoUrl != null && ProductInfoUrl != ""; }
 
-        public Uri GetImageUrl() {
-            return new Uri(ProductImageUrl ?? "https://via.placeholder.com/50x50");
-        }
+        public Uri ImageUrl { get => new Uri(ProductImageUrl ?? "https://via.placeholder.com/50x50"); }
 
+        // Methods
+
+        public void Check() {
+            App.dataService.MarkItem(This);
+        }
     }
 }

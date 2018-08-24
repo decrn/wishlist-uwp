@@ -2,7 +2,6 @@
 using ClientApp.Models;
 using ClientApp.ViewModels;
 using System.Linq;
-using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -47,10 +46,9 @@ namespace ClientApp {
 
         private void Send(object sender, RoutedEventArgs e) {
             if (!Lists.SelectedList.IsNew) {
-
+                Lists.SelectedList.SendInvitations();
             } else {
-                var messageDialog = new MessageDialog("You can't do this on a new list");
-                messageDialog.ShowAsync();
+                App.ShowMessage("You can't do this on a new list");
             }
         }
 
@@ -58,8 +56,7 @@ namespace ClientApp {
             if (!Lists.SelectedList.IsNew) {
                 Lists.DeleteSelectedList();
             } else {
-                var messageDialog = new MessageDialog("You can't do this on a new list");
-                messageDialog.ShowAsync();
+                App.ShowMessage("You can't do this on a new list");
             }
         }
 

@@ -53,9 +53,9 @@ namespace ClientApp.DataService {
 
         Task<JObject> EditList(List list);
 
-        void SendInvitations(List list);
+        Task SendInvitations(List list);
 
-        void UnsubscribeFromList(List list);
+        Task UnsubscribeFromList(List list);
         
         Task DeleteList(List list);
 
@@ -70,18 +70,18 @@ namespace ClientApp.DataService {
 
         Task<JObject> EditItem(Item item);
 
-        void DeleteItem(Item item);
+        Task DeleteItem(Item item);
 
 
         // NOTIFICATIONS
 
         Task<List<Notification>> GetNotifications();
 
-        void MarkAllNotificationsAsRead();
+        Task MarkAllNotificationsAsRead();
 
-        void MarkNotification(Notification notification);
+        Task MarkNotification(Notification notification);
 
-        void ActOnNotification(Notification notification);
+        Task ActOnNotification(Notification notification);
 
     }
 }

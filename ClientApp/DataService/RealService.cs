@@ -194,13 +194,13 @@ namespace ClientApp.DataService {
             return obj;
         }
 
-        public async void SendInvitations(List list) {
+        public async Task SendInvitations(List list) {
             await HttpService.Post("Lists/" + list.ListId, null);
         }
 
-        public async void UnsubscribeFromList(List list) {
+        public async Task UnsubscribeFromList(List list) {
             // this is fine, a subscriber cant remove the list and the owner cant subscribe to the list
-            DeleteList(list); 
+            await DeleteList(list); 
         }
 
         public async Task DeleteList(List list) {
@@ -234,8 +234,8 @@ namespace ClientApp.DataService {
             return obj;
         }
 
-        public async void DeleteItem(Item item) {
-            HttpService.Delete("Items/" + item.ItemId);
+        public async Task DeleteItem(Item item) {
+            await HttpService.Delete("Items/" + item.ItemId);
         }
 
         #endregion
@@ -248,15 +248,15 @@ namespace ClientApp.DataService {
             return obj.ToObject<List<Notification>>(); ;
         }
 
-        public async void MarkAllNotificationsAsRead() {
-            HttpService.Put("Notifications", null);
+        public async Task MarkAllNotificationsAsRead() {
+            await HttpService.Put("Notifications", null);
         }
 
-        public async void MarkNotification(Notification notif) {
-            HttpService.Put("Notifications/" + notif.NotificationId, null);
+        public async Task MarkNotification(Notification notif) {
+            await HttpService.Put("Notifications/" + notif.NotificationId, null);
         }
 
-        public async void ActOnNotification(Notification notif) {
+        public async Task ActOnNotification(Notification notif) {
             await HttpService.Post("Notifications/" + notif.NotificationId, null);
         }
 

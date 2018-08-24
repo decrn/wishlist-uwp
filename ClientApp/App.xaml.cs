@@ -9,6 +9,7 @@ using Windows.ApplicationModel.Background;
 using Windows.ApplicationModel.Core;
 using Windows.UI;
 using Windows.UI.Notifications;
+using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -36,18 +37,6 @@ namespace ClientApp {
                 this.RequestedTheme = ApplicationTheme.Light;
             else if (settingsService.GetThemeSetting() == Theme.Dark)
                 this.RequestedTheme = ApplicationTheme.Dark;
-        }
-
-        public static void Reload() {
-            // cheeky way of reloading
-            var _Frame = Window.Current.Content as Frame;
-            _Frame.Navigate(typeof(MainPage));
-            _Frame.GoBack();
-        }
-
-        // helper function because I'm sick of looking this up while testing
-        public static void Wait(int milliseconds) {
-            System.Threading.Tasks.Task.Delay(milliseconds).Wait();
         }
 
 
@@ -149,6 +138,23 @@ namespace ClientApp {
 
 
         // Methods
+
+        public static void ShowMessage(string message) {
+            var messageDialog = new MessageDialog(message);
+            messageDialog.ShowAsync();
+        }
+
+        public static void Reload() {
+            // cheeky way of reloading
+            var _Frame = Window.Current.Content as Frame;
+            _Frame.Navigate(typeof(MainPage));
+            _Frame.GoBack();
+        }
+
+        // helper function because I'm sick of looking this up while testing
+        public static void Wait(int milliseconds) {
+            System.Threading.Tasks.Task.Delay(milliseconds).Wait();
+        }
 
         public static void ShowNotification(string title, string message) {
             ToastContent toastContent = new ToastContent() {

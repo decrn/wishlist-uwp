@@ -167,17 +167,19 @@ namespace ClientApp.DataService {
             );
         }
 
-        public void SendInvitations(List list) {
+        public Task SendInvitations(List list) {
             Debug.WriteLine("POST sendinvitations");
+            throw new Exception("Not supported in Fake Data Service");
         }
 
-        public void UnsubscribeFromList(List list) {
+        public Task UnsubscribeFromList(List list) {
             this.DeleteList(list);
+            throw new Exception("Not supported in Fake Data Service");
         }
 
         public Task DeleteList(List list) {
             Debug.WriteLine("DELETE list "+list.ListId);
-            throw new Exception("");
+            throw new Exception("Not supported in Fake Data Service");
         }
 
         public void MarkItem(Item item) {
@@ -202,8 +204,9 @@ namespace ClientApp.DataService {
             );
         }
 
-        public void DeleteItem(Item item) {
+        public Task DeleteItem(Item item) {
             Debug.WriteLine("DELETE item " + item.ItemId);
+            throw new Exception("Not supported in Fake Data Service");
         }
 
         public async Task<List<Notification>> GetNotifications() {
@@ -219,16 +222,19 @@ namespace ClientApp.DataService {
             });
         }
 
-        public void MarkAllNotificationsAsRead() {
+        public Task MarkAllNotificationsAsRead() {
             Debug.WriteLine("POST markallnotifs");
+            throw new Exception("Not supported in Fake Data Service");
         }
 
-        public void MarkNotification(Notification notification) {
+        public Task MarkNotification(Notification notification) {
             Debug.WriteLine("POST execmarknotif "+notification.NotificationId);
+            throw new Exception("Not supported in Fake Data Service");
         }
 
-        public void ActOnNotification(Notification notification) {
+        public Task ActOnNotification(Notification notification) {
             Debug.WriteLine("POST execmarknotif " + notification.NotificationId);
+            throw new Exception("Not supported in Fake Data Service");
         }
 
     }

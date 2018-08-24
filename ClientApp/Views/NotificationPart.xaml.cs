@@ -23,14 +23,14 @@ namespace ClientApp.Views {
             return false;
         }
 
-        public void MarkAll(object sender, RoutedEventArgs e) {
-            App.dataService.MarkAllNotificationsAsRead();
+        public async void MarkAll(object sender, RoutedEventArgs e) {
+            await App.dataService.MarkAllNotificationsAsRead();
             this.Refresh(null,null);
         }
 
-        public void Mark(object sender, RoutedEventArgs e) {
+        public async void Mark(object sender, RoutedEventArgs e) {
             Notification notif = (Notification) ((Button)sender).Tag;
-            App.dataService.MarkNotification(notif);
+            await App.dataService.MarkNotification(notif);
             this.Refresh(null,null);
         }
 
@@ -43,7 +43,7 @@ namespace ClientApp.Views {
             }
         }
 
-        public void Act(object sender, TappedRoutedEventArgs e) {
+        public async void Act(object sender, TappedRoutedEventArgs e) {
 
             Notification notif = (Notification)((StackPanel)sender).Tag;
 
@@ -54,7 +54,8 @@ namespace ClientApp.Views {
                 MainPage.GoToOwnedList(null);
 
             } else if (notif.Type == NotificationType.ListInvitation) {
-                App.dataService.ActOnNotification(notif);
+                await App.dataService.ActOnNotification(notif);
+                MainPage.GoToSubscribedList(notif.SubjectList);
 
             } else if (notif.Type == NotificationType.DeadlineReminder) {
                 MainPage.GoToSubscribedList(notif.SubjectList);

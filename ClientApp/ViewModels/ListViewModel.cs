@@ -103,11 +103,23 @@ namespace ClientApp.ViewModels {
             set { SetProperty(This.Icon, value, () => This.Icon = value); }
         }
 
+        // methods
+
         public void Save() {
             if (IsNew)
                 App.dataService.NewList(List);
             else
                 App.dataService.EditList(List);
+        }
+
+        public async void SendInvitations() {
+            await App.dataService.SendInvitations(List);
+            App.ShowMessage("Invitations sent!");
+        }
+
+        public async void UnsubscribeAsync() {
+            await App.dataService.UnsubscribeFromList(List);
+            App.Reload();
         }
 
         static DateTime ConvertFromDateTimeOffset(DateTimeOffset dateTime) {
