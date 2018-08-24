@@ -138,8 +138,8 @@ namespace ClientApp.DataService {
 
             list.Items = new List<Item> {
                 new Item { ItemId=0, ProductName="Playstation",  CheckedByUser=GetFakeUser() },
-                new Item { ItemId=1, ProductName="Tent", ItemPriceUsd=19.99, CheckedByUser=GetFakeUser(1) },
-                new Item { ItemId=2, ProductName="Ovenschotel", ItemPriceUsd=9.99 },
+                new Item { ItemId=1, ProductName="Tent", ItemPriceUsd="19.99", CheckedByUser=GetFakeUser(1) },
+                new Item { ItemId=2, ProductName="Ovenschotel", ItemPriceUsd="9.99" },
                 new Item { ItemId=3, ProductName="Barbies" }
             };
 

@@ -95,9 +95,9 @@ namespace ServerApp.Controllers {
 
             await _context.SaveChangesAsync();
 
-            // only save existing mailaddresses
             // TODO: don't save double keys
             list.InvitedUsers.ToList().ForEach(user => {
+                // only save existing mailaddresses
                 var foundusers = _context.User.Where(u => u.Email == user.User.Email);
                 if (foundusers.Count() == 1) {
                     _context.Database.ExecuteSqlCommand("INSERT INTO [UserListInvite] VALUES (" + list.ListId + ",'" + foundusers.First().Id + "');");
@@ -134,13 +134,18 @@ namespace ServerApp.Controllers {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            List list = await _context.List.SingleOrDefaultAsync(l => l.ListId == id);
+            List list = await _context.List.Include(l => l.InvitedUsers).ThenInclude(u => u.User).SingleOrDefaultAsync(l => l.ListId == id);
 
             User user = await _userManager.GetUserAsync(HttpContext.User);
             if (list.OwnerUser.Id != user.Id)
                 return Forbid();
 
-            list.InvitedUsers.ToList().ForEach(u => u.User.InviteToList(list));
+
+            // TODO: check if not sending multiple motifications to same person
+            list.InvitedUsers.ToList().ForEach(u => {
+                Notification notif = u.User.InviteToList(list);
+                _context.Notification.Add(notif);
+            });
             await _context.SaveChangesAsync();
 
             return Ok();

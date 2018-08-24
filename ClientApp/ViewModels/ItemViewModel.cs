@@ -41,7 +41,7 @@ namespace ClientApp.ViewModels {
             set { SetProperty(This.Category, value, () => This.Category = value); }
         }
 
-        public double ItemPriceUsd {
+        public string ItemPriceUsd {
             get { return This.ItemPriceUsd; }
             set { SetProperty(This.ItemPriceUsd, value, () => This.ItemPriceUsd = value); }
         }

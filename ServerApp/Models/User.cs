@@ -20,8 +20,8 @@ namespace ServerApp.Models {
         [JsonIgnore]
         public virtual ICollection<Notification> Notifications { get; set; }
 
-        public void InviteToList(List list) {
-            new Notification(this, NotificationType.ListInvitation, list);
+        public Notification InviteToList(List list) {
+            return new Notification(this, NotificationType.ListInvitation, list);
         }
 
         public string GetFullName() {
