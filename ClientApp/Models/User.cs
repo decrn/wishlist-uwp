@@ -1,32 +1,31 @@
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Newtonsoft.Json;
-using ClientApp.DataService;
 using ClientApp.ViewModels;
+using GalaSoft.MvvmLight;
 using System;
+using System.Collections.Generic;
 
 namespace ClientApp.Models {
-    public class User {
+    public class User : ObservableObject {
 
-        public string Id;
-        public string Email;
-        
-        [JsonIgnore]
-        public virtual ICollection<List> OwningLists { get; set; }
+        public string Id { get; set; }
 
-        [JsonIgnore]
-        public virtual ICollection<List> SubscribedLists { get; set; }
+        public string Email { get; set; }
 
-        public User() {
-            SubscribedLists = RealService.GetSubscribedLists();
-            OwningLists = RealService.GetOwnedLists();
-        }
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public virtual ICollection<List> OwningLists { get; set; } = new List<List>();
+
+        public virtual ICollection<List> SubscribedLists { get; set; } = new List<List>();
+
+        public virtual ICollection<Notification> Notifications { get; set; } = new List<Notification>();
+
+        public User() {}
 
         public void RegisterSubscription(List list) {
             if (!SubscribedLists.Contains(list)) {
                 SubscribedLists.Add(list);
-                RealService.Write(list);
+                //App.dataService.EditList(list);
             }
         }
 
@@ -37,42 +36,36 @@ namespace ClientApp.Models {
         public void RegisterOwned(List list) {
             if (!OwningLists.Contains(list)) {
                 OwningLists.Add(list);
-                RealService.Write(list);
+                //App.dataService.EditList(list);
             }
         }
 
         public void RemoveSubscription(List list) {
             if (SubscribedLists.Contains(list)) {
                 SubscribedLists.Remove(list);
-                RealService.Delete(list);
+                //App.dataService.DeleteList(list);
             }
         }
 
         public void RemoveOwned(List list) {
             if (SubscribedLists.Contains(list)) {
                 SubscribedLists.Remove(list);
-                RealService.Delete(list);
+                //App.dataService.DeleteList(list);
             }
         }
 
         public void Add(List list) {
             if (!OwningLists.Contains(list)) {
                 OwningLists.Add(list);
-                RealService.Write(list);
+                //App.dataService.EditList(list);
             }
         }
 
         public void Delete(List list) {
             if (OwningLists.Contains(list)) {
                 OwningLists.Remove(list);
-                RealService.Delete(list);
+                App.dataService.DeleteList(list);
             }
         }
-
-        public void UpdateOwnedList(List list) {
-            // update... requires iterating over lists with linq, fuck that
-        }
-
-        // add methods for users to be able to change their info, pw, emails, ...
     }
 }

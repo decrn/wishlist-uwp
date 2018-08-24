@@ -1,0 +1,87 @@
+﻿<Page
+    x:Class="ClientApp.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ClientApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Views="using:ClientApp.Views"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    mc:Ignorable="d">
+
+    <Grid>
+
+        <NavigationView x:Name="NavView"
+                    ItemInvoked="NavView_ItemInvoked"
+                    Loaded="NavView_Loaded"
+                    xmlns:appmodel="using:Windows.ApplicationModel" OpenPaneLength="275"
+                    PaneTitle="{x:Bind appmodel:Package.Current.DisplayName}"
+                    IsBackButtonVisible="Collapsed">
+
+            <!-- Left -->
+
+            <NavigationView.MenuItems>
+                <!--List of icons: https://docs.microsoft.com/en-us/uwp/api/windows.ui.xaml.controls.symbol-->
+                <NavigationViewItem x:Uid="OwnedNavItem" Icon="AllApps" Content="My Lists" Tag="owned" />
+                <NavigationViewItem x:Uid="SubscriptionNavItem" Icon="Bullets" Content="Subscriptions" Tag="subscription"/>
+            </NavigationView.MenuItems>
+
+            <NavigationView.PaneFooter>
+                <StackPanel Orientation="Vertical">
+
+                    <NavigationViewItem x:Uid="NotificationNavItem" Icon="PostUpdate" Tapped="OpenNotificationsFlyout">
+                        <NavigationViewItem.Content>
+                            <StackPanel Orientation="Horizontal">
+
+                                <TextBlock Text="Notifications" VerticalAlignment="Center" />
+
+                                <RelativePanel CornerRadius="10" Margin="10 0 0 0" Padding="7 3">
+                                    <!--<TextBlock Text="{x:Bind NotificationCount, Mode=OneWay}" FontSize="12" />-->
+                                </RelativePanel>
+
+                            </StackPanel>
+                        </NavigationViewItem.Content>
+                        <NavigationViewItem.ContextFlyout>
+                            <Flyout>
+                                <Views:NotificationPart></Views:NotificationPart>
+                            </Flyout>
+                        </NavigationViewItem.ContextFlyout>
+                    </NavigationViewItem>
+
+                    <NavigationViewItem x:Uid="UserNavItem" Icon="Contact" Content="User" Tapped="OpenUserMenu">
+                        <NavigationViewItem.ContextFlyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem Text="Edit details" Icon="Edit" Tag="account" Click="EditAccount" />
+                                <MenuFlyoutItem Text="Logout" Icon="Permissions" Tag="logout" Click="Logout" />
+                            </MenuFlyout>
+                        </NavigationViewItem.ContextFlyout>
+                    </NavigationViewItem>
+                    
+                </StackPanel>
+            </NavigationView.PaneFooter>
+
+
+            <!--Right (negative top margin to get rid of navigationview header)-->
+
+            <Frame x:Name="ContentFrame" Margin="0 -60 0 0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Frame.ContentTransitions>
+                    <TransitionCollection>
+                        <NavigationThemeTransition/>
+                    </TransitionCollection>
+                </Frame.ContentTransitions>
+            </Frame>
+
+        </NavigationView>
+
+        <!--Loading spinner-->
+        <controls:Loading x:Name="LoadingControl" IsLoading="False"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center">
+            <controls:Loading.Background>
+                <AcrylicBrush BackgroundSource="Backdrop" Opacity="0.65" TintColor="{ThemeResource SystemChromeMediumLowColor}" />
+            </controls:Loading.Background>
+            <ProgressRing IsActive="True" Width="75" Height="75" Foreground="{ThemeResource SystemAccentColor}" />
+        </controls:Loading>
+
+    </Grid>
+</Page>

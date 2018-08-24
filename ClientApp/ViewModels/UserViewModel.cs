@@ -2,36 +2,62 @@
 using ClientApp.ViewModels.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ClientApp.ViewModels {
-    public class UserViewModel : NotificationBase {
+    public class UserViewModel : NotificationBase<User> {
+        User User;
 
-        User user;
+        public UserViewModel(User user = null) : base(user) {
 
-        public UserViewModel() {
-
-            user = new User();
+            if (user == null) {
+                User = new User();
+            } else {
+                User = user;
+            }
             _SelectedSubscriptionIndex = -1;
-            _SelectedOwnedIndex = -1;
 
-            foreach (var list in user.SubscribedLists) {
+            foreach (var list in User.SubscribedLists) {
                 var nl = new ListViewModel(list);
                 nl.PropertyChanged += List_OnNotifyPropertyChanged;
                 _Subscriptions.Add(nl);
             }
 
-            foreach (var list in user.OwningLists) {
+            foreach (var list in User.OwningLists) {
                 var nl = new ListViewModel(list);
                 nl.PropertyChanged += List_OnNotifyPropertyChanged;
                 _Owned.Add(nl);
             }
 
+        }
+
+        public string Id {
+            get => This.Id;
+            set { SetProperty(This.Id, value, () => This.Id = value); }
+        }
+
+        public string FirstName {
+            get => This.FirstName;
+            set { SetProperty(This.FirstName, value, () => This.FirstName = value); }
+        }
+
+        public string LastName {
+            get => This.LastName;
+            set { SetProperty(This.LastName, value, () => This.LastName = value); }
+        }
+
+        public string Email {
+            get => This.Email;
+            set { SetProperty(This.Email, value, () => This.Email = value); }
+        }
+
+        public string FullName {
+            get { return FirstName + " " + LastName; }
+        }
+
+        public string BracketedEmail {
+            get { return "(" + Email + ")"; }
         }
 
         // Subscriptions
@@ -55,7 +81,7 @@ namespace ClientApp.ViewModels {
         }
 
         // _SelectedIndex is used internally when navigating into lists in the details view, when navigating back
-        // This index remembers where the user left off and helps them scroll through all subscribed lists to where they were
+        // This index remembers where the User left off and helps them scroll through all subscribed lists to where they were
         int _SelectedSubscriptionIndex;
 
         public int SelectedSubscriptionIndex {
@@ -69,7 +95,7 @@ namespace ClientApp.ViewModels {
             var list = new ListViewModel();
             list.PropertyChanged += List_OnNotifyPropertyChanged;
             Subscriptions.Add(list);
-            user.RegisterSubscription(list);
+            User.RegisterSubscription(list);
             SelectedSubscriptionIndex = Subscriptions.IndexOf(list);
         }
 
@@ -77,7 +103,7 @@ namespace ClientApp.ViewModels {
             if (SelectedSubscriptionIndex != -1) {
                 var sub = Subscriptions[SelectedSubscriptionIndex];
                 Subscriptions.RemoveAt(SelectedSubscriptionIndex);
-                user.RemoveSubscription(sub);
+                User.RemoveSubscription(sub);
             }
         }
 
@@ -89,51 +115,22 @@ namespace ClientApp.ViewModels {
             set { SetProperty(ref _Owned, value); }
         }
 
-        public ListViewModel SelectedOwned {
-            get { return (_SelectedOwnedIndex >= 0) ? _Owned[_SelectedOwnedIndex] : null; }
-        }
-
-        // used explicitly by ListDetailPage to grab content for a specific list
-        public List GetOwnedById(int id) {
-            foreach (var list in _Owned) {
-                if (list.ListId == id) { return list; }
-            }
-            throw new IndexOutOfRangeException();
-        }
-
-        // _SelectedIndex is used internally when navigating into lists in the details view, when navigating back
-        // This index remembers where the user left off and helps them scroll through all subscribed lists to where they were
-        int _SelectedOwnedIndex;
-
-        public int SelectedOwnedIndex {
-            get { return _SelectedOwnedIndex; }
-            set {
-                if (SetProperty(ref _SelectedOwnedIndex, value)) { RaisePropertyChanged(nameof(SelectedOwned)); }
-            }
-        }
-
-        public void AddOwned() {
-            var list = new ListViewModel();
-            list.PropertyChanged += List_OnNotifyPropertyChanged;
-            Owned.Add(list);
-            user.RegisterOwned(list);
-            SelectedOwnedIndex = Owned.IndexOf(list);
-        }
-
-        public void RemoveOwned() {
-            if (SelectedOwnedIndex != -1) {
-                var list = Owned[SelectedOwnedIndex];
-                Owned.RemoveAt(SelectedOwnedIndex);
-                user.RemoveOwned(list);
-            }
-        }
-
         // Other
 
         void List_OnNotifyPropertyChanged(Object sender, PropertyChangedEventArgs e) {
-            user.Update((ListViewModel)sender);
-
+            User.Update((ListViewModel)sender);
         }
+
+        public async static Task<UserViewModel> FromEmail(string email) {
+            return new UserViewModel(await App.dataService.GetUser(email));
+        }
+
+        public User ToUser() => new User {
+            Id = Id,
+            Email = Email,
+            FirstName = FirstName,
+            LastName = LastName
+        };
 
     }
 }

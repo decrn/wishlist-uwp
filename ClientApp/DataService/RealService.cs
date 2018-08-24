@@ -1,163 +1,270 @@
 ﻿using ClientApp.Models;
+using ClientApp.ViewModels;
+using Microsoft.Toolkit.Uwp.UI.Controls;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
-using Windows.Web.Http;
-using Windows.Web.Http.Headers;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using HttpClient = System.Net.Http.HttpClient;
 
 namespace ClientApp.DataService {
-    public class RealService {
-        static Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
 
-        public static String Name = "Real Data Service";
+    public class RealService : IDataService {
 
-        public static String JWTToken = localSettings.Values.ContainsKey("JWTToken") ? localSettings.Values["JWTToken"].ToString() : "";
+        private HttpService HttpService = new HttpService();
 
-        // ACCOUNT
+        public Loading LoadingIndicator { get { return HttpService.LoadingIndicator; } set { HttpService.LoadingIndicator = value; }  }
 
-        public static bool validJWT(string obj) {
-            try
-            {
-                var handler = new JwtSecurityTokenHandler();
-                var token = handler.ReadToken(obj) as JwtSecurityToken;
-                return true;
-            }
-            catch (Exception e)
-            {
-                return false;
-            }
+        public User LoggedInUser { get; set; }
+
+
+        #region ACCOUNT
+
+        public bool IsLoggedIn() {
+            return HttpService.IsTokenSet();
         }
 
-        public static bool IsLoggedIn {
-            get { return JWTToken != ""; }
-        }
-
-        public static dynamic Login(string email, string password) {
-            Debug.WriteLine("GET /login/ for JWT Token with email " + email);
-
-            var httpClient = new HttpClient();
-            var content = new FormUrlEncodedContent(new[] {
-                new KeyValuePair<string, string>("Email", email),
-                new KeyValuePair<string, string>("Password", password),
-            });
-
-            var response = "";
-            Task task = Task.Run(async () => {
-                var res = await httpClient.PostAsync(new Uri(App.BaseUri + "Account/Login"), content);
-                response = await res.Content.ReadAsStringAsync();
-            });
-            task.Wait();
-
-            var obj = JsonConvert.DeserializeObject<object>(response);
-            if (validJWT(obj.ToString()))
-                localSettings.Values["JWTToken"] = obj.ToString();
+        public async Task<JObject> Login(LoginViewModel vm) {
             
+            var body = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string, string>("Email", vm.Email),
+                new KeyValuePair<string, string>("Password", vm.Password),
+            });
+
+            JObject obj = JObject.Parse(await HttpService.PostForm("Account/Login", body, true));
+            HttpService.TrySettingToken(obj);
+
             return obj;
         }
 
-        public static dynamic Register(string email, string password) {
-            Debug.WriteLine("GET /register/ for JWT Token with email "+ email);
+        public async Task<JObject> Register(RegisterViewModel vm) {
 
-            var httpClient = new HttpClient();
-            var content = new FormUrlEncodedContent(new[] {
-                new KeyValuePair<string, string>("Email", email),
-                new KeyValuePair<string, string>("Password", password),
+            var body = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string, string>("FirstName", vm.FirstName),
+                new KeyValuePair<string, string>("LastName", vm.LastName),
+                new KeyValuePair<string, string>("Email", vm.Email),
+                new KeyValuePair<string, string>("Password", vm.Password),
+                new KeyValuePair<string, string>("ConfirmPassword", vm.ConfirmPassword),
             });
 
-            var response = "";
-            Task task = Task.Run(async () => {
-                var res = await httpClient.PostAsync(new Uri(App.BaseUri + "Account/Register"), content);
-                response = await res.Content.ReadAsStringAsync();
-            });
-            task.Wait();
+            JObject obj = JObject.Parse(await HttpService.PostForm("Account/Register", body, true));
+            HttpService.TrySettingToken(obj);
 
-            var obj = JsonConvert.DeserializeObject<object>(response);
-            Debug.WriteLine(obj);
             return obj;
         }
 
-        public static void Logout() {
-            Debug.WriteLine("Logout");
-            JWTToken = "";
-        }
-
-        // LISTS
-
-        public static List<List> GetSubscribedLists() {
-            Debug.WriteLine("GET for Subscribed Lists.");
-
-            var httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWTToken);
-
-            var response = "";
-            Task task = Task.Run(async () => {
-                response = await httpClient.GetStringAsync(new Uri(App.BaseUri + "Users/Subscriptions")); // sends GET request
+        public async Task<JObject> ChangePassword(ChangePasswordViewModel vm) {
+            var body = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string, string>("OldPassword", vm.OldPassword),
+                new KeyValuePair<string, string>("NewPassword", vm.NewPassword),
+                new KeyValuePair<string, string>("ConfirmPassword", vm.ConfirmPassword),
             });
-            task.Wait();
-            // TODO: convert int representation of color to Color
-            return JsonConvert.DeserializeObject<List<List>>(response);
-        }
 
-        public static List<List> GetOwnedLists() {
-            Debug.WriteLine("GET for Owned Lists.");
+            JObject obj = JObject.Parse(await HttpService.PostForm("Account/Password", body, true));
 
-            var httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWTToken);
-
-            var response = "";
-            Task task = Task.Run(async () => {
-                response = await httpClient.GetStringAsync(new Uri(App.BaseUri + "Users/Lists")); // sends GET request
-            });
-            task.Wait();
-            // TODO: convert int representation of color to Color
-            return JsonConvert.DeserializeObject<List<List>>(response);
-        }
-
-        public static List<Item> GetListItems(List list) {
-            Debug.WriteLine("GET items for list with name " + list.Name);
-
-            var httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWTToken);
-
-            string response = "";
-            Task task = Task.Run(async () => {
-                response = await httpClient.GetStringAsync(new Uri(App.BaseUri + "Lists/"+list.ListId+"/Items")); // sends GET request
-            });
-            task.Wait();
-            var obj = JsonConvert.DeserializeObject<List<Item>>(response);
             return obj;
         }
 
-        public static void Write(List list) {
-            Debug.WriteLine("POST List with name " + list.Name);
+        public async Task<JObject> EditAccount(EditAccountViewModel vm) {
+            var body = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string, string>("FirstName", vm.FirstName),
+                new KeyValuePair<string, string>("LastName", vm.LastName),
+                new KeyValuePair<string, string>("Email", vm.Email)
+            });
 
-            var httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWTToken);
+            JObject obj = JObject.Parse(await HttpService.PostForm("Account/Edit", body, true));
 
-            StringContent content = new StringContent(
-                JsonConvert.SerializeObject(list),
-                System.Text.Encoding.UTF8
-            );
-            httpClient.PostAsync(new Uri(App.BaseUri + "Lists/"+list.ListId), content);
+            return obj;
         }
-        
-        public static void Delete(List list) {
-            Debug.WriteLine("DELETE List with name " + list.Name);
 
-            var httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWTToken);
-            httpClient.DeleteAsync(new Uri(App.BaseUri + "Lists/" + list.ListId));
+        public async Task<JObject> ForgotPassword(ForgotPasswordViewModel vm) {
+            
+            var body = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string, string>("Email", vm.Email)
+            });
+
+            JObject obj = JObject.Parse(await HttpService.PostForm("Account/ForgotPassword", body, true));
+            return obj;
         }
+
+        public async Task<JObject> ResetPassword(ResetPasswordViewModel vm) {
+
+            var body = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string, string>("Email", vm.Email),
+                new KeyValuePair<string, string>("Password", vm.Password),
+                new KeyValuePair<string, string>("ConfirmPassword", vm.ConfirmPassword),
+                new KeyValuePair<string, string>("Code", vm.Code),
+            });
+
+            JObject obj = JObject.Parse(await HttpService.PostForm("Account/ResetPassword", body, true));
+            return obj;
+        }
+
+        public async void Logout() {
+            await HttpService.Get("Account/Logout", false);
+            HttpService.ClearToken();
+            LoggedInUser = null;
+        }
+
+        #endregion
+
+
+        #region USERS
+
+        public async Task<User> GetCurrentUser() {
+            LoggedInUser = await GetUser("");
+            return LoggedInUser;
+        }
+
+        public async Task<User> GetUser(string id) {
+            JObject obj = JObject.Parse(await HttpService.Get("Users/" + id));
+            User user = obj.ToObject<User>();
+            return user;
+        }
+
+        public async Task<List<List>> GetOwnedLists() {
+            JArray obj = JArray.Parse(await HttpService.Get("Users/Lists"));
+            List<List> lists = obj.ToObject<List<List>>();
+            return lists;
+        }
+
+        public async Task<List<List>> GetOwnedListsAsync() {
+            JArray obj = JArray.Parse(await HttpService.Get("Users/Lists"));
+            List<List> lists = obj.ToObject<List<List>>();
+            return lists;
+        }
+
+        public async Task<List<List>> GetSubscribedLists() {
+            JArray obj = JArray.Parse(await HttpService.Get("Users/Subscriptions"));
+            List<List> lists = obj.ToObject<List<List>>();
+            return lists;
+        }
+
+        public async void RequestAccess(string emailaddress) {
+            await HttpService.Post("Users/" + emailaddress, null);
+        }
+
+        #endregion
+
+
+        #region LISTS
+
+        public async Task<List> GetList(int id) {
+            JObject obj = JObject.Parse(await HttpService.Get("Lists/" + id));
+
+            // convert UserListSubscribe model from server to Users
+            JArray subs = obj["subscribedUsers"] as JArray;
+            for (int i = 0; i < subs.Count; i++) {
+                subs[i] = subs[i]["user"];
+            }
+
+            // convert UserListInvite model from server to Users
+            JArray invited = obj["invitedUsers"] as JArray;
+            for (int i = 0; i < invited.Count; i++) {
+                invited[i] = invited[i]["user"];
+            }
+
+            List list = obj.ToObject<List>();
+            return list;
+        }
+
+
+        private JObject ParseListObject(JObject body) {
+            // convert User models to UserListInvite model for server
+            JArray invites = body["InvitedUsers"] as JArray;
+            for (int i = 0; i < invites.Count; i++) {
+                var user = invites[i];
+                var invite = new JObject();
+                invite["id"] = 0;
+                invite["user"] = user;
+                invites[i] = invite;
+            }
+
+            body.Remove("SubscribedUsers");
+            return body;
+        }
+
+        public async Task<JObject> NewList(List list) {
+            JObject body = JObject.FromObject(list);
+            body = ParseListObject(body);
+            JObject obj = JObject.Parse(await HttpService.Post("Lists", body, true));
+            return obj;
+        }
+
+        public async Task<JObject> EditList(List list) {
+            JObject body = JObject.FromObject(list);
+            body = ParseListObject(body);
+            JObject obj = JObject.Parse(await HttpService.Put("Lists/" + list.ListId, body, true));
+            return obj;
+        }
+
+        public async Task SendInvitations(List list) {
+            await HttpService.Post("Lists/" + list.ListId, null);
+        }
+
+        public async Task UnsubscribeFromList(List list) {
+            // this is fine, a subscriber cant remove the list and the owner cant subscribe to the list
+            await DeleteList(list); 
+        }
+
+        public async Task DeleteList(List list) {
+            await HttpService.Delete("Lists/" + list.ListId);
+        }
+
+        #endregion
+
+
+        #region ITEMS
+
+        public async void MarkItem(Item item) {
+            HttpService.Put("Items/" + item.ItemId, null);
+        }
+
+        public async void UnMarkItem(Item item) {
+            MarkItem(item);
+        }
+
+        // isn't used, never tested but should work
+        public async Task<JObject> NewItem(Item item) {
+            JObject body = JObject.FromObject(item);
+            JObject obj = JObject.Parse(await HttpService.Post("Items", body, true));
+            return obj;
+        }
+
+        // isn't used, never tested but should work
+        public async Task<JObject> EditItem(Item item) {
+            JObject body = JObject.FromObject(item);
+            JObject obj = JObject.Parse(await HttpService.Post("Items/" + item.ItemId, body, true));
+            return obj;
+        }
+
+        public async Task DeleteItem(Item item) {
+            await HttpService.Delete("Items/" + item.ItemId);
+        }
+
+        #endregion
+
+
+        #region NOTIFICATIONS
+
+        public async Task<List<Notification>> GetNotifications() {
+            JArray obj = JArray.Parse(await HttpService.Get("Notifications"));
+            return obj.ToObject<List<Notification>>(); ;
+        }
+
+        public async Task MarkAllNotificationsAsRead() {
+            await HttpService.Put("Notifications", null);
+        }
+
+        public async Task MarkNotification(Notification notif) {
+            await HttpService.Put("Notifications/" + notif.NotificationId, null);
+        }
+
+        public async Task ActOnNotification(Notification notif) {
+            await HttpService.Post("Notifications/" + notif.NotificationId, null);
+        }
+
+        #endregion
 
     }
 }

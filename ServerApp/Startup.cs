@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using dotnet_g24.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ServerApp.Data;
 using ServerApp.Models;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 
 namespace ServerApp {
     public class Startup {
@@ -38,8 +33,8 @@ namespace ServerApp {
                 options.Password.RequireUppercase = false;
                 options.Password.RequireLowercase = false;
             })
-                .AddEntityFrameworkStores<WishContext>()
-                .AddDefaultTokenProviders();
+            .AddEntityFrameworkStores<WishContext>()
+            .AddDefaultTokenProviders();
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // => remove default claims
             services
@@ -61,6 +56,7 @@ namespace ServerApp {
                 });
 
             services.AddTransient<DataInitializer>();
+            services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddMvc();
         }
@@ -78,5 +74,6 @@ namespace ServerApp {
             if (env.IsDevelopment())
                 dataInitializer.Seed().Wait();
         }
+
     }
 }

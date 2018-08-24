@@ -1,0 +1,301 @@
+﻿<helpers:PrintablePage
+    xmlns:helpers="using:ClientApp.Helpers"
+    x:Class="ClientApp.OwnedMasterDetail"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ClientApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:ClientApp.Models"
+    xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
+    xmlns:viewmodels="using:ClientApp.ViewModels"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:system="using:System"
+    mc:Ignorable="d"
+    NavigationCacheMode="Enabled">
+    <Page.Transitions>
+        <TransitionCollection>
+            <NavigationThemeTransition />
+        </TransitionCollection>
+    </Page.Transitions>
+
+    <Page.Resources>
+        <helpers:TimeConverter x:Key="TimeConverter"/>
+    </Page.Resources>
+
+    <!--Start master detail-->
+    <Grid>
+        <controls:MasterDetailsView x:Name="MasterDetail"
+            ItemsSource="{x:Bind Lists.Lists, Mode=TwoWay}"
+            SelectionChanged="MasterDetail_SelectionChanged"
+            CompactModeThresholdWidth="720"
+            MasterPaneBackground="{ThemeResource MiddlePaneBackground}"
+            Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+            BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}"
+            BorderThickness="0">
+
+            <!--Define master header-->
+            <controls:MasterDetailsView.MasterHeader>
+                <StackPanel Orientation="Horizontal"
+                    Padding="0 20 0 10" Grid.Column="0" Grid.Row="0">
+                    <TextBlock
+                        Text="Created lists"
+                        Style="{ThemeResource TitleTextBlockStyle}"/>
+                    <Button Click="NewList" Background="Transparent" VerticalAlignment="Center">
+                        <SymbolIcon>Add</SymbolIcon>
+                    </Button>
+                </StackPanel>
+            </controls:MasterDetailsView.MasterHeader>
+
+            <!--Define items in master list-->
+            <controls:MasterDetailsView.ItemTemplate>
+                <DataTemplate x:DataType="viewmodels:ListViewModel">
+                    <Grid Margin="0 12">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" MinWidth="205" />
+                            <ColumnDefinition Width="85" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- name of the list-->
+                        <TextBlock Text="{x:Bind Name, Mode=OneWay}" Style="{ThemeResource BaseTextBlockStyle}" />
+
+                        <!-- creator of the list-->
+                        <TextBlock
+                            Text="{x:Bind Description}"
+                            Grid.Row="1"
+                            MaxLines="1"
+                            Style="{ThemeResource ListBodyTextBlockStyle}" />
+
+                        <!-- deadline -->
+                        <!--TODO: Decently float right-->
+                        <TextBlock
+                            Text="{x:Bind FormattedDeadline}"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            Margin="12,1,0,0"
+                            HorizontalAlignment="Right"
+                            TextTrimming="Clip"
+                            TextWrapping="NoWrap"
+                            Style="{ThemeResource ListCaptionAltTextblockStyle}" />
+                    </Grid>
+                </DataTemplate>
+            </controls:MasterDetailsView.ItemTemplate>
+
+            <!--Define detail panel-->
+            <controls:MasterDetailsView.DetailsTemplate>
+                <DataTemplate x:DataType="viewmodels:ListViewModel">
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        
+                        <!--Header-->
+                        <Grid Grid.Row="0" Padding="0,5,0,20" BorderThickness="0,0,0,1" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Ellipse Grid.Column="0" 
+                                Width="100"
+                                Height="100"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
+                                <Ellipse.Stroke>
+                                    <SolidColorBrush Color="{ThemeResource SystemBaseMediumHighColor}"></SolidColorBrush>
+                                </Ellipse.Stroke>
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="Assets/placeholder.png" />
+                                </Ellipse.Fill>
+                            </Ellipse>
+                            
+                            <StackPanel Grid.Column="1" HorizontalAlignment="Left">
+                                <TextBox x:Name="Name" PlaceholderText="List Name" Margin="0,15,0,0" MaxLength="100" Width="400" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox x:Name="Description" PlaceholderText="Description" Margin="0,15,0,0" MaxLength="300" AcceptsReturn="True" TextWrapping="Wrap" Width="400" Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
+                                    <CalendarDatePicker x:Name="Deadline" PlaceholderText="Deadline" DisplayMode="Decade" Width="200" DateFormat="{}{year.full}-{month.integer}-{day.integer}" Date="{x:Bind Deadline, Mode=TwoWay, Converter={StaticResource TimeConverter}}"></CalendarDatePicker>
+                                    <CheckBox IsChecked="{x:Bind IsHidden, Mode=TwoWay}" VerticalAlignment="Center" Margin="30,0,0,0" Content="Private List"></CheckBox>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                        
+                        <!--Content-->
+                        <ScrollViewer Grid.Row="1" VerticalAlignment="Stretch" HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto" VerticalScrollMode="Auto">
+                            <Grid MinWidth="800">
+
+                                <!--TODO: Collapse Grid on mobile-->
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.6*" />
+                                    <ColumnDefinition Width="0.4*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"></RowDefinition>
+                                    <RowDefinition Height="*"></RowDefinition>
+                                </Grid.RowDefinitions>
+
+                                <!--Wishes-->
+                                <StackPanel Grid.RowSpan="2" Grid.Column="0" Padding="10" BorderThickness="0,0,1,0" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}">
+
+                                    <TextBlock
+                                        Text="Wishes"
+                                        Style="{ThemeResource TitleTextBlockStyle}" />
+
+                                    <ListView x:Name="Items" Margin="0,20" ItemsSource="{x:Bind Items, Mode=TwoWay}" SelectionMode="None">
+                                        <ListView.Header>
+                                            <TextBlock Visibility="{x:Bind HasNoItems}">No items</TextBlock>
+                                        </ListView.Header>
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate x:DataType="viewmodels:ItemViewModel">
+                                                <Grid Margin="0,5" Padding="0,0,0,10" BorderThickness="0,0,0,1" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="50"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="50"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition></RowDefinition>
+                                                        <RowDefinition></RowDefinition>
+                                                        <RowDefinition></RowDefinition>
+                                                        <RowDefinition></RowDefinition>
+                                                    </Grid.RowDefinitions>
+
+                                                    <CheckBox Grid.RowSpan="3" IsChecked="{x:Bind IsCompleted, Mode=OneTime}" IsEnabled="False"></CheckBox>
+
+                                                    <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+                                                        <TextBox Margin="5" PlaceholderText="Name" Text="{Binding ProductName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="280" />
+                                                        <TextBox Margin="5" PlaceholderText="Price"  Width="80"
+                                                             Text="{Binding ItemPriceUsd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                             extensions:TextBoxRegex.ValidationMode="Forced"
+                                                             extensions:TextBoxRegex.ValidationType="Decimal" />
+                                                    </StackPanel>
+
+                                                    <TextBox Grid.Column="1" AcceptsReturn="True" TextWrapping="Wrap" Grid.Row="1" Margin="5" PlaceholderText="Description" Text="{x:Bind Description, Mode=TwoWay}" Width="370"/>
+
+                                                    <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+                                                        <TextBox Margin="5" PlaceholderText="More Info Url" Text="{Binding ProductInfoUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="180" />
+                                                        <TextBox Margin="5" PlaceholderText="Image Url" Text="{Binding ProductImageUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="180" />
+                                                    </StackPanel>
+
+                                                    <AutoSuggestBox Grid.Column="1" Grid.Row="3"
+                                                        PlaceholderText="Category" Width="200"
+                                                        Text="{Binding Category, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        TextChanged="Category_TextChanged"
+                                                        SuggestionChosen="Category_SuggestionChosen"
+                                                        GotFocus="Category_GotFocus"/>
+
+                                                    <Button Grid.Column="2" Grid.RowSpan="3" Margin="10,0,0,0">
+                                                        <SymbolIcon>More</SymbolIcon>
+                                                        <Button.Flyout>
+                                                            <MenuFlyout>
+                                                                <MenuFlyoutItem Text="Up" Icon="Upload" Click="MoveItemUp" Tag="{x:Bind}"/>
+                                                                <MenuFlyoutItem Text="Down" Icon="Download" Click="MoveItemDown" Tag="{x:Bind}"/>
+                                                                <MenuFlyoutItem Text="Delete" Icon="Delete" Click="DeleteItem" Tag="{x:Bind}"/>
+                                                            </MenuFlyout>
+                                                        </Button.Flyout>
+                                                    </Button>
+
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+
+                                    <Button Click="AddNewWish" Margin="10">
+                                        <StackPanel Orientation="Horizontal">
+                                            <SymbolIcon>Add</SymbolIcon>
+                                            <TextBlock Text="Add" Margin="5,0,0,0"/>
+                                        </StackPanel>
+                                    </Button>
+
+                                </StackPanel>
+
+                                <!--invited users-->
+                                <StackPanel Grid.Column="1" Padding="10" BorderThickness="0,0,1,0" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}">
+                                    <TextBlock
+                                    Text="Invite users"
+                                    Style="{ThemeResource TitleTextBlockStyle}" />
+
+                                    <ListView x:Name="InvitedUsersList" Margin="0,20" ItemsSource="{x:Bind InvitedUsers, Mode=TwoWay}" SelectionMode="None">
+                                        <ListView.Header>
+                                            <TextBlock Visibility="{x:Bind HasNoInvited}">No invited users</TextBlock>
+                                        </ListView.Header>
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate x:DataType="viewmodels:UserViewModel">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition/>
+                                                        <ColumnDefinition Width="50"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBox Text="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" Width="200"/>
+                                                    <Button Grid.Column="1" Background="Transparent" VerticalAlignment="Center" Click="DeleteInvite" Tag="{x:Bind}">
+                                                        <SymbolIcon>Delete</SymbolIcon>
+                                                    </Button>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+
+                                    <Button Click="AddInvite" Margin="10">
+                                        <StackPanel Orientation="Horizontal">
+                                            <SymbolIcon>Add</SymbolIcon>
+                                            <TextBlock Text="Add" Margin="5,0,0,0" />
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+
+                                <!--subscribed users-->
+                                <StackPanel Grid.Row="1" Grid.Column="1" Padding="10" BorderThickness="0,0,1,0" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}">
+                                    <TextBlock
+                                    Text="Subscribed users"
+                                    Style="{ThemeResource TitleTextBlockStyle}" />
+
+                                    <ListView x:Name="SubscribedUsersList" Margin="0,20" ItemsSource="{x:Bind SubscribedUsers, Mode=OneTime}" SelectionMode="None">
+                                        <ListView.Header>
+                                            <TextBlock Visibility="{x:Bind HasNoSubscribers}">No subscribers</TextBlock>
+                                        </ListView.Header>
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate x:DataType="viewmodels:UserViewModel">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition/>
+                                                        <ColumnDefinition Width="50"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="{x:Bind FullName, Mode=OneTime}" Grid.Column="0" Width="200"/>
+                                                    <!--<Button Grid.Column="1" Background="Transparent" VerticalAlignment="Center">
+                                                        <SymbolIcon>Delete</SymbolIcon>
+                                                    </Button>-->
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                </StackPanel>
+
+                            </Grid>
+                        </ScrollViewer>
+                    </Grid>
+                    
+                </DataTemplate>
+            </controls:MasterDetailsView.DetailsTemplate>
+
+            <!--Detail actions-->
+            <controls:MasterDetailsView.DetailsCommandBar>
+                <CommandBar>
+                    <AppBarButton Icon="Save" Label="Save" Click="Save"/>
+                    <AppBarButton Icon="Send" Label="Send invitations" Click="Send"/>
+                    <CommandBar.SecondaryCommands>
+                        <AppBarButton Icon="Print" Label="Print (also to PDF)" Click="Export"/>
+                        <AppBarButton Icon="Delete" Label="Delete" Click="Delete"/>
+                    </CommandBar.SecondaryCommands>
+                </CommandBar>
+            </controls:MasterDetailsView.DetailsCommandBar>
+            
+
+        </controls:MasterDetailsView>
+    </Grid>
+</helpers:PrintablePage>

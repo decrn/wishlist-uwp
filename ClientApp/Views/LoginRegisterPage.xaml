@@ -1,0 +1,73 @@
+﻿<Page
+    x:Class="ClientApp.LoginRegisterPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ClientApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    mc:Ignorable="d"
+    Background="{ThemeResource MiddlePaneBackground}">
+
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+
+        <StackPanel Padding="25" Grid.Column="0" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" BorderThickness="1" BorderBrush="#888">
+
+            <TextBox x:Name="FirstNameBox" Margin="10" TextWrapping="Wrap" PlaceholderText="First name" Width="210" IsSpellCheckEnabled="False" Visibility="Collapsed" KeyDown="OnTextBoxKeyDown"/>
+            <TextBox x:Name="LastNameBox" Margin="10" TextWrapping="Wrap" PlaceholderText="Last name" Width="210" IsSpellCheckEnabled="False" Visibility="Collapsed" KeyDown="OnTextBoxKeyDown"/>
+
+            <TextBox x:Name="EmailBox" Margin="10" TextWrapping="Wrap" PlaceholderText="Email address" Width="210" IsSpellCheckEnabled="False" KeyDown="OnTextBoxKeyDown"/>
+            <PasswordBox x:Name="PasswordBox" Margin="10" PlaceholderText="Password" Width="210" KeyDown="OnTextBoxKeyDown"/>
+
+            <PasswordBox x:Name="ConfirmPasswordBox" Margin="10" PlaceholderText="Confirm password" Width="210" Visibility="Collapsed" KeyDown="OnTextBoxKeyDown"/>
+            
+            <TextBlock x:Name="ErrorText" Margin="10" TextWrapping="Wrap" Visibility="Collapsed" Width="210" Foreground="Red"/>
+            
+            <StackPanel Orientation="Horizontal">
+                <Button Margin="10" Click="Login">
+                    <StackPanel Orientation="Horizontal">
+                        <Grid x:Name="LoginBackIcon" Visibility="Collapsed" Margin="0 0 10 0">
+                            <SymbolIcon>Back</SymbolIcon>
+                        </Grid>
+                        <TextBlock>Login</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Content="Register" Margin="10" Click="Register"/>
+            </StackPanel>
+
+            <HyperlinkButton Click="OpenForgotPassword" Margin="10 0">Forgot password?</HyperlinkButton>
+
+        </StackPanel>
+
+        <StackPanel Margin="25 0 0 0" Padding="25" Grid.Column="1" VerticalAlignment="Center" BorderThickness="1 0 0 0" BorderBrush="#888">
+            <Button Margin="7" Click="LoginGoogle" Background="{ThemeResource SystemAltHighColor}" BorderThickness="1" BorderBrush="#888">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/Assets/images/google.png" Width="16" Margin="0 0 10 0" />
+                    <TextBlock Text="Login with Google"/>
+                </StackPanel>
+            </Button>
+            <Button Margin="7" Click="LoginFacebook" Background="{ThemeResource SystemAltHighColor}" BorderThickness="1" BorderBrush="#888">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/Assets/images/facebook.png" Width="16" Margin="0 0 10 0" />
+                    <TextBlock Text="Login with Facebook"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+
+        <!--Loading spinner-->
+        <controls:Loading x:Name="LoadingControl" IsLoading="False"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center">
+            <controls:Loading.Background>
+                <AcrylicBrush BackgroundSource="Backdrop" Opacity="0.65" TintColor="{ThemeResource SystemChromeMediumLowColor}" />
+            </controls:Loading.Background>
+            <ProgressRing IsActive="True" Width="75" Height="75" Foreground="{ThemeResource SystemAccentColor}" />
+        </controls:Loading>
+    </Grid>
+</Page>

@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ServerApp.Data;
 using ServerApp.Models;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ServerApp.Controllers {
 
@@ -35,10 +32,10 @@ namespace ServerApp.Controllers {
             if (!item.List.SubscribedUsers.Any(s => s.UserId == user.Id))
                 return Forbid();
 
-            if (item.CheckedByUserId == user.Id)
-                item.CheckedByUserId = null;
+            if (item.CheckedByUser == null && item.CheckedByUser == user)
+                item.CheckedByUser = null;
             else
-                item.CheckedByUserId = user.Id;
+                item.CheckedByUser = user;
 
             await _context.SaveChangesAsync();
 
@@ -52,7 +49,7 @@ namespace ServerApp.Controllers {
                 return BadRequest(ModelState);
 
             User user = await _userManager.GetUserAsync(HttpContext.User);
-            if (item.List == null || item.List.OwnerUserId != user.Id)
+            if (item.List == null || item.List.OwnerUser.Id != user.Id)
                 return Forbid();
 
             _context.Item.Add(item);
@@ -70,7 +67,7 @@ namespace ServerApp.Controllers {
                 return NotFound();
 
             User user = await _userManager.GetUserAsync(HttpContext.User);
-            if (item.List.OwnerUserId != user.Id)
+            if (item.List.OwnerUser.Id != user.Id)
                 return Forbid();
 
             _context.Item.Remove(item);

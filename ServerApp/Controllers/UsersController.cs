@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ServerApp.Data;
 using ServerApp.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ServerApp.Controllers {
 
@@ -26,16 +25,16 @@ namespace ServerApp.Controllers {
         [HttpGet("Lists")]
         public async Task<IEnumerable<List>> GetOwnedLists() {
             User user = await _userManager.GetUserAsync(HttpContext.User);
-            return _context.List.Where(l => l.OwnerUserId == user.Id);
+            return _context.List.Where(l => l.OwnerUser.Id == user.Id).OrderBy(l => l.Deadline);
         }
 
         // GET: api/Users/Subscriptions
         [HttpGet("Subscriptions")]
         public async Task<IEnumerable<List>> GetSubscribedLists() {
             User user = await _userManager.GetUserAsync(HttpContext.User);
-            return _context.List.Where(l => 
+            return _context.List.Include(l => l.OwnerUser).Where(l => 
                 l.SubscribedUsers.Any(s=>
-                    s.UserId == user.Id));
+                    s.UserId == user.Id)).OrderBy(l => l.Deadline);
         }
 
         // GET: api/Users/
@@ -56,12 +55,29 @@ namespace ServerApp.Controllers {
 
             var publicuser = new {
                 Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
                 userName = user.UserName,
                 Email = user.Email,
-                Lists = _context.List.Where(l => l.OwnerUserId == user.Id).Where(l => !l.IsHidden || loggedinuser.Id == id)
+                Lists = _context.List.Where(l => l.OwnerUser.Id == user.Id).Where(l => !l.IsHidden || loggedinuser.Id == id).ToList()
             };
 
             return Ok(publicuser);
+        }
+
+        // POST: api/Users/a@domain.com
+        [HttpPost("{Email}")]
+        public async Task<IActionResult> SendRequestToUser([FromRoute] string Email) {
+            User loggedinuser = await _userManager.GetUserAsync(HttpContext.User);
+            User selecteduser = await _context.User.Include(u => u.Notifications).FirstOrDefaultAsync(m => m.Email == Email);
+
+            if (selecteduser == null)
+                return NotFound();
+
+            new Notification(selecteduser, NotificationType.JoinRequest, null, loggedinuser);
+
+            await _context.SaveChangesAsync();
+            return Ok();
         }
 
     }

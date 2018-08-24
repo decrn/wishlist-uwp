@@ -1,16 +1,14 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace ServerApp.Models {
     public class List {
 
         // autogenerate
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ListId { get; set; }
 
         [Required]
@@ -21,18 +19,16 @@ namespace ServerApp.Models {
         [MaxLength(500)]
         public string Description { get; set; }
 
-        [ForeignKey("User")]
-        public string OwnerUserId { get; set; }
+        [Required]
+        public DateTime Deadline { get; set; }
+
+        public User OwnerUser { get; set; }
 
         // defaults to false
         public bool IsHidden { get; set; }
 
-        // defaults to false?
-        public bool IsReadOnly { get; set; }
-
         // optional
-        [JsonIgnore]
-        public int Color { get; set; }
+        public string Color { get; set; }
 
         // optional: consider default icon?
         public string Icon { get; set; }
@@ -41,5 +37,20 @@ namespace ServerApp.Models {
         public virtual ICollection<Item> Items { get; set; }
 
         public virtual ICollection<UserListSubscription> SubscribedUsers { get; set; }
+
+        public virtual ICollection<UserListInvite> InvitedUsers { get; set; }
+
+        [JsonIgnore]
+        [InverseProperty("SubjectList")]
+        public IEnumerable<Notification> Notifications { get; internal set; }
+
+        public bool IsSoon() {
+            TimeSpan diff = Deadline - DateTime.Now;
+
+            if (diff.TotalSeconds > 0 && diff.TotalHours < 24*3)
+                return true;
+
+            return false;
+        }
     }
 }
