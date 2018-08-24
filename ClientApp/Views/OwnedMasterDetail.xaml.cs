@@ -36,7 +36,8 @@ namespace ClientApp {
         }
 
         private void NewList(object sender, RoutedEventArgs e) {
-            MasterDetail.SelectedItem = new ListViewModel(new List());
+            Lists.AddList(new List());
+            MasterDetail.SelectedItem = Lists.SelectedList;
         }
 
         private void Save(object sender, RoutedEventArgs e) {
