@@ -77,8 +77,6 @@ namespace ClientApp.DataService {
 
         Task<List<Notification>> GetNotifications();
 
-        int GetUnreadNotificationCount();
-
         void MarkAllNotificationsAsRead();
 
         void MarkNotification(Notification notification);

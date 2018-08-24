@@ -36,8 +36,7 @@
                                 <TextBlock Text="Notifications" VerticalAlignment="Center" />
 
                                 <RelativePanel CornerRadius="10" Margin="10 0 0 0" Padding="7 3">
-                                    <!--TODO: fix binding notification count doesnt update-->
-                                    <TextBlock Text="{x:Bind NotificationCount, Mode=OneWay}" FontSize="12" />
+                                    <!--<TextBlock Text="{x:Bind NotificationCount, Mode=OneWay}" FontSize="12" />-->
                                 </RelativePanel>
 
                             </StackPanel>

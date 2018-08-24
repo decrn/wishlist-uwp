@@ -41,7 +41,6 @@ namespace ClientApp.Views {
                 // TODO: probably needed to use a ViewModel for this
                 Notifications.Add(n);
             }
-            if (MainPage != null) MainPage.RefreshNotificationCount();
         }
 
         public void Act(object sender, TappedRoutedEventArgs e) {

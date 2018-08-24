@@ -243,22 +243,9 @@ namespace ClientApp.DataService {
 
         #region NOTIFICATIONS
 
-        private List<Notification> Notifications;
-
         public async Task<List<Notification>> GetNotifications() {
             JArray obj = JArray.Parse(await HttpService.Get("Notifications"));
-            Notifications = obj.ToObject<List<Notification>>();
-            return Notifications;
-        }
-
-        public async Task<List<Notification>> GetNotificationsAsync() {
-            JArray obj = JArray.Parse(await HttpService.Get("Notifications"));
-            Notifications = obj.ToObject<List<Notification>>();
-            return Notifications;
-        }
-
-        public int GetUnreadNotificationCount() {
-            return Notifications.FindAll(n => n.IsUnread).Count;
+            return obj.ToObject<List<Notification>>(); ;
         }
 
         public async void MarkAllNotificationsAsRead() {

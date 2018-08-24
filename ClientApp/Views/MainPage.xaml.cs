@@ -114,10 +114,6 @@ namespace ClientApp {
             notificationPart.MainPage = this;
         }
 
-        public void RefreshNotificationCount() {
-            NotificationCount = App.dataService.GetUnreadNotificationCount();
-        }
-
         private async void EditAccount(object sender, RoutedEventArgs e) {
             ContentFrame.Navigate(typeof(UserPage));
         }
