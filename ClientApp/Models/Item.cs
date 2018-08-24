@@ -18,7 +18,7 @@ namespace ClientApp.Models {
 
         public string Category { get; set; }
 
-        public double? ItemPriceUsd { get; set; }
+        public double ItemPriceUsd { get; set; }
 
         public virtual List List { get; set; }
 

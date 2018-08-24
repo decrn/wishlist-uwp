@@ -105,15 +105,17 @@ namespace ClientApp.ViewModels {
 
         // methods
 
-        public void Save() {
+        public async void Save() {
 
             This.Items = Items.Select(i => i.ToItem()).ToList();
             This.InvitedUsers = InvitedUsers.Select(u => u.ToUser()).ToList();
 
             if (IsNew)
-                App.dataService.NewList(List);
+                await App.dataService.NewList(List);
             else
-                App.dataService.EditList(List);
+                await App.dataService.EditList(List);
+
+            App.Reload();
         }
 
         public async void SendInvitations() {
