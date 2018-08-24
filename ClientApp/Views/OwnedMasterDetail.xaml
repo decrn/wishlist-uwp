@@ -61,7 +61,7 @@
 
                         <!-- creator of the list-->
                         <TextBlock
-                            Text="{x:Bind OwnerUser.FullName}"
+                            Text="{x:Bind Description}"
                             Grid.Row="1"
                             MaxLines="1"
                             Style="{ThemeResource ListBodyTextBlockStyle}" />
@@ -187,9 +187,9 @@
                                                         <SymbolIcon>More</SymbolIcon>
                                                         <Button.Flyout>
                                                             <MenuFlyout>
-                                                                <MenuFlyoutItem Text="Up" Icon="Upload" Tag="up"/>
-                                                                <MenuFlyoutItem Text="Down" Icon="Download" Tag="down"/>
-                                                                <MenuFlyoutItem Text="Delete" Icon="Delete" Tag="delete"/>
+                                                                <MenuFlyoutItem Text="Up" Icon="Upload" Click="MoveItemUp" Tag="{x:Bind}"/>
+                                                                <MenuFlyoutItem Text="Down" Icon="Download" Click="MoveItemDown" Tag="{x:Bind}"/>
+                                                                <MenuFlyoutItem Text="Delete" Icon="Delete" Click="DeleteItem" Tag="{x:Bind}"/>
                                                             </MenuFlyout>
                                                         </Button.Flyout>
                                                     </Button>
@@ -226,7 +226,7 @@
                                                         <ColumnDefinition Width="50"/>
                                                     </Grid.ColumnDefinitions>
                                                     <TextBox Text="{x:Bind Email, Mode=TwoWay}" Grid.Column="0" Width="200"/>
-                                                    <Button Grid.Column="1" Background="Transparent" VerticalAlignment="Center">
+                                                    <Button Grid.Column="1" Background="Transparent" VerticalAlignment="Center" Click="DeleteInvite" Tag="{x:Bind}">
                                                         <SymbolIcon>Delete</SymbolIcon>
                                                     </Button>
                                                 </Grid>
@@ -260,9 +260,9 @@
                                                         <ColumnDefinition Width="50"/>
                                                     </Grid.ColumnDefinitions>
                                                     <TextBlock Text="{x:Bind FullName, Mode=OneTime}" Grid.Column="0" Width="200"/>
-                                                    <Button Grid.Column="1" Background="Transparent" VerticalAlignment="Center">
+                                                    <!--<Button Grid.Column="1" Background="Transparent" VerticalAlignment="Center">
                                                         <SymbolIcon>Delete</SymbolIcon>
-                                                    </Button>
+                                                    </Button>-->
                                                 </Grid>
                                             </DataTemplate>
                                         </ListView.ItemTemplate>

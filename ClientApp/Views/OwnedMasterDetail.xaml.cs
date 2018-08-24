@@ -83,5 +83,25 @@ namespace ClientApp {
             box.ItemsSource = CategorySuggestions;
             box.IsSuggestionListOpen = true;
         }
+
+        private void DeleteInvite(object sender, RoutedEventArgs e) {
+            UserViewModel invite = (UserViewModel)((FrameworkElement)sender).Tag;
+            Lists.SelectedList.RemoveInvite(invite);
+        }
+
+        private void DeleteItem(object sender, RoutedEventArgs e) {
+            ItemViewModel item = (ItemViewModel)((FrameworkElement)sender).Tag;
+            Lists.SelectedList.RemoveItem(item);
+        }
+
+        private void MoveItemUp(object sender, RoutedEventArgs e) {
+            ItemViewModel item = (ItemViewModel)((FrameworkElement)sender).Tag;
+            Lists.SelectedList.MoveItemUp(item);
+        }
+
+        private void MoveItemDown(object sender, RoutedEventArgs e) {
+            ItemViewModel item = (ItemViewModel)((FrameworkElement)sender).Tag;
+            Lists.SelectedList.MoveItemDown(item);
+        }
     }
 }

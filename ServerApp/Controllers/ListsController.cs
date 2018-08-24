@@ -58,13 +58,15 @@ namespace ServerApp.Controllers {
             if (id != list.ListId)
                 return BadRequest();
 
-            User user = await _userManager.GetUserAsync(HttpContext.User);
-            if (list.OwnerUser.Id != user.Id)
+            User currentuser = await _userManager.GetUserAsync(HttpContext.User);
+            if (list.OwnerUser.Id != currentuser.Id)
                 return Forbid();
 
             _context.Entry(list).State = EntityState.Modified;
 
             await _context.SaveChangesAsync();
+
+            // TODO: removing items and invites server side
 
             list.Items.ToList().ForEach(item => {
                 if (item.ItemId > 0) {
@@ -78,14 +80,32 @@ namespace ServerApp.Controllers {
                     trueitem.ItemPriceUsd = item.ItemPriceUsd;
 
                 } else {
-                    // TODO: test adding new item when issue #38 is fixed
-                    _context.Item.Add(item);
+                    Item newitem = new Item {
+                        ProductName = item.ProductName,
+                        Description = item.Description,
+                        ProductInfoUrl = item.ProductInfoUrl,
+                        ProductImageUrl = item.ProductImageUrl,
+                        Category = item.Category,
+                        ItemPriceUsd = item.ItemPriceUsd,
+                        List = list
+                    };
+                    _context.Item.Add(newitem);
                 }
             });
 
             await _context.SaveChangesAsync();
 
-            // TODO: also save new invitations (only possible after #38 is fixed)
+            // only save existing mailaddresses
+            // TODO: don't save double keys
+            list.InvitedUsers.ToList().ForEach(user => {
+                var foundusers = _context.User.Where(u => u.Email == user.User.Email);
+                if (foundusers.Count() == 1) {
+                    _context.Database.ExecuteSqlCommand("INSERT INTO [UserListInvite] VALUES (" + list.ListId + ",'" + foundusers.First().Id + "');");
+                    foundusers.First();
+                }
+            });
+
+            await _context.SaveChangesAsync();
 
             return Ok(list);
         }

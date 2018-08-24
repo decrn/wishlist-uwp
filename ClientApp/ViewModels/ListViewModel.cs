@@ -106,6 +106,10 @@ namespace ClientApp.ViewModels {
         // methods
 
         public void Save() {
+
+            This.Items = Items.Select(i => i.ToItem()).ToList();
+            This.InvitedUsers = InvitedUsers.Select(u => u.ToUser()).ToList();
+
             if (IsNew)
                 App.dataService.NewList(List);
             else
@@ -153,6 +157,24 @@ namespace ClientApp.ViewModels {
             //SelectedItemIndex = Items.IndexOf(item);
         }
 
+        public void MoveItemUp(ItemViewModel item) {
+            var index = Items.IndexOf(item);
+            if (index > 0)
+                Items.Move(index,index-1);
+        }
+
+        public void MoveItemDown(ItemViewModel item) {
+            var index = Items.IndexOf(item);
+            if (index < Items.Count-1)
+                Items.Move(index, index + 1);
+        }
+
+        public void RemoveItem(ItemViewModel item) {
+            Items.Remove(item);
+            // The following wont work because it's not the same object and it doesn't matter because of what happens in Save()
+            //List.RemoveItem(item.ToItem());
+        }
+
         public IEnumerable<IGrouping<string, ItemViewModel>> GetGroupedItems() {
             //Group the data
             var groups = from c in Items
@@ -178,6 +200,10 @@ namespace ClientApp.ViewModels {
         public ObservableCollection<UserViewModel> InvitedUsers {
             get => _invitedUsers;
             set => SetProperty(ref _invitedUsers, value);
+        }
+
+        internal void RemoveInvite(UserViewModel invite) {
+            InvitedUsers.Remove(invite);
         }
     }
 }

@@ -40,6 +40,7 @@ namespace ClientApp.ViewModels {
 
         public string Id {
             get => This.Id;
+            set { SetProperty(This.Id, value, () => This.Id = value); }
         }
 
         public string FirstName {
@@ -156,8 +157,14 @@ namespace ClientApp.ViewModels {
 
         void List_OnNotifyPropertyChanged(Object sender, PropertyChangedEventArgs e) {
             User.Update((ListViewModel)sender);
-
         }
+
+        public User ToUser() => new User {
+            Id = Id,
+            Email = Email,
+            FirstName = FirstName,
+            LastName = LastName
+        };
 
     }
 }

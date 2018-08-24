@@ -8,6 +8,7 @@ namespace ClientApp.ViewModels {
 
         public int ItemId {
             get { return This.ItemId; }
+            set { SetProperty(This.ItemId, value, () => This.ItemId = value); }
         }
 
         public string ProductName {
@@ -69,5 +70,17 @@ namespace ClientApp.ViewModels {
         public void Check() {
             App.dataService.MarkItem(This);
         }
+
+
+        public Item ToItem() => new Item {
+            ItemId = ItemId,
+            ProductName = ProductName,
+            CheckedByUser = CheckedByUser,
+            Description = Description,
+            ProductInfoUrl = ProductInfoUrl,
+            ProductImageUrl = ProductImageUrl,
+            Category = Category,
+            ItemPriceUsd = ItemPriceUsd
+        };
     }
 }
