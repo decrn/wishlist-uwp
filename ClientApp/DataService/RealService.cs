@@ -168,15 +168,8 @@ namespace ClientApp.DataService {
             return list;
         }
 
-        public async Task<JObject> NewList(List list) {
-            JObject body = JObject.FromObject(list);
-            JObject obj = JObject.Parse(await HttpService.Post("Lists", body, true));
-            return obj;
-        }
 
-        public async Task<JObject> EditList(List list) {
-            JObject body = JObject.FromObject(list);
-
+        private JObject ParseListObject(JObject body) {
             // convert User models to UserListInvite model for server
             JArray invites = body["InvitedUsers"] as JArray;
             for (int i = 0; i < invites.Count; i++) {
@@ -187,9 +180,20 @@ namespace ClientApp.DataService {
                 invites[i] = invite;
             }
 
-            // remove unneeded properties
             body.Remove("SubscribedUsers");
+            return body;
+        }
 
+        public async Task<JObject> NewList(List list) {
+            JObject body = JObject.FromObject(list);
+            body = ParseListObject(body);
+            JObject obj = JObject.Parse(await HttpService.Post("Lists", body, true));
+            return obj;
+        }
+
+        public async Task<JObject> EditList(List list) {
+            JObject body = JObject.FromObject(list);
+            body = ParseListObject(body);
             JObject obj = JObject.Parse(await HttpService.Put("Lists/" + list.ListId, body, true));
             return obj;
         }

@@ -120,7 +120,7 @@
                                 <TextBox x:Name="Name" PlaceholderText="List Name" Margin="0,15,0,0" MaxLength="100" Width="400" Text="{x:Bind Name, Mode=TwoWay}"/>
                                 <TextBox x:Name="Description" PlaceholderText="Description" Margin="0,15,0,0" MaxLength="300" AcceptsReturn="True" TextWrapping="Wrap" Width="400" Text="{x:Bind Description, Mode=TwoWay}"/>
                                 <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
-                                    <CalendarDatePicker x:Name="Deadline" PlaceholderText="Deadline" Width="200" DateFormat="{}{year.full}-{month.integer}-{day.integer}" Date="{x:Bind Deadline, Mode=TwoWay, Converter={StaticResource TimeConverter}}"></CalendarDatePicker>
+                                    <CalendarDatePicker x:Name="Deadline" PlaceholderText="Deadline" DisplayMode="Decade" Width="200" DateFormat="{}{year.full}-{month.integer}-{day.integer}" Date="{x:Bind Deadline, Mode=TwoWay, Converter={StaticResource TimeConverter}}"></CalendarDatePicker>
                                     <CheckBox IsChecked="{x:Bind IsHidden, Mode=TwoWay}" VerticalAlignment="Center" Margin="30,0,0,0" Content="Private List"></CheckBox>
                                 </StackPanel>
                             </StackPanel>

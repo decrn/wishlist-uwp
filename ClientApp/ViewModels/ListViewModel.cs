@@ -72,7 +72,7 @@ namespace ClientApp.ViewModels {
 
         public string ClaimedWishesCount => Items.Count(i => i.IsCompleted) + "/" + Items.Count;
 
-        public bool IsNew => This.ListId == -1;
+        public bool IsNew => This.ListId == 0;
 
         public bool HasNoItems => Items.Count < 1;
 

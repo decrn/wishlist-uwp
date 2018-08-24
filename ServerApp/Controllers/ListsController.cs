@@ -49,22 +49,7 @@ namespace ServerApp.Controllers {
             return Forbid();
         }
 
-        // PUT: api/Lists/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateListPut([FromRoute] int id, [FromBody] List list) {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            if (id != list.ListId)
-                return BadRequest();
-
-            User currentuser = await _userManager.GetUserAsync(HttpContext.User);
-            if (list.OwnerUser.Id != currentuser.Id)
-                return Forbid();
-
-            _context.Entry(list).State = EntityState.Modified;
-
-            await _context.SaveChangesAsync();
+        private async Task AddListDependencies(List list) {
 
             // TODO: removing items and invites server side
 
@@ -106,6 +91,26 @@ namespace ServerApp.Controllers {
             });
 
             await _context.SaveChangesAsync();
+        }
+
+        // PUT: api/Lists/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateListPut([FromRoute] int id, [FromBody] List list) {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (id != list.ListId)
+                return BadRequest();
+
+            User currentuser = await _userManager.GetUserAsync(HttpContext.User);
+            if (list.OwnerUser.Id != currentuser.Id)
+                return Forbid();
+
+            _context.Entry(list).State = EntityState.Modified;
+
+            await _context.SaveChangesAsync();
+
+            await AddListDependencies(list);
 
             return Ok(list);
         }
@@ -158,10 +163,12 @@ namespace ServerApp.Controllers {
                 return BadRequest(ModelState);
 
             User user = await _userManager.GetUserAsync(HttpContext.User);
-            list.OwnerUser.Id = user.Id;
+            list.OwnerUser = user;
 
             _context.List.Add(list);
             await _context.SaveChangesAsync();
+
+            await AddListDependencies(list);
 
             return Ok(list);
         }
