@@ -58,8 +58,6 @@ namespace ServerApp.Controllers {
             return Ok(item);
         }
 
-        // TODO: Add server route for edit item: wait untill we know list edit works and which way works best
-
         // DELETE: api/Items/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteItem([FromRoute] int id) {

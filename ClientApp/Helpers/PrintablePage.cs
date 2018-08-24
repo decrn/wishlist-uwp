@@ -88,11 +88,19 @@ namespace ClientApp.Helpers {
 
         private void GetPreviewPage(object sender, GetPreviewPageEventArgs e) {
             // Provide a UIElement as the print preview.
-            printDoc.SetPreviewPage(e.PageNumber, this);
+            try {
+                printDoc.SetPreviewPage(e.PageNumber, this);
+            } catch {
+                App.ShowMessage("Please restart application and try again.");
+            }
         }
 
         private void AddPages(object sender, AddPagesEventArgs e) {
-            printDoc.AddPage(this);
+            try {
+                printDoc.AddPage(this);
+            } catch {
+                App.ShowMessage("Please restart application and try again.");
+            }
 
             // Indicate that all of the print pages have been provided
             printDoc.AddPagesComplete();

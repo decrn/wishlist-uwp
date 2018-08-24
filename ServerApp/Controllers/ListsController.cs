@@ -80,12 +80,13 @@ namespace ServerApp.Controllers {
 
             await _context.SaveChangesAsync();
 
-            // TODO: don't save double keys
             list.InvitedUsers.ToList().ForEach(user => {
                 // only save existing mailaddresses
                 var foundusers = _context.User.Where(u => u.Email == user.User.Email);
                 if (foundusers.Count() == 1) {
-                    _context.Database.ExecuteSqlCommand("INSERT INTO [UserListInvite] VALUES (" + list.ListId + ",'" + foundusers.First().Id + "');");
+                    try {
+                        _context.Database.ExecuteSqlCommand("INSERT INTO [UserListInvite] VALUES (" + list.ListId + ",'" + foundusers.First().Id + "');");
+                    } catch { }
                     foundusers.First();
                 }
             });

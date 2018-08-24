@@ -34,8 +34,6 @@ namespace ClientApp {
             SkipNextSelectionChanged = false;
         }
 
-        // TODO: move these methods to the viewmodel or are they fine here?
-
         private void RequestAccess(object sender, RoutedEventArgs e) {
             RequestListAccess dialog = new RequestListAccess();
             dialog.ShowAsync();

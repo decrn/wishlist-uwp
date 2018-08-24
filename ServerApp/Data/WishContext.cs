@@ -29,6 +29,9 @@ namespace ServerApp.Data {
                 .HasForeignKey(i => i.ListId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<UserListInvite>().HasIndex(
+                inv => new { inv.ListId, inv.UserId }).IsUnique(true);
+
             modelBuilder.Entity<UserListSubscription>()
                 .HasOne(l => l.List)
                 .WithMany(l => l.SubscribedUsers)

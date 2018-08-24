@@ -38,7 +38,6 @@ namespace ClientApp.Views {
             Notifications.Clear();
             List<Notification> notifs = await App.dataService.GetNotifications();
             foreach (Notification n in notifs) {
-                // TODO: probably needed to use a ViewModel for this
                 Notifications.Add(n);
             }
         }

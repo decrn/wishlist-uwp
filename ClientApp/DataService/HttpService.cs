@@ -80,7 +80,9 @@ namespace ClientApp.DataService {
                 HttpResponseMessage res = await apicall();
                 if (res.StatusCode == System.Net.HttpStatusCode.Unauthorized) {
                     //TODO: remember credentials to refresh auth
-                    throw new Exception("Token invalid!");
+                    App.ShowMessage("Please login again");
+                    App.GoToLogin();
+                    return "";
                 }
                 response = await res.Content.ReadAsStringAsync();
 

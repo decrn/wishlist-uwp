@@ -33,11 +33,6 @@ namespace ClientApp.ViewModels {
 
         }
 
-        // TODO: is this allowed? needed in RequestListAccess
-        public async static Task<UserViewModel> FromEmail(string email) {
-            return new UserViewModel(await App.dataService.GetUser(email));
-        }
-
         public string Id {
             get => This.Id;
             set { SetProperty(This.Id, value, () => This.Id = value); }
@@ -125,7 +120,6 @@ namespace ClientApp.ViewModels {
             get { return (_SelectedOwnedIndex >= 0) ? _Owned[_SelectedOwnedIndex] : null; }
         }
 
-        // TODO: do we need this?
         // _SelectedIndex is used internally when navigating into lists in the details view, when navigating back
         // This index remembers where the User left off and helps them scroll through all subscribed lists to where they were
         int _SelectedOwnedIndex;
@@ -157,6 +151,10 @@ namespace ClientApp.ViewModels {
 
         void List_OnNotifyPropertyChanged(Object sender, PropertyChangedEventArgs e) {
             User.Update((ListViewModel)sender);
+        }
+
+        public async static Task<UserViewModel> FromEmail(string email) {
+            return new UserViewModel(await App.dataService.GetUser(email));
         }
 
         public User ToUser() => new User {

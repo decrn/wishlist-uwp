@@ -169,18 +169,18 @@
                                                     <CheckBox Grid.RowSpan="3" IsChecked="{x:Bind IsCompleted, Mode=OneTime}" IsEnabled="False"></CheckBox>
 
                                                     <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-                                                        <TextBox Margin="5" PlaceholderText="Name" Text="{Binding ProductName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="200" />
-                                                        <TextBox Margin="5" PlaceholderText="Price"  MinWidth="80"
+                                                        <TextBox Margin="5" PlaceholderText="Name" Text="{Binding ProductName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="280" />
+                                                        <TextBox Margin="5" PlaceholderText="Price"  Width="80"
                                                              Text="{Binding ItemPriceUsd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                              extensions:TextBoxRegex.ValidationMode="Forced"
                                                              extensions:TextBoxRegex.ValidationType="Decimal" />
                                                     </StackPanel>
 
-                                                    <TextBox Grid.Column="1" AcceptsReturn="True" TextWrapping="Wrap" Grid.Row="1" Margin="5" PlaceholderText="Description" Text="{x:Bind Description, Mode=TwoWay}" />
+                                                    <TextBox Grid.Column="1" AcceptsReturn="True" TextWrapping="Wrap" Grid.Row="1" Margin="5" PlaceholderText="Description" Text="{x:Bind Description, Mode=TwoWay}" Width="370"/>
 
                                                     <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
-                                                        <TextBox Margin="5" PlaceholderText="More Info Url" Text="{Binding ProductInfoUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="140" />
-                                                        <TextBox Margin="5" PlaceholderText="Image Url" Text="{Binding ProductImageUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="140" />
+                                                        <TextBox Margin="5" PlaceholderText="More Info Url" Text="{Binding ProductInfoUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="180" />
+                                                        <TextBox Margin="5" PlaceholderText="Image Url" Text="{Binding ProductImageUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="180" />
                                                     </StackPanel>
 
                                                     <AutoSuggestBox Grid.Column="1" Grid.Row="3"

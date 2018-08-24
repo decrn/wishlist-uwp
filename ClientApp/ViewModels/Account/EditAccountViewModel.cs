@@ -17,7 +17,6 @@ namespace ClientApp.ViewModels {
 
 
         public EditAccountViewModel() {
-            // TODO: change this to the real mvvm way
             Initialize();
         }
 
