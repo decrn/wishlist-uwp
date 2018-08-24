@@ -117,8 +117,8 @@
                             </Ellipse>
                             
                             <StackPanel Grid.Column="1" HorizontalAlignment="Left">
-                                <TextBox x:Name="Name" PlaceholderText="List Name" Margin="0,15,0,0" MaxLength="100" Width="400" Text="{x:Bind Name, Mode=TwoWay}"/>
-                                <TextBox x:Name="Description" PlaceholderText="Description" Margin="0,15,0,0" MaxLength="300" AcceptsReturn="True" TextWrapping="Wrap" Width="400" Text="{x:Bind Description, Mode=TwoWay}"/>
+                                <TextBox x:Name="Name" PlaceholderText="List Name" Margin="0,15,0,0" MaxLength="100" Width="400" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox x:Name="Description" PlaceholderText="Description" Margin="0,15,0,0" MaxLength="300" AcceptsReturn="True" TextWrapping="Wrap" Width="400" Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                 <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
                                     <CalendarDatePicker x:Name="Deadline" PlaceholderText="Deadline" DisplayMode="Decade" Width="200" DateFormat="{}{year.full}-{month.integer}-{day.integer}" Date="{x:Bind Deadline, Mode=TwoWay, Converter={StaticResource TimeConverter}}"></CalendarDatePicker>
                                     <CheckBox IsChecked="{x:Bind IsHidden, Mode=TwoWay}" VerticalAlignment="Center" Margin="30,0,0,0" Content="Private List"></CheckBox>
@@ -169,9 +169,9 @@
                                                     <CheckBox Grid.RowSpan="3" IsChecked="{x:Bind IsCompleted, Mode=OneTime}" IsEnabled="False"></CheckBox>
 
                                                     <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-                                                        <TextBox Margin="5" PlaceholderText="Name" Text="{x:Bind ProductName, Mode=TwoWay}" MinWidth="200" />
+                                                        <TextBox Margin="5" PlaceholderText="Name" Text="{Binding ProductName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="200" />
                                                         <TextBox Margin="5" PlaceholderText="Price"  MinWidth="80"
-                                                             Text="{x:Bind ItemPriceUsd, Mode=TwoWay}"
+                                                             Text="{Binding ItemPriceUsd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                              extensions:TextBoxRegex.ValidationMode="Forced"
                                                              extensions:TextBoxRegex.ValidationType="Decimal" />
                                                     </StackPanel>
@@ -179,13 +179,13 @@
                                                     <TextBox Grid.Column="1" AcceptsReturn="True" TextWrapping="Wrap" Grid.Row="1" Margin="5" PlaceholderText="Description" Text="{x:Bind Description, Mode=TwoWay}" />
 
                                                     <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
-                                                        <TextBox Margin="5" PlaceholderText="More Info Url" Text="{x:Bind ProductInfoUrl, Mode=TwoWay}" MinWidth="140" />
-                                                        <TextBox Margin="5" PlaceholderText="Image Url" Text="{x:Bind ProductImageUrl, Mode=TwoWay}" MinWidth="140" />
+                                                        <TextBox Margin="5" PlaceholderText="More Info Url" Text="{Binding ProductInfoUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="140" />
+                                                        <TextBox Margin="5" PlaceholderText="Image Url" Text="{Binding ProductImageUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="140" />
                                                     </StackPanel>
 
                                                     <AutoSuggestBox Grid.Column="1" Grid.Row="3"
                                                         PlaceholderText="Category" Width="200"
-                                                        Text="{x:Bind Category, Mode=TwoWay}"
+                                                        Text="{Binding Category, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                         TextChanged="Category_TextChanged"
                                                         SuggestionChosen="Category_SuggestionChosen"
                                                         GotFocus="Category_GotFocus"/>
@@ -232,7 +232,7 @@
                                                         <ColumnDefinition/>
                                                         <ColumnDefinition Width="50"/>
                                                     </Grid.ColumnDefinitions>
-                                                    <TextBox Text="{x:Bind Email, Mode=TwoWay}" Grid.Column="0" Width="200"/>
+                                                    <TextBox Text="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" Width="200"/>
                                                     <Button Grid.Column="1" Background="Transparent" VerticalAlignment="Center" Click="DeleteInvite" Tag="{x:Bind}">
                                                         <SymbolIcon>Delete</SymbolIcon>
                                                     </Button>
